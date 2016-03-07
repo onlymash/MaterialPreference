@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MaterialPreference</string>
+    <string name="action_settings">Settings</string>
+    <string name="night_mode">Night Mode</string>
+</resources>

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Settings</string>
+
+    <string-array name="entries">
+        <item>Poi?</item>
+        <item>Poi!</item>
+        <item>Nep-nep!</item>
+        <item>Nico Nico Nii</item>
+    </string-array>
+
+    <string-array name="entry_values" translatable="false">
+        <item>999</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="default_value" translatable="false">
+        <item>999</item>
+        <item>0</item>
+    </string-array>
+</resources>

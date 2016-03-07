@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        android:title="Preference"
+        android:summary="Summary">
+    </Preference>
+
+    <Preference
+        android:title="Preference"
+        android:summary="with icon"
+        android:icon="@mipmap/ic_launcher">
+    </Preference>
+
+    <PreferenceCategory
+        android:title="TwoStatePreference">
+
+        <rikka.materialpreference.SwitchPreference
+            android:key="switch"
+            android:title="SwitchPreference"
+            android:summaryOn="On"
+            android:summaryOff="Off"/>
+
+        <CheckBoxPreference
+            android:key="checkbox"
+            android:title="CheckBoxPreference"
+            android:summaryOn="On"
+            android:summaryOff="Off"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="DialogPreference">
+
+        <rikka.materialpreference.EditTextPreference
+            android:key="edit_text"
+            android:title="EditTextPreference"
+            android:defaultValue="Nyanpasu~"
+            android:hint="hint"/>
+
+        <rikka.materialpreference.ListPreference
+            android:key="list"
+            android:title="ListPreference"
+            android:entries="@array/entries"
+            android:entryValues="@array/entry_values"
+            android:defaultValue="1"/>
+
+        <rikka.materialpreference.MultiSelectListPreference
+            android:key="multi_select_list"
+            android:title="MultiSelectListPreference"
+            android:entries="@array/entries"
+            android:entryValues="@array/entry_values"
+            android:defaultValue="@array/default_value"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="OtherPreference">
+
+        <rikka.materialpreference.DropDownPreference
+            android:key="drop_down"
+            android:title="DropDownPreference"
+            app:myEntries="@array/entries"
+            app:myEntryValues="@array/entry_values"
+            android:defaultValue="1"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
