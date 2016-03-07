@@ -41,7 +41,7 @@ Screenshots
 
 Note
 -----------
-1. You need add `preference_fallback_accent_color` in your `colors.xml` to set accent color for pre-L
+1. You need add `preference_fallback_accent_color` in your `colors.xml` to set accent color of dialog button and category title
 2. The value of `ListPreference` and `EditTextPreference` will be set to summay, add `app:showValueSummary="false"` in xml to disable it
 
 Requirment
