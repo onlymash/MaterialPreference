@@ -18,8 +18,8 @@ package rikka.materialpreference;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.preference.EditTextPreference;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -46,6 +46,7 @@ public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
         super.onBindDialogView(view);
         mEditText = (AppCompatEditText) view.findViewById(android.R.id.edit);
         mEditText.setText(getEditTextPreference().getText());
+        mEditText.setInputType(getEditTextPreference().getInputType());
     }
 
     private EditTextPreference getEditTextPreference() {

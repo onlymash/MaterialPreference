@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.view.View;
  */
 public class EditTextPreference extends android.support.v7.preference.EditTextPreference {
     private boolean showValueSummary;
+    private int inputType;
 
     public EditTextPreference(Context context) {
         super(context);
@@ -24,6 +26,10 @@ public class EditTextPreference extends android.support.v7.preference.EditTextPr
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyPreference);
         showValueSummary = a.getBoolean(R.styleable.MyPreference_showValueSummary, true);
+        a.recycle();
+
+        a = context.obtainStyledAttributes(attrs, R.styleable.EditTextPreference);
+        inputType = a.getInt(R.styleable.EditTextPreference_textInputType, InputType.TYPE_NULL);
         a.recycle();
     }
 
@@ -41,6 +47,10 @@ public class EditTextPreference extends android.support.v7.preference.EditTextPr
         if (showValueSummary) {
             setSummary(text);
         }
+    }
+
+    public int getInputType() {
+        return inputType;
     }
 
     @Override

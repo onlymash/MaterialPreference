@@ -37,7 +37,13 @@
             android:key="edit_text"
             android:title="EditTextPreference"
             android:defaultValue="Nyanpasu~"
-            android:hint="hint"/>
+            app:textInputType="number"/>
+
+        <rikka.materialpreference.EditTextPreference
+            android:key="edit_text_number"
+            android:title="EditTextPreference (inputType=number)"
+            android:defaultValue="233"
+            app:textInputType="number"/>
 
         <rikka.materialpreference.ListPreference
             android:key="list"
