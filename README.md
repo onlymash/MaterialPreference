@@ -23,7 +23,7 @@ Usage
 		}
 	
 		dependencies {
-	        compile 'com.github.RikkaW:MaterialPreference:v0.0.1'
+	        compile 'com.github.RikkaW:MaterialPreference:v0.0.2'
 		}  
 	
 2. Add `<item name="preferenceTheme">@style/PreferenceTheme.Material</item>` to your theme.
