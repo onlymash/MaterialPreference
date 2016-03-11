@@ -46,7 +46,8 @@ public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
         super.onBindDialogView(view);
         mEditText = (AppCompatEditText) view.findViewById(android.R.id.edit);
         mEditText.setText(getEditTextPreference().getText());
-        mEditText.setInputType(getEditTextPreference().getInputType());
+        if (getEditTextPreference().getInputType() != InputType.TYPE_NULL)
+            mEditText.setInputType(getEditTextPreference().getInputType());
     }
 
     private EditTextPreference getEditTextPreference() {
