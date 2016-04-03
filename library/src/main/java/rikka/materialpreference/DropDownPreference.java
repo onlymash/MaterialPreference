@@ -90,11 +90,9 @@ public class DropDownPreference extends Preference {
 
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-        if (restoreValue) {
-            int index = findIndexByEntryValues(getPersistedString(""));
-            if (index != -1 && index < mEntries.length) {
-                setSelectedItem(index);
-            }
+        int index = findIndexByEntryValues(getPersistedString((String) defaultValue));
+        if (index != -1 && index < mEntries.length) {
+            setSelectedItem(index);
         }
     }
 
@@ -217,19 +215,6 @@ public class DropDownPreference extends Preference {
         lp.width = 0;
         mSpinner.setLayoutParams(lp);
     }
-    //    @Override
-    //    public void onBindView(View view) {
-    //        super.onBindView(view);
-    //        if (view.equals(mSpinner.getParent())) return;
-    //        if (mSpinner.getParent() != null) {
-    //            ((ViewGroup)mSpinner.getParent()).removeView(mSpinner);
-    //        }
-    //        final ViewGroup vg = (ViewGroup)view;
-    //        vg.addView(mSpinner, 0);
-    //        final ViewGroup.LayoutParams lp = mSpinner.getLayoutParams();
-    //        lp.width = 0;
-    //        mSpinner.setLayoutParams(lp);
-    //    }
 
     public interface Callback {
         boolean onItemSelected(int pos, Object value);
