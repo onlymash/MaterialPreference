@@ -22,6 +22,6 @@
           android:textAppearance="@android:style/TextAppearance.Material.Body2"
           android:textColor="?attr/colorAccent"
           android:paddingStart="?attr/listPreferredItemPaddingLeft"
-          android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+          android:paddingEnd="?attr/listPreferredItemPaddingRight"
           android:paddingTop="16dip" />
     <!-- From: file:/usr/local/google/buildbot/src/googleplex-android/mnc-supportlib-release/frameworks/support/v14/preference/res/layout-v21/preference_category_material.xml -->
