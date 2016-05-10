@@ -21,7 +21,7 @@
           android:layout_height="wrap_content"
           android:textAppearance="@style/Preference_TextAppearanceMaterialBody2"
           android:textColor="@color/preference_fallback_accent_color"
-          android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-          android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+          android:paddingLeft="?attr/listPreferredItemPaddingLeft"
+          android:paddingRight="?attr/listPreferredItemPaddingRight"
           android:paddingTop="16dip" />
     <!-- From: file:/usr/local/google/buildbot/src/googleplex-android/mnc-supportlib-release/frameworks/support/v14/preference/res/layout/preference_category_material.xml -->
