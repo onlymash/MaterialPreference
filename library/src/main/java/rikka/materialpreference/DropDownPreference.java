@@ -241,6 +241,10 @@ public class DropDownPreference extends Preference {
      */
     @Override
     public CharSequence getSummary() {
+        if (mAdapter == null || getSelectedPosition() < 0 || mAdapter.getCount() <= getSelectedPosition()) {
+            return super.getSummary();
+        }
+
         final CharSequence entry = mAdapter.getItem(getSelectedPosition());
         if (mSummary == null) {
             return super.getSummary();
