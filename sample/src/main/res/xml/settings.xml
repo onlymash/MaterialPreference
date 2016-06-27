@@ -16,7 +16,7 @@
     <PreferenceCategory
         android:title="TwoStatePreference">
 
-        <rikka.materialpreference.SwitchPreference
+        <SwitchPreference
             android:key="switch"
             android:title="SwitchPreference"
             android:summaryOn="On"
@@ -33,25 +33,28 @@
     <PreferenceCategory
         android:title="DialogPreference">
 
-        <rikka.materialpreference.EditTextPreference
+        <EditTextPreference
             android:key="edit_text"
             android:title="EditTextPreference"
+            android:summary="%s"
             android:defaultValue="Nyanpasu~"/>
 
-        <rikka.materialpreference.EditTextPreference
+        <EditTextPreference
             android:key="edit_text_number"
             android:title="EditTextPreference (inputType=number)"
+            android:summary="%s"
             android:defaultValue="233"
-            app:textInputType="number"/>
+            android:inputType="number"/>
 
-        <rikka.materialpreference.ListPreference
+        <ListPreference
             android:key="list"
             android:title="ListPreference"
+            android:summary="%s"
             android:entries="@array/entries"
             android:entryValues="@array/entry_values"
             android:defaultValue="1"/>
 
-        <rikka.materialpreference.MultiSelectListPreference
+        <MultiSelectListPreference
             android:key="multi_select_list"
             android:title="MultiSelectListPreference"
             android:entries="@array/entries"
@@ -63,11 +66,12 @@
     <PreferenceCategory
         android:title="OtherPreference">
 
-        <rikka.materialpreference.DropDownPreference
+        <DropDownPreference
             android:key="drop_down"
             android:title="DropDownPreference"
-            app:myEntries="@array/entries"
-            app:myEntryValues="@array/entry_values"
+            android:summary="%s"
+            android:entries="@array/entries"
+            android:entryValues="@array/entry_values"
             android:defaultValue="1"/>
 
     </PreferenceCategory>

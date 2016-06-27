@@ -45,6 +45,8 @@ class PreferenceInflater {
 
     private static final HashMap<String, Constructor> CONSTRUCTOR_MAP = new HashMap<>();
 
+    protected static final String DEFAULT_PACKAGE = "rikka.materialpreference.";
+
     private final Context mContext;
 
     private final Object[] mConstructorArgs = new Object[2];
@@ -63,7 +65,7 @@ class PreferenceInflater {
 
     private void init(PreferenceManager preferenceManager) {
         mPreferenceManager = preferenceManager;
-        setDefaultPackages(new String[] {"rikka.materialpreference."});
+        setDefaultPackages(new String[] {DEFAULT_PACKAGE});
     }
 
     /**

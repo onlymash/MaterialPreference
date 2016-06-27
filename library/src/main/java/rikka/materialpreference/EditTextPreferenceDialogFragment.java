@@ -17,6 +17,7 @@
 package rikka.materialpreference;
 
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
@@ -43,6 +44,9 @@ public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
             throw new IllegalStateException("Dialog view must contain an EditText with id" +
                     " @android:id/edit");
         }
+
+        if (getEditTextPreference().getInputType() != InputType.TYPE_NULL)
+            mEditText.setInputType(getEditTextPreference().getInputType());
 
         mEditText.setText(getEditTextPreference().getText());
     }

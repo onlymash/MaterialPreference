@@ -15,7 +15,7 @@
     limitations under the License
     -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <declare-styleable name="Theme">
 
         <!-- =================== -->
@@ -188,6 +188,12 @@
         <attr name="android:dialogLayout" />
     </declare-styleable>
 
+    <!-- Base attributes available to EditTextPreference. -->
+    <declare-styleable name="EditTextPreference">
+        <attr name="inputType" format="reference"/>
+        <attr name="android:inputType"/>
+    </declare-styleable>
+
     <!-- Base attributes available to ListPreference. -->
     <declare-styleable name="ListPreference">
         <!-- The human-readable array to present as a list. Each entry must have a corresponding
@@ -280,4 +286,10 @@
         <attr name="android:dividerHeight" />
     </declare-styleable>
 
+    <declare-styleable name="DropDownPreference">
+        <attr name="entries" />
+        <attr name="android:entries" />
+        <attr name="entryValues" />
+        <attr name="android:entryValues" />
+    </declare-styleable>
 </resources>

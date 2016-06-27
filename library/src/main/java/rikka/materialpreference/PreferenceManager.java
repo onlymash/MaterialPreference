@@ -25,11 +25,9 @@ import android.support.v4.content.SharedPreferencesCompat;
  * from activities or XML.
  * <p>
  * In most cases, clients should use
- * {@link android.support.v14.preference.PreferenceFragment#addPreferencesFromResource(int)}, or
- * {@link PreferenceFragmentCompat#addPreferencesFromResource(int)}.
+ * {@link PreferenceFragment#addPreferencesFromResource(int)}}.
  *
- * @see android.support.v14.preference.PreferenceFragment
- * @see PreferenceFragmentCompat
+ * @see PreferenceFragment
  */
 public class PreferenceManager {
 
@@ -81,6 +79,11 @@ public class PreferenceManager {
      */
     private PreferenceScreen mPreferenceScreen;
 
+    /**
+     * The default package that will be searched for classes to construct
+     */
+    private String[] mDefaultPackages;
+
     private OnPreferenceTreeClickListener mOnPreferenceTreeClickListener;
     private OnDisplayPreferenceDialogListener mOnDisplayPreferenceDialogListener;
     private OnNavigateToScreenListener mOnNavigateToScreenListener;
@@ -112,6 +115,7 @@ public class PreferenceManager {
         setNoCommit(true);
 
         final PreferenceInflater inflater = new PreferenceInflater(context, this);
+        inflater.setDefaultPackages(getDefaultPackages());
         rootPreferences = (PreferenceScreen) inflater.inflate(resId, rootPreferences);
         rootPreferences.onAttachedToHierarchy(this);
 
@@ -402,6 +406,27 @@ public class PreferenceManager {
         }
     }
 
+    public final String[] getDefaultPackages() {
+        if (mDefaultPackages == null) {
+            mDefaultPackages = new String[]{ PreferenceInflater.DEFAULT_PACKAGE };
+        }
+        return mDefaultPackages;
+    }
+
+    /**
+     * Sets the default package that will be searched for classes to construct
+     * for tag names that have no explicit package.
+     *
+     * @param defaultPackages The default package. This will be prepended to the
+     *            tag name, so it should end with a period.
+     */
+    public void setDefaultPackages(String[] defaultPackages) {
+        String[] array = new String[defaultPackages.length + 1];
+        System.arraycopy(defaultPackages, 0, array, 0, defaultPackages.length);
+        array[defaultPackages.length] = PreferenceInflater.DEFAULT_PACKAGE;
+        mDefaultPackages = array;
+    }
+
     /**
      * Sets the callback to be invoked when a {@link Preference} in the
      * hierarchy rooted at this {@link PreferenceManager} is clicked.
@@ -451,7 +476,7 @@ public class PreferenceManager {
 
     /**
      * Interface definition for a class that will be called when a
-     * {@link android.support.v7.preference.Preference} requests to display a dialog.
+     * {@link Preference} requests to display a dialog.
      */
     public interface OnDisplayPreferenceDialogListener {
 
@@ -465,7 +490,7 @@ public class PreferenceManager {
 
     /**
      * Interface definition for a class that will be called when a
-     * {@link android.support.v7.preference.PreferenceScreen} requests navigation.
+     * {@link PreferenceScreen} requests navigation.
      */
     public interface OnNavigateToScreenListener {
 

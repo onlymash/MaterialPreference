@@ -20,6 +20,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.content.res.TypedArrayUtils;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.EditText;
@@ -35,10 +37,28 @@ import android.widget.EditText;
  */
 public class EditTextPreference extends DialogPreference {
     private String mText;
+    private String mSummary;
+    private int mInputType;
 
     public EditTextPreference(Context context, AttributeSet attrs, int defStyleAttr,
             int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+        TypedArray a;
+        a = context.obtainStyledAttributes(attrs, R.styleable.EditTextPreference);
+        mInputType = TypedArrayUtils.getInt(a, R.styleable.EditTextPreference_inputType, R.styleable.EditTextPreference_android_inputType, InputType.TYPE_NULL);
+        a.recycle();
+
+        /* Retrieve the Preference summary attribute since it's private
+         * in the Preference class.
+         */
+        a = context.obtainStyledAttributes(attrs,
+                R.styleable.Preference, defStyleAttr, defStyleRes);
+
+        mSummary = TypedArrayUtils.getString(a, R.styleable.Preference_summary,
+                R.styleable.Preference_android_summary);
+
+        a.recycle();
     }
 
     public EditTextPreference(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -60,14 +80,54 @@ public class EditTextPreference extends DialogPreference {
      */
     public void setText(String text) {
         final boolean wasBlocking = shouldDisableDependents();
-
+        final boolean changed = !TextUtils.equals(mText, text);
         mText = text;
 
-        persistString(text);
+        if (changed) {
+            persistString(text);
+            notifyChanged();
+        }
 
         final boolean isBlocking = shouldDisableDependents();
         if (isBlocking != wasBlocking) {
             notifyDependencyChange(isBlocking);
+        }
+    }
+
+    /**
+     * Returns the summary of this EditTextPreference. If the summary
+     * has a {@linkplain java.lang.String#format String formatting}
+     * marker in it (i.e. "%s" or "%1$s"), then the current entry
+     * value will be substituted in its place.
+     *
+     * @return the summary with appropriate string substitution
+     */
+    @Override
+    public CharSequence getSummary() {
+        final CharSequence entry = getText();
+        if (mSummary == null) {
+            return super.getSummary();
+        } else {
+            return String.format(mSummary, entry == null ? "" : entry);
+        }
+    }
+
+    /**
+     * Sets the summary for this Preference with a CharSequence.
+     * If the summary has a
+     * {@linkplain java.lang.String#format String formatting}
+     * marker in it (i.e. "%s" or "%1$s"), then the current entry
+     * value will be substituted in its place when it's retrieved.
+     *
+     * @param summary The summary for the preference.
+     */
+    @Override
+    public void setSummary(CharSequence summary) {
+        super.setSummary(summary);
+        if (summary == null && mSummary != null) {
+            mSummary = null;
+        } else if (summary != null && !summary.equals(mSummary)) {
+            mSummary = summary.toString();
         }
     }
 
@@ -78,6 +138,14 @@ public class EditTextPreference extends DialogPreference {
      */
     public String getText() {
         return mText;
+    }
+
+    /**
+     *
+     * @return Input type value.
+     */
+    public int getInputType() {
+        return mInputType;
     }
 
     @Override

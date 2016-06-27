@@ -96,7 +96,7 @@ public class SwitchPreference extends TwoStatePreference {
      * @param attrs Style attributes that differ from the default
      */
     public SwitchPreference(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.switchPreferenceCompatStyle);
+        this(context, attrs, R.attr.switchPreferenceStyle);
     }
     /**
      * Construct a new SwitchPreference with default style options.

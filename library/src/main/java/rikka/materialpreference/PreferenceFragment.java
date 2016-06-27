@@ -659,9 +659,10 @@ public abstract class PreferenceFragment extends Fragment implements
         }
 
         private boolean shouldDrawDividerAbove(View view, RecyclerView parent) {
-            final RecyclerView.ViewHolder holder = parent.getChildViewHolder(view);
+            /*final RecyclerView.ViewHolder holder = parent.getChildViewHolder(view);
             return holder.getAdapterPosition() == 0 &&
-                    ((PreferenceViewHolder) holder).isDividerAllowedAbove();
+                    ((PreferenceViewHolder) holder).isDividerAllowedAbove();*/
+            return false;
         }
 
         private boolean shouldDrawDividerBelow(View view, RecyclerView parent) {

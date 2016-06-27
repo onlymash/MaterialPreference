@@ -44,7 +44,7 @@
     </style>
 
     <style name="Preference.SwitchPreferenceCompat">
-        <item name="android:widgetLayout">@layout/preference_widget_switch_compat</item>
+        <item name="android:widgetLayout">@layout/preference_widget_switch</item>
         <item name="android:switchTextOn">@string/v7_preference_on</item>
         <item name="android:switchTextOff">@string/v7_preference_off</item>
     </style>
@@ -133,4 +133,7 @@
         <item name="android:paddingRight">0dp</item>
     </style>
 
+    <style name="Preference.Dialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="colorAccent">@color/preference_fallback_accent_color</item>
+    </style>
 </resources>

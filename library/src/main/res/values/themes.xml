@@ -17,24 +17,6 @@
 
 <resources>
     <style name="PreferenceThemeOverlay">
-        <item name="preferenceScreenStyle">@style/Preference.PreferenceScreen</item>
-        <item name="preferenceFragmentCompatStyle">@style/PreferenceFragment</item>
-        <item name="preferenceCategoryStyle">@style/Preference.Category</item>
-        <item name="preferenceStyle">@style/Preference</item>
-        <item name="preferenceInformationStyle">@style/Preference.Information</item>
-        <item name="checkBoxPreferenceStyle">@style/Preference.CheckBoxPreference</item>
-        <item name="switchPreferenceCompatStyle">@style/Preference.SwitchPreferenceCompat</item>
-        <item name="dialogPreferenceStyle">@style/Preference.DialogPreference</item>
-        <item name="editTextPreferenceStyle">@style/Preference.DialogPreference.EditTextPreference</item>
-        <item name="preferenceFragmentListStyle">@style/PreferenceFragmentList</item>
-    </style>
-
-    <style name="PreferenceThemeOverlay.v14">
-        <item name="switchPreferenceStyle">@style/Preference.SwitchPreference</item>
-        <item name="preferenceFragmentStyle">@style/PreferenceFragment</item>
-    </style>
-
-    <style name="PreferenceThemeOverlay.v14.Material">
         <item name="preferenceScreenStyle">@style/Preference.PreferenceScreen.Material</item>
         <item name="preferenceFragmentCompatStyle">@style/PreferenceFragment.Material</item>
         <item name="preferenceFragmentStyle">@style/PreferenceFragment.Material</item>
