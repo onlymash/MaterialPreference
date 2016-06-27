@@ -16,16 +16,13 @@
 
 package rikka.materialpreference;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatEditText;
-import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 
 public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
 
-    private AppCompatEditText mEditText;
+    private EditText mEditText;
 
     public static EditTextPreferenceDialogFragment newInstance(String key) {
         final EditTextPreferenceDialogFragment
@@ -37,17 +34,17 @@ public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
     }
 
     @Override
-    protected View onCreateDialogView(Context context) {
-        return LayoutInflater.from(context).inflate(R.layout.preference_dialog_edittext, null);
-    }
-
-    @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
-        mEditText = (AppCompatEditText) view.findViewById(android.R.id.edit);
+
+        mEditText = (EditText) view.findViewById(android.R.id.edit);
+
+        if (mEditText == null) {
+            throw new IllegalStateException("Dialog view must contain an EditText with id" +
+                    " @android:id/edit");
+        }
+
         mEditText.setText(getEditTextPreference().getText());
-        if (getEditTextPreference().getInputType() != InputType.TYPE_NULL)
-            mEditText.setInputType(getEditTextPreference().getInputType());
     }
 
     private EditTextPreference getEditTextPreference() {

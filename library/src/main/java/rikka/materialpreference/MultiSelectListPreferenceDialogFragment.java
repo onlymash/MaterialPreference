@@ -53,11 +53,7 @@ public class MultiSelectListPreferenceDialogFragment extends PreferenceDialogFra
                             "an entryValues array.");
         }
 
-        boolean[] checkedItems = new boolean[preference.getEntryValues().length];
-        for (String s : preference.getValues()) {
-            checkedItems [preference.findIndexOfValue(s)] = preference.findIndexOfValue(s) >= 0;
-        }
-
+        boolean[] checkedItems = preference.getSelectedItems();
         builder.setMultiChoiceItems(preference.getEntries(), checkedItems,
                 new DialogInterface.OnMultiChoiceClickListener() {
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {

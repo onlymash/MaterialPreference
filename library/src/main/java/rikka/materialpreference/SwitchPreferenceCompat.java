@@ -25,7 +25,7 @@ import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.CompoundButton;
 
-public class SwitchPreference extends TwoStatePreference {
+public class SwitchPreferenceCompat extends TwoStatePreference {
     private final Listener mListener = new Listener();
     // Switch text for on and off states
     private CharSequence mSwitchOn;
@@ -39,7 +39,7 @@ public class SwitchPreference extends TwoStatePreference {
                 buttonView.setChecked(!isChecked);
                 return;
             }
-            SwitchPreference.this.setChecked(isChecked);
+            SwitchPreferenceCompat.this.setChecked(isChecked);
         }
     }
     /**
@@ -55,8 +55,8 @@ public class SwitchPreference extends TwoStatePreference {
      *        defStyleAttr is 0 or can not be found in the theme. Can be 0
      *        to not look for defaults.
      */
-    public SwitchPreference(Context context, AttributeSet attrs, int defStyleAttr,
-                                  int defStyleRes) {
+    public SwitchPreferenceCompat(Context context, AttributeSet attrs, int defStyleAttr,
+                            int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.SwitchPreference, defStyleAttr, defStyleRes);
@@ -86,7 +86,7 @@ public class SwitchPreference extends TwoStatePreference {
      *        reference to a style resource that supplies default values for
      *        the view. Can be 0 to not look for defaults.
      */
-    public SwitchPreference(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SwitchPreferenceCompat(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);
     }
     /**
@@ -95,7 +95,7 @@ public class SwitchPreference extends TwoStatePreference {
      * @param context The Context that will style this preference
      * @param attrs Style attributes that differ from the default
      */
-    public SwitchPreference(Context context, AttributeSet attrs) {
+    public SwitchPreferenceCompat(Context context, AttributeSet attrs) {
         this(context, attrs, R.attr.switchPreferenceCompatStyle);
     }
     /**
@@ -103,7 +103,7 @@ public class SwitchPreference extends TwoStatePreference {
      *
      * @param context The Context that will style this preference
      */
-    public SwitchPreference(Context context) {
+    public SwitchPreferenceCompat(Context context) {
         this(context, null);
     }
     @Override
