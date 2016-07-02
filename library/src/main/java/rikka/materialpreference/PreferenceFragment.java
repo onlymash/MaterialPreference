@@ -620,7 +620,7 @@ public abstract class PreferenceFragment extends Fragment implements
         return null;
     }
 
-    private class DividerDecoration extends RecyclerView.ItemDecoration {
+    public class DividerDecoration extends RecyclerView.ItemDecoration {
 
         private Drawable mDivider;
         private int mDividerHeight;
@@ -658,17 +658,17 @@ public abstract class PreferenceFragment extends Fragment implements
             }
         }
 
-        private boolean shouldDrawDividerAbove(View view, RecyclerView parent) {
+        public boolean shouldDrawDividerAbove(View view, RecyclerView parent) {
             /*final RecyclerView.ViewHolder holder = parent.getChildViewHolder(view);
             return holder.getAdapterPosition() == 0 &&
                     ((PreferenceViewHolder) holder).isDividerAllowedAbove();*/
             return false;
         }
 
-        private boolean shouldDrawDividerBelow(View view, RecyclerView parent) {
+        public boolean shouldDrawDividerBelow(View view, RecyclerView parent) {
             final PreferenceViewHolder holder =
                     (PreferenceViewHolder) parent.getChildViewHolder(view);
-            boolean nextAllowed = true;
+            boolean nextAllowed = false;
             int index = parent.indexOfChild(view);
             if (index < parent.getChildCount() - 1) {
                 final View nextView = parent.getChildAt(index + 1);
