@@ -43,7 +43,7 @@ public class DropDownPreference extends Preference {
 
         mContext = context;
         mAdapter = new ArrayAdapter<>(mContext,
-                android.R.layout.simple_spinner_dropdown_item);
+                R.layout.spinner_dropdown_item);
 
         mSpinner = new AppCompatSpinner(context);
         mSpinner.setVisibility(View.INVISIBLE);
