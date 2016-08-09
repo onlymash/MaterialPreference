@@ -16,9 +16,11 @@
 
 package rikka.materialpreference;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
@@ -49,6 +51,16 @@ public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
             mEditText.setInputType(getEditTextPreference().getInputType());
 
         mEditText.setText(getEditTextPreference().getText());
+
+        mEditText.requestFocus();
+
+        mEditText.post(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(mEditText, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
     }
 
     private EditTextPreference getEditTextPreference() {
