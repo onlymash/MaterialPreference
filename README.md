@@ -16,7 +16,7 @@ Usage
 		}
 	
 		dependencies {
-	        compile 'com.github.RikkaW:MaterialPreference:v0.0.8'
+	        compile 'com.github.RikkaW:MaterialPreference:v0.0.12'
 		}  
 	
 2. Add `<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>` to your theme.
