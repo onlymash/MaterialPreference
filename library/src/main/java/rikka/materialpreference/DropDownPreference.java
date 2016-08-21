@@ -34,6 +34,7 @@ public class DropDownPreference extends ListPreference {
 
     private final Context mContext;
     private final ArrayAdapter<String> mAdapter;
+    private Object[] mEntryValues;
 
     private AppCompatSpinner mSpinner;
 
@@ -69,6 +70,13 @@ public class DropDownPreference extends ListPreference {
         updateEntries();
     }
 
+    public void setObjectEntryValues(Object[] entryValues) {
+        mEntryValues = entryValues;
+    }
+
+    public Object[] getObjectEntryValues() {
+        return mEntryValues;
+    }
 
     /**
      * By default, this class uses a simple {@link android.widget.ArrayAdapter}. But if you need
@@ -101,7 +109,13 @@ public class DropDownPreference extends ListPreference {
      * @hide
      */
     public int findSpinnerIndexOfValue(String value) {
-        CharSequence[] entryValues = getEntryValues();
+        Object[] entryValues;
+        if (getObjectEntryValues() != null) {
+            entryValues= getObjectEntryValues();
+        } else {
+            entryValues = getEntryValues();
+        }
+
         if (value != null && entryValues != null) {
             for (int i = entryValues.length - 1; i >= 0; i--) {
                 if (entryValues[i].equals(value)) {
