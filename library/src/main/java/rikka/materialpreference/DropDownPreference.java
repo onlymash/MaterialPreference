@@ -34,7 +34,6 @@ public class DropDownPreference extends ListPreference {
 
     private final Context mContext;
     private final ArrayAdapter<String> mAdapter;
-    private Object[] mEntryValues;
 
     private AppCompatSpinner mSpinner;
 
@@ -70,21 +69,6 @@ public class DropDownPreference extends ListPreference {
         updateEntries();
     }
 
-    public void setDropDownEntryValues(Object[] entryValues) {
-        mEntryValues = entryValues;
-    }
-
-    public Object[] getDropDownEntryValues() {
-        Object[] entryValues;
-        if (mEntryValues != null) {
-            entryValues = mEntryValues;
-        } else {
-            entryValues = getEntryValues();
-        }
-
-        return entryValues;
-    }
-
     /**
      * By default, this class uses a simple {@link android.widget.ArrayAdapter}. But if you need
      * a more complicated {@link android.widget.ArrayAdapter}, this method can be overridden to
@@ -109,14 +93,14 @@ public class DropDownPreference extends ListPreference {
 
     @Override
     public void setValueIndex(int index) {
-        setValue(getDropDownEntryValues()[index].toString());
+        setValue(getEntryValues()[index].toString());
     }
 
     /**
      * @hide
      */
     public int findSpinnerIndexOfValue(String value) {
-        Object[] entryValues = getDropDownEntryValues();
+        Object[] entryValues = getEntryValues();
         if (value != null && entryValues != null) {
             for (int i = entryValues.length - 1; i >= 0; i--) {
                 if (entryValues[i].equals(value)) {
@@ -147,7 +131,7 @@ public class DropDownPreference extends ListPreference {
         @Override
         public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
             if (position >= 0) {
-                String value = getDropDownEntryValues()[position].toString();
+                String value = getEntryValues()[position].toString();
                 if (!value.equals(getValue()) && callChangeListener(value)) {
                     setValue(value);
                 }
