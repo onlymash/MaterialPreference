@@ -70,12 +70,19 @@ public class DropDownPreference extends ListPreference {
         updateEntries();
     }
 
-    public void setObjectEntryValues(Object[] entryValues) {
+    public void setDropDownEntryValues(Object[] entryValues) {
         mEntryValues = entryValues;
     }
 
-    public Object[] getObjectEntryValues() {
-        return mEntryValues;
+    public Object[] getDropDownEntryValues() {
+        Object[] entryValues;
+        if (mEntryValues != null) {
+            entryValues = mEntryValues;
+        } else {
+            entryValues = getEntryValues();
+        }
+
+        return entryValues;
     }
 
     /**
@@ -102,20 +109,14 @@ public class DropDownPreference extends ListPreference {
 
     @Override
     public void setValueIndex(int index) {
-        setValue(getEntryValues()[index].toString());
+        setValue(getDropDownEntryValues()[index].toString());
     }
 
     /**
      * @hide
      */
     public int findSpinnerIndexOfValue(String value) {
-        Object[] entryValues;
-        if (getObjectEntryValues() != null) {
-            entryValues= getObjectEntryValues();
-        } else {
-            entryValues = getEntryValues();
-        }
-
+        Object[] entryValues = getDropDownEntryValues();
         if (value != null && entryValues != null) {
             for (int i = entryValues.length - 1; i >= 0; i--) {
                 if (entryValues[i].equals(value)) {
@@ -146,7 +147,7 @@ public class DropDownPreference extends ListPreference {
         @Override
         public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
             if (position >= 0) {
-                String value = getEntryValues()[position].toString();
+                String value = getDropDownEntryValues()[position].toString();
                 if (!value.equals(getValue()) && callChangeListener(value)) {
                     setValue(value);
                 }
