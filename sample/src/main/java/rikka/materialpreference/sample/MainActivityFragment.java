@@ -3,17 +3,21 @@ package rikka.materialpreference.sample;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import java.util.Locale;
 
 import rikka.materialpreference.DropDownPreference;
 import rikka.materialpreference.PreferenceFragment;
+import rikka.materialpreference.PreferenceViewHolder;
 
 /**
  * PreferenceFragment example include set DropDownPreference entries programmatically
  */
 public class MainActivityFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         getPreferenceManager().setSharedPreferencesName("settings");
@@ -27,6 +31,32 @@ public class MainActivityFragment extends PreferenceFragment implements SharedPr
         if (dropDownPreference.getValue() == null) {
             dropDownPreference.setValueIndex(1);
         }
+    }
+
+    @Override
+    public DividerDecoration onCreateItemDecoration() {
+        return new DefaultDividerDecoration() {
+            @Override
+            public boolean shouldDrawDividerAbove(View view, RecyclerView parent) {
+                PreferenceViewHolder holder =
+                        (PreferenceViewHolder) parent.getChildViewHolder(view);
+
+                boolean nextAllowed = false;
+                int index = parent.indexOfChild(view);
+                if (index < parent.getChildCount() - 1) {
+                    View nextView = parent.getChildAt(index + 1);
+                    PreferenceViewHolder nextHolder =
+                            (PreferenceViewHolder) parent.getChildViewHolder(nextView);
+                    nextAllowed = nextHolder.isDividerAllowedAbove();
+                }
+                return nextAllowed && !holder.isDividerAllowedAbove() && index != 0;
+            }
+
+            @Override
+            public boolean shouldDrawDividerBelow(View view, RecyclerView parent) {
+                return false;
+            }
+        };
     }
 
     @Override

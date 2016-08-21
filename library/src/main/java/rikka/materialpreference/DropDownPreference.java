@@ -126,9 +126,6 @@ public class DropDownPreference extends ListPreference {
         mSpinner.setAdapter(mAdapter);
         mSpinner.setOnItemSelectedListener(mItemSelectedListener);
         mSpinner.setSelection(findSpinnerIndexOfValue(getValue()));
-        //mSpinner.setMinimumWidth(100);
-        //mSpinner.setDropDownWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        /*mSpinner.getLayoutParams().width = 0;*/
     }
 
     private final AdapterView.OnItemSelectedListener mItemSelectedListener = new AdapterView.OnItemSelectedListener() {

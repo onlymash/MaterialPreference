@@ -131,7 +131,7 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
 
     private int mLayoutResId = R.layout.preference_list_fragment;
 
-    private final DividerDecoration mDividerDecoration = new DividerDecoration();
+    private DividerDecoration mDividerDecoration;
 
     private static final int MSG_BIND_PREFERENCES = 1;
     private Handler mHandler = new Handler() {
@@ -275,7 +275,10 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
 
         mList = listView;
 
-        onAddItemDecoration(mList, mDividerDecoration);
+        mDividerDecoration = onCreateItemDecoration();
+        if (mDividerDecoration != null) {
+            mList.addItemDecoration(mDividerDecoration);
+        }
 
         setDivider(divider);
         if (dividerHeight != -1) {
@@ -287,8 +290,8 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
         return view;
     }
 
-    public void onAddItemDecoration(RecyclerView recyclerView, DividerDecoration dividerDecoration) {
-        recyclerView.addItemDecoration(dividerDecoration);
+    @Nullable public DividerDecoration onCreateItemDecoration() {
+        return new DefaultDividerDecoration();
     }
 
     /**
@@ -301,7 +304,8 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
      * @attr ref R.styleable#PreferenceFragment_android_divider
      */
     public void setDivider(Drawable divider) {
-        mDividerDecoration.setDivider(divider);
+        if (mDividerDecoration != null)
+            mDividerDecoration.setDivider(divider);
     }
 
     /**
@@ -312,7 +316,8 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
      * @attr ref R.styleable#PreferenceFragment_android_dividerHeight
      */
     public void setDividerHeight(int height) {
-        mDividerDecoration.setDividerHeight(height);
+        if (mDividerDecoration != null)
+            mDividerDecoration.setDividerHeight(height);
     }
 
     @Override
@@ -654,10 +659,28 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
         return null;
     }
 
-    public class DividerDecoration extends RecyclerView.ItemDecoration {
+    public abstract class DividerDecoration extends RecyclerView.ItemDecoration {
 
         private Drawable mDivider;
         private int mDividerHeight;
+
+        public abstract boolean shouldDrawDividerAbove(View view, RecyclerView parent);
+        public abstract boolean shouldDrawDividerBelow(View view, RecyclerView parent);
+
+        public void setDivider(Drawable divider) {
+            if (divider != null) {
+                mDividerHeight = divider.getIntrinsicHeight();
+            } else {
+                mDividerHeight = 0;
+            }
+            mDivider = divider;
+            mList.invalidateItemDecorations();
+        }
+
+        public void setDividerHeight(int dividerHeight) {
+            mDividerHeight = dividerHeight;
+            mList.invalidateItemDecorations();
+        }
 
         @Override
         public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
@@ -683,7 +706,7 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
 
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
-                RecyclerView.State state) {
+                                   RecyclerView.State state) {
             /*if (shouldDrawDividerAbove(view, parent)) {
                 outRect.top = mDividerHeight;
             }
@@ -691,7 +714,11 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
                 outRect.bottom = mDividerHeight;
             }*/
         }
+    }
 
+    public class DefaultDividerDecoration extends DividerDecoration {
+
+        @Override
         public boolean shouldDrawDividerAbove(View view, RecyclerView parent) {
             /*final RecyclerView.ViewHolder holder = parent.getChildViewHolder(view);
             return holder.getAdapterPosition() == 0 &&
@@ -699,6 +726,7 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
             return false;
         }
 
+        @Override
         public boolean shouldDrawDividerBelow(View view, RecyclerView parent) {
             final PreferenceViewHolder holder =
                     (PreferenceViewHolder) parent.getChildViewHolder(view);
@@ -713,19 +741,6 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
             return nextAllowed && holder.isDividerAllowedBelow();
         }
 
-        public void setDivider(Drawable divider) {
-            if (divider != null) {
-                mDividerHeight = divider.getIntrinsicHeight();
-            } else {
-                mDividerHeight = 0;
-            }
-            mDivider = divider;
-            mList.invalidateItemDecorations();
-        }
 
-        public void setDividerHeight(int dividerHeight) {
-            mDividerHeight = dividerHeight;
-            mList.invalidateItemDecorations();
-        }
     }
 }
