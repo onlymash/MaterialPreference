@@ -15,12 +15,13 @@
   ~ limitations under the License
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-          android:id="@android:id/title"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:textAppearance="@style/Preference_TextAppearanceMaterialBody2"
-          android:textColor="@color/preference_fallback_accent_color"
-          android:paddingLeft="?attr/listPreferredItemPaddingLeft"
-          android:paddingRight="?attr/listPreferredItemPaddingRight"
-          android:paddingTop="16dip" />
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textAppearance="@style/Preference_TextAppearanceMaterialBody2"
+    android:textColor="?attr/colorAccent"
+    android:paddingStart="?attr/listPreferredItemPaddingLeft"
+    android:paddingEnd="?attr/listPreferredItemPaddingRight"
+    android:paddingTop="16dp" />

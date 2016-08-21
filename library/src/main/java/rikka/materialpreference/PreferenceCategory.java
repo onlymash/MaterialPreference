@@ -18,6 +18,9 @@ package rikka.materialpreference;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Used to group {@link android.preference.Preference} objects
@@ -68,5 +71,10 @@ public class PreferenceCategory extends PreferenceGroup {
     @Override
     public boolean shouldDisableDependents() {
         return !super.isEnabled();
+    }
+
+    @Override
+    public void onBindViewHolder(PreferenceViewHolder holder) {
+        super.onBindViewHolder(holder);
     }
 }

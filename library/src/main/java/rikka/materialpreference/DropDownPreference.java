@@ -19,8 +19,10 @@ package rikka.materialpreference;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatSpinner;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -33,7 +35,7 @@ public class DropDownPreference extends ListPreference {
     private final Context mContext;
     private final ArrayAdapter<String> mAdapter;
 
-    private Spinner mSpinner;
+    private AppCompatSpinner mSpinner;
 
     public DropDownPreference(Context context) {
         this(context, null);
@@ -120,10 +122,13 @@ public class DropDownPreference extends ListPreference {
     public void onBindViewHolder(PreferenceViewHolder view) {
         super.onBindViewHolder(view);
 
-        mSpinner = (Spinner) view.itemView.findViewById(R.id.spinner);
+        mSpinner = (AppCompatSpinner) view.itemView.findViewById(R.id.spinner);
         mSpinner.setAdapter(mAdapter);
         mSpinner.setOnItemSelectedListener(mItemSelectedListener);
         mSpinner.setSelection(findSpinnerIndexOfValue(getValue()));
+        //mSpinner.setMinimumWidth(100);
+        //mSpinner.setDropDownWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        /*mSpinner.getLayoutParams().width = 0;*/
     }
 
     private final AdapterView.OnItemSelectedListener mItemSelectedListener = new AdapterView.OnItemSelectedListener() {

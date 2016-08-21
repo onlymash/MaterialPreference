@@ -275,7 +275,8 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
 
         mList = listView;
 
-        listView.addItemDecoration(mDividerDecoration);
+        onAddItemDecoration(mList, mDividerDecoration);
+
         setDivider(divider);
         if (dividerHeight != -1) {
             setDividerHeight(dividerHeight);
@@ -284,6 +285,10 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
         listContainer.addView(mList);
         mHandler.post(mRequestFocus);
         return view;
+    }
+
+    public void onAddItemDecoration(RecyclerView recyclerView, DividerDecoration dividerDecoration) {
+        recyclerView.addItemDecoration(dividerDecoration);
     }
 
     /**
@@ -679,12 +684,12 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
                 RecyclerView.State state) {
-            if (shouldDrawDividerAbove(view, parent)) {
+            /*if (shouldDrawDividerAbove(view, parent)) {
                 outRect.top = mDividerHeight;
             }
             if (shouldDrawDividerBelow(view, parent)) {
                 outRect.bottom = mDividerHeight;
-            }
+            }*/
         }
 
         public boolean shouldDrawDividerAbove(View view, RecyclerView parent) {

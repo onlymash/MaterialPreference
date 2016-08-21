@@ -15,7 +15,7 @@
   ~ limitations under the License
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Preference">
         <item name="android:layout">@layout/preference_material</item>
     </style>
@@ -27,13 +27,13 @@
     </style>
 
     <style name="Preference.Information">
-        <item name="android:layout">@layout/preference_information</item>
+        <item name="android:layout">@layout/preference_information_material</item>
         <item name="android:enabled">false</item>
         <item name="android:shouldDisableView">false</item>
     </style>
 
     <style name="Preference.Category">
-        <item name="android:layout">@layout/preference_category</item>
+        <item name="android:layout">@layout/preference_category_material</item>
         <!-- The title should not dim if the category is disabled, instead only the preference children should dim. -->
         <item name="android:shouldDisableView">false</item>
         <item name="android:selectable">false</item>
@@ -116,14 +116,14 @@
 
     <style name="Preference_TextAppearanceMaterialBody2">
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Preference_TextAppearanceMaterialSubhead">
         <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textStyle">normal</item>
     </style>
@@ -135,9 +135,5 @@
     <style name="PreferenceFragmentList.Material">
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
-    </style>
-
-    <style name="Preference.Dialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
-        <item name="colorAccent">@color/preference_fallback_accent_color</item>
     </style>
 </resources>

@@ -64,7 +64,7 @@ public abstract class PreferenceDialogFragment extends DialogFragment implements
         final Context context = getActivity();
         mWhichButtonClicked = DialogInterface.BUTTON_NEGATIVE;
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Preference_Dialog)
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(mPreference.getDialogTitle())
                 .setIcon(mPreference.getDialogIcon())
                 .setPositiveButton(mPreference.getPositiveButtonText(), this)
@@ -85,7 +85,6 @@ public abstract class PreferenceDialogFragment extends DialogFragment implements
         if (needInputMethod()) {
             requestInputMethod(dialog);
         }
-
 
         return builder.create();
     }

@@ -16,33 +16,37 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="48dp"
-    android:layout_marginBottom="48dp"
-    android:overScrollMode="ifContentScrolls">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="48dp"
+            android:overScrollMode="ifContentScrolls">
 
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:padding="5dip"
-      android:orientation="vertical">
-
-    <TextView android:id="@android:id/message"
-        style="?android:attr/textAppearanceSmall"
-        android:layout_marginBottom="48dp"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="?android:attr/textColorSecondary" />
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
+        android:orientation="vertical">
 
-      <EditText
-          android:id="@android:id/edit"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="16dp"
-          android:layout_marginRight="16dp"
-          android:inputType="none"/>
+        <TextView android:id="@android:id/message"
+                  style="?android:attr/textAppearanceSmall"
+                  android:paddingTop="4dp"
+                  android:paddingBottom="4dp"
+                  android:layout_marginLeft="24dp"
+                  android:layout_marginRight="24dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:textColor="?android:attr/textColorSecondary" />
 
-  </LinearLayout>
+        <EditText
+            android:id="@android:id/edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="none"/>
+
+    </LinearLayout>
 
 </ScrollView>

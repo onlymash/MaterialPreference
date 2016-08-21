@@ -43,7 +43,10 @@
 
         <EditTextPreference
             android:key="edit_text_number"
-            android:title="EditTextPreference (inputType=number)"
+            android:title="EditTextPreference"
+            android:dialogIcon="@mipmap/ic_launcher"
+            android:dialogTitle="summary"
+            android:dialogMessage="selectAllOnFocus = true\ninputType=number\ncommitOnEnter = true"
             android:summary="%s"
             android:defaultValue="233"
             app:commitOnEnter="true"
@@ -70,17 +73,17 @@
         android:title="OtherPreference">
 
         <DropDownPreference
+            android:key="drop_down2"
+            android:title="DropDownPreference"
+            android:summary="%s"/>
+
+        <DropDownPreference
             android:key="drop_down"
             android:title="DropDownPreference"
             android:summary="%s"
             android:entries="@array/entries"
             android:entryValues="@array/entry_values"
             android:defaultValue="1"/>
-
-        <DropDownPreference
-            android:key="drop_down2"
-            android:title="DropDownPreference"
-            android:summary="%s"/>
 
     </PreferenceCategory>
 
