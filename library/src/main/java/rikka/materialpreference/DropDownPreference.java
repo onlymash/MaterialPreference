@@ -1,274 +1,145 @@
+/*
+ * Copyright (C) 2016 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License
+ */
+
 package rikka.materialpreference;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.content.res.TypedArrayUtils;
-import android.support.v7.widget.AppCompatSpinner;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
-import java.util.ArrayList;
+import android.widget.Spinner;
 
 /**
- * Created by Rikka on 2015/12/15.
+ * A version of {@link ListPreference} that presents the options in a drop down menu rather than a dialog.
  */
-public class DropDownPreference extends Preference {
+public class DropDownPreference extends ListPreference {
 
-    private Context mContext;
-    private ArrayAdapter<String> mAdapter;
-    private AppCompatSpinner mSpinner;
-    private ArrayList<Object> mValues = new ArrayList<>();
+    private final Context mContext;
+    private final ArrayAdapter<String> mAdapter;
 
-    private CharSequence[] mEntries;
-    private CharSequence[] mEntryValues;
+    private Spinner mSpinner;
 
-    private String mSummary;
-
-    private Callback mCallback;
-    private int mSelectedPosition = -1;
-
-    public DropDownPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    public DropDownPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    public DropDownPreference(Context context) {
+        this(context, null);
     }
 
     public DropDownPreference(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, R.attr.dropDownPreferenceStyle);
+    }
 
+    public DropDownPreference(Context context, AttributeSet attrs, int defStyle) {
+        this(context, attrs, defStyle, 0);
+    }
+
+    public DropDownPreference(Context context, AttributeSet attrs, int defStyleAttr,
+                              int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
         mContext = context;
-        mAdapter = new ArrayAdapter<>(mContext,
-                R.layout.spinner_dropdown_item);
+        mAdapter = createAdapter();
 
-        mSpinner = new AppCompatSpinner(context);
-        mSpinner.setVisibility(View.INVISIBLE);
-        mSpinner.setAdapter(mAdapter);
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
-                setSelectedItem(position, true);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // noop
-            }
-        });
-
-        setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                mSpinner.performClick();
-                return true;
-            }
-        });
-
-        // Support XML specification like ListPreferences do.
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DropDownPreference);
-        mEntries = TypedArrayUtils.getTextArray(a, R.styleable.DropDownPreference_entries, R.styleable.DropDownPreference_android_entries);
-        mEntryValues = TypedArrayUtils.getTextArray(a, R.styleable.DropDownPreference_entryValues, R.styleable.DropDownPreference_android_entryValues);
-        if (mEntries != null && mEntryValues != null) {
-            for (int i = 0; i < mEntries.length; i++) {
-                addItem(mEntries[i].toString(), mEntryValues[i]);
-            }
-        }
-        a.recycle();
-
-        /* Retrieve the Preference summary attribute since it's private
-         * in the Preference class.
-         */
-        a = context.obtainStyledAttributes(attrs,
-                R.styleable.Preference);
-
-        mSummary = TypedArrayUtils.getString(a, R.styleable.Preference_summary,
-                R.styleable.Preference_android_summary);
-
-        a.recycle();
-    }
-
-    public DropDownPreference(Context context) {
-        super(context, null);
+        updateEntries();
     }
 
     @Override
-    protected Object onGetDefaultValue(TypedArray a, int index) {
-        return a.getString(index);
+    protected void onClick() {
+        mSpinner.performClick();
     }
 
     @Override
-    protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-        int index = findIndexByEntryValues(getPersistedString((String) defaultValue));
-        if (index != -1 && index < mEntries.length) {
-            setSelectedItem(index);
-        }
+    public void setEntries(@NonNull CharSequence[] entries) {
+        super.setEntries(entries);
+        updateEntries();
     }
 
-    public int findIndexByEntryValues(String value) {
-        if (mEntryValues == null) {
-            return -1;
-        }
 
-        for (int i = 0; i < mEntryValues.length; i++) {
-            if (value.equals(mEntryValues[i])) {
-                return i;
-            }
-        }
-
-        return -1;
+    /**
+     * By default, this class uses a simple {@link android.widget.ArrayAdapter}. But if you need
+     * a more complicated {@link android.widget.ArrayAdapter}, this method can be overridden to
+     * create a custom one.
+     * <p> Note: This method is called from the constructor. So, overridden methods will get called
+     * before any subclass initialization.
+     *
+     * @return The custom {@link android.widget.ArrayAdapter} that needs to be used with this class.
+     */
+    protected ArrayAdapter<String> createAdapter() {
+        return new ArrayAdapter<>(mContext, R.layout.spinner_dropdown_item);
     }
 
-    public void setDropDownWidth(int dimenResId) {
-        mSpinner.setDropDownWidth(mContext.getResources().getDimensionPixelSize(dimenResId));
-    }
-
-    public void setCallback(Callback callback) {
-        mCallback = callback;
-    }
-
-    public void setSelectedItem(int position) {
-        setSelectedItem(position, false);
-    }
-
-    public void setSelectedItem(int position, boolean fromSpinner) {
-        boolean changed = mSelectedPosition != position;
-
-        if (fromSpinner && position == mSelectedPosition) {
-            return;
-        }
-        final Object value = mValues.get(position);
-        if (mCallback != null && !mCallback.onItemSelected(position, value)) {
-            return;
-        }
-        mSpinner.setSelection(position);
-        mSelectedPosition = mSpinner.getSelectedItemPosition();
-        final boolean disableDependents = value == null;
-        notifyDependencyChange(disableDependents);
-        notifyChanged();
-
-        if (changed && value != null) {
-            persistString(value.toString());
-        }
-    }
-
-    public Object getSelectedValue() {
-        return mValues.get(mSelectedPosition);
-    }
-
-    public int getSelectedPosition() {
-        return mSelectedPosition;
-    }
-
-    public void setSelectedValue(Object value) {
-        final int i = mValues.indexOf(value);
-        if (i > -1) {
-            setSelectedItem(i);
-        }
-    }
-
-    public void addItem(int captionResid, Object value) {
-        addItem(mContext.getResources().getString(captionResid), value);
-    }
-
-    public void addItem(String caption, Object value) {
-        mAdapter.add(caption);
-        mValues.add(value);
-    }
-
-    public void removeItem(int index) {
-        mAdapter.remove(mAdapter.getItem(index));
-        mValues.remove(index);
-    }
-
-    public Object getValue(int index) {
-        return mValues.get(index);
-    }
-
-    public ArrayAdapter<String> getAdapter() {
-        return mAdapter;
-    }
-
-    public ArrayList<Object> getValues() {
-        return mValues;
-    }
-
-    public void setAdapter(ArrayAdapter<String> adapter) {
-        mAdapter = adapter;
-    }
-
-    public void setValues(ArrayList<Object> values) {
-        mValues = values;
-    }
-
-    public int getItemCount() {
-        return mAdapter.getCount();
-    }
-
-    public void clearItems() {
+    private void updateEntries() {
         mAdapter.clear();
-        mValues.clear();
+        if (getEntries() != null) {
+            for (CharSequence c : getEntries()) {
+                mAdapter.add(c.toString());
+            }
+        }
     }
 
     @Override
-    public void onBindViewHolder(PreferenceViewHolder holder) {
-        super.onBindViewHolder(holder);
-        if (holder.equals(mSpinner.getParent())) return;
-        if (mSpinner.getParent() != null) {
-            ((ViewGroup) mSpinner.getParent()).removeView(mSpinner);
-        }
-        final ViewGroup vg = (ViewGroup) holder.itemView;
-        vg.addView(mSpinner, 0);
-        final ViewGroup.LayoutParams lp = mSpinner.getLayoutParams();
-        lp.width = 0;
-        mSpinner.setLayoutParams(lp);
-    }
-
-    public interface Callback {
-        boolean onItemSelected(int pos, Object value);
+    public void setValueIndex(int index) {
+        setValue(getEntryValues()[index].toString());
     }
 
     /**
-     * Returns the summary of this EditTextPreference. If the summary
-     * has a {@linkplain java.lang.String#format String formatting}
-     * marker in it (i.e. "%s" or "%1$s"), then the current entry
-     * value will be substituted in its place.
-     *
-     * @return the summary with appropriate string substitution
+     * @hide
      */
-    @Override
-    public CharSequence getSummary() {
-        if (mAdapter == null || getSelectedPosition() < 0 || mAdapter.getCount() <= getSelectedPosition()) {
-            return super.getSummary();
+    public int findSpinnerIndexOfValue(String value) {
+        CharSequence[] entryValues = getEntryValues();
+        if (value != null && entryValues != null) {
+            for (int i = entryValues.length - 1; i >= 0; i--) {
+                if (entryValues[i].equals(value)) {
+                    return i;
+                }
+            }
         }
-
-        final CharSequence entry = mAdapter.getItem(getSelectedPosition());
-        if (mSummary == null) {
-            return super.getSummary();
-        } else {
-            return String.format(mSummary, entry == null ? "" : entry);
-        }
+        return Spinner.INVALID_POSITION;
     }
 
-    /**
-     * Sets the summary for this Preference with a CharSequence.
-     * If the summary has a
-     * {@linkplain java.lang.String#format String formatting}
-     * marker in it (i.e. "%s" or "%1$s"), then the current entry
-     * value will be substituted in its place when it's retrieved.
-     *
-     * @param summary The summary for the preference.
-     */
     @Override
-    public void setSummary(CharSequence summary) {
-        super.setSummary(summary);
-        if (summary == null && mSummary != null) {
-            mSummary = null;
-        } else if (summary != null && !summary.equals(mSummary)) {
-            mSummary = summary.toString();
-        }
+    protected void notifyChanged() {
+        super.notifyChanged();
+        mAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onBindViewHolder(PreferenceViewHolder view) {
+        super.onBindViewHolder(view);
+
+        mSpinner = (Spinner) view.itemView.findViewById(R.id.spinner);
+        mSpinner.setAdapter(mAdapter);
+        mSpinner.setOnItemSelectedListener(mItemSelectedListener);
+        mSpinner.setSelection(findSpinnerIndexOfValue(getValue()));
+    }
+
+    private final AdapterView.OnItemSelectedListener mItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+            if (position >= 0) {
+                String value = getEntryValues()[position].toString();
+                if (!value.equals(getValue()) && callChangeListener(value)) {
+                    setValue(value);
+                }
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+            // noop
+        }
+    };
 }

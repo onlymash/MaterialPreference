@@ -16,8 +16,6 @@
 
 package rikka.materialpreference;
 
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -28,8 +26,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.XmlRes;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -100,7 +101,7 @@ import android.view.ViewGroup;
  * @see Preference
  * @see PreferenceScreen
  */
-public abstract class PreferenceFragment extends Fragment implements
+public abstract class PreferenceFragment extends android.support.v4.app.Fragment implements
         PreferenceManager.OnPreferenceTreeClickListener,
         PreferenceManager.OnDisplayPreferenceDialogListener,
         PreferenceManager.OnNavigateToScreenListener,
@@ -117,6 +118,9 @@ public abstract class PreferenceFragment extends Fragment implements
 
     private static final String DIALOG_FRAGMENT_TAG =
             "android.support.v14.preference.PreferenceFragment.DIALOG";
+
+    private static final String FIRST_COMPLETELY_VISIBLE_ITEM_POSITION_TAG =
+            "FIRST_COMPLETELY_VISIBLE_ITEM_POSITION_TAG";
 
     private PreferenceManager mPreferenceManager;
     private RecyclerView mList;
@@ -359,6 +363,12 @@ public abstract class PreferenceFragment extends Fragment implements
             preferenceScreen.saveHierarchyState(container);
             outState.putBundle(PREFERENCES_TAG, container);
         }
+
+        if (getListView() != null
+                && getListView().getLayoutManager() != null
+                && getListView().getLayoutManager() instanceof LinearLayoutManager) {
+            outState.putInt(FIRST_COMPLETELY_VISIBLE_ITEM_POSITION_TAG, ((LinearLayoutManager) getListView().getLayoutManager()).findFirstCompletelyVisibleItemPosition());
+        }
     }
 
     /**
@@ -468,6 +478,7 @@ public abstract class PreferenceFragment extends Fragment implements
     @Override
     public void onNavigateToScreen(PreferenceScreen preferenceScreen) {
         boolean handled = false;
+
         if (getCallbackFragment() instanceof OnPreferenceStartScreenCallback) {
             handled = ((OnPreferenceStartScreenCallback) getCallbackFragment())
                     .onPreferenceStartScreen(this, preferenceScreen);
@@ -544,6 +555,11 @@ public abstract class PreferenceFragment extends Fragment implements
 
         recyclerView.setLayoutManager(onCreateLayoutManager());
 
+        if (savedInstanceState != null) {
+            recyclerView.smoothScrollToPosition(
+                    savedInstanceState.getInt(FIRST_COMPLETELY_VISIBLE_ITEM_POSITION_TAG, 0));
+        }
+
         return recyclerView;
     }
 
@@ -554,7 +570,20 @@ public abstract class PreferenceFragment extends Fragment implements
      * @return A new {@link android.support.v7.widget.RecyclerView.LayoutManager} instance.
      */
     public RecyclerView.LayoutManager onCreateLayoutManager() {
-        return new LinearLayoutManager(getActivity());
+        return new LinearLayoutManager(getActivity()) {
+            @Override
+            public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
+                LinearSmoothScroller linearSmoothScroller =
+                        new LinearSmoothScroller(recyclerView.getContext()) {
+                            @Override
+                            protected int getVerticalSnapPreference() {
+                                return LinearSmoothScroller.SNAP_TO_START;
+                            }
+                        };
+                linearSmoothScroller.setTargetPosition(position);
+                startSmoothScroll(linearSmoothScroller);
+            }
+        };
     }
 
     /**

@@ -36,9 +36,13 @@ import android.widget.EditText;
  * This preference will store a string into the SharedPreferences.
  */
 public class EditTextPreference extends DialogPreference {
+
     private String mText;
     private String mSummary;
     private int mInputType;
+    private boolean mSingleLine;
+    private boolean mSelectAllOnFocus;
+    private boolean mCommitOnEnter;
 
     public EditTextPreference(Context context, AttributeSet attrs, int defStyleAttr,
             int defStyleRes) {
@@ -46,7 +50,17 @@ public class EditTextPreference extends DialogPreference {
 
         TypedArray a;
         a = context.obtainStyledAttributes(attrs, R.styleable.EditTextPreference);
-        mInputType = TypedArrayUtils.getInt(a, R.styleable.EditTextPreference_inputType, R.styleable.EditTextPreference_android_inputType, InputType.TYPE_NULL);
+
+        mInputType = TypedArrayUtils.getInt(a, R.styleable.EditTextPreference_inputType,
+                R.styleable.EditTextPreference_android_inputType, InputType.TYPE_CLASS_TEXT);
+
+        mSingleLine = TypedArrayUtils.getBoolean(a, R.styleable.EditTextPreference_singleLine,
+                R.styleable.EditTextPreference_android_singleLine, true);
+
+        mSelectAllOnFocus = TypedArrayUtils.getBoolean(a, R.styleable.EditTextPreference_selectAllOnFocus,
+                R.styleable.EditTextPreference_android_selectAllOnFocus, true);
+
+        mCommitOnEnter = a.getBoolean(R.styleable.EditTextPreference_commitOnEnter, false);
         a.recycle();
 
         /* Retrieve the Preference summary attribute since it's private
@@ -146,6 +160,22 @@ public class EditTextPreference extends DialogPreference {
      */
     public int getInputType() {
         return mInputType;
+    }
+
+    /**
+     *
+     * @return is SingleLine
+     */
+    public boolean isSingleLine() {
+        return mSingleLine;
+    }
+
+    public boolean isSelectAllOnFocus() {
+        return mSelectAllOnFocus;
+    }
+
+    public boolean isCommitOnEnter() {
+        return mCommitOnEnter;
     }
 
     @Override

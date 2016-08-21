@@ -32,7 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A {@link android.support.v7.preference.Preference} that displays a list of entries as
+ * A {@link Preference} that displays a list of entries as
  * a dialog.
  * <p>
  * This preference will store a set of strings into the SharedPreferences.

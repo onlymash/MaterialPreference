@@ -50,6 +50,8 @@
         <attr name="editTextPreferenceStyle" format="reference" />
         <!-- Default style for RingtonePreference. -->
         <attr name="ringtonePreferenceStyle" format="reference" />
+        <!-- Default style for RingtonePreference. -->
+        <attr name="dropDownPreferenceStyle" format="reference" />
         <!-- The preference layout that has the child/tabbed effect. -->
         <attr name="preferenceLayoutChild" format="reference" />
         <!-- Preference panel style -->
@@ -192,6 +194,11 @@
     <declare-styleable name="EditTextPreference">
         <attr name="inputType" format="reference"/>
         <attr name="android:inputType"/>
+        <attr name="singleLine" format="boolean"/>
+        <attr name="android:singleLine"/>
+        <attr name="selectAllOnFocus" format="boolean"/>
+        <attr name="android:selectAllOnFocus"/>
+        <attr name="commitOnEnter" format="boolean"/>
     </declare-styleable>
 
     <!-- Base attributes available to ListPreference. -->

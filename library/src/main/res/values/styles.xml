@@ -17,7 +17,7 @@
 
 <resources>
     <style name="Preference">
-        <item name="android:layout">@layout/preference</item>
+        <item name="android:layout">@layout/preference_material</item>
     </style>
 
     <style name="PreferenceFragment">
@@ -108,6 +108,10 @@
 
     <style name="Preference.DialogPreference.EditTextPreference.Material">
         <item name="android:layout">@layout/preference_material</item>
+    </style>
+
+    <style name="Preference.DropDownPreference">
+        <item name="android:layout">@layout/preference_dropdown</item>
     </style>
 
     <style name="Preference_TextAppearanceMaterialBody2">

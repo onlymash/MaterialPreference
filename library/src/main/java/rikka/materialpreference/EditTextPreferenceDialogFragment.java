@@ -17,11 +17,14 @@
 package rikka.materialpreference;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
 
@@ -47,7 +50,10 @@ public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
                     " @android:id/edit");
         }
 
-        if (getEditTextPreference().getInputType() != InputType.TYPE_NULL)
+        mEditText.setSingleLine(getEditTextPreference().isSingleLine());
+        mEditText.setSelectAllOnFocus(getEditTextPreference().isSelectAllOnFocus());
+
+        if (getEditTextPreference().getInputType() != InputType.TYPE_CLASS_TEXT)
             mEditText.setInputType(getEditTextPreference().getInputType());
 
         mEditText.setText(getEditTextPreference().getText());
@@ -61,6 +67,20 @@ public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
                 imm.showSoftInput(mEditText, InputMethodManager.SHOW_IMPLICIT);
             }
         });
+
+        if (getEditTextPreference().isCommitOnEnter()) {
+            mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_ENDCALL) {
+                        onClick(getDialog(), DialogInterface.BUTTON_POSITIVE);
+                        dismiss();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     private EditTextPreference getEditTextPreference() {

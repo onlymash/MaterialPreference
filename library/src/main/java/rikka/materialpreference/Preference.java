@@ -121,7 +121,7 @@ public class Preference implements Comparable<Preference> {
      */
     private boolean mShouldDisableView = true;
 
-    private int mLayoutResId = R.layout.preference;
+    private int mLayoutResId = R.layout.preference_material;
     private int mWidgetLayoutResId;
 
     private OnPreferenceChangeInternalListener mListener;
@@ -247,7 +247,7 @@ public class Preference implements Comparable<Preference> {
                 R.styleable.Preference_android_fragment);
 
         mLayoutResId = TypedArrayUtils.getResourceId(a, R.styleable.Preference_layout,
-                R.styleable.Preference_android_layout, R.layout.preference);
+                R.styleable.Preference_android_layout, R.layout.preference_material);
 
         mWidgetLayoutResId = TypedArrayUtils.getResourceId(a, R.styleable.Preference_widgetLayout,
                 R.styleable.Preference_android_widgetLayout, 0);
@@ -1263,6 +1263,10 @@ public class Preference implements Comparable<Preference> {
      */
     public void setDefaultValue(Object defaultValue) {
         mDefaultValue = defaultValue;
+    }
+
+    public Object getDefaultValue() {
+        return mDefaultValue;
     }
 
     private void dispatchSetInitialValue() {

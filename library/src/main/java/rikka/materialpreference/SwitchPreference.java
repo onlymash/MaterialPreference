@@ -24,6 +24,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.CompoundButton;
+import android.widget.Switch;
 
 public class SwitchPreference extends TwoStatePreference {
     private final Listener mListener = new Listener();
@@ -109,7 +110,7 @@ public class SwitchPreference extends TwoStatePreference {
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
-        final SwitchCompat switchView = (SwitchCompat) holder.findViewById(R.id.switchWidget);
+        View switchView = holder.findViewById(R.id.switchWidget);
         syncSwitchView(switchView);
         syncSummaryView(holder);
     }
@@ -193,27 +194,30 @@ public class SwitchPreference extends TwoStatePreference {
     }
 
     private void syncSwitchView(final View view) {
-        if (view instanceof SwitchCompat) {
-            final SwitchCompat switchView = (SwitchCompat) view;
+        if (view instanceof CompoundButton) {
+            CompoundButton switchView = (CompoundButton) view;
             switchView.setOnCheckedChangeListener(null);
-        }
-        if (view instanceof SwitchCompat) {
+
             if (!mSetInPost) {
-                ((SwitchCompat) view).setChecked(mChecked);
+                switchView.setChecked(mChecked);
             } else {
                 view.post(new Runnable() {
                     @Override
                     public void run() {
-                        ((SwitchCompat) view).setChecked(mChecked);
+                        ((CompoundButton) view).setChecked(mChecked);
                         mSetInPost = false;
                     }
                 });
             }
-        }
-        if (view instanceof SwitchCompat) {
-            final SwitchCompat switchView = (SwitchCompat) view;
-            switchView.setTextOn(mSwitchOn);
-            switchView.setTextOff(mSwitchOff);
+
+            if (view instanceof Switch) {
+                ((Switch) switchView).setTextOn(mSwitchOn);
+                ((Switch) switchView).setTextOff(mSwitchOff);
+            } else if (view instanceof SwitchCompat) {
+                ((SwitchCompat) switchView).setTextOn(mSwitchOn);
+                ((SwitchCompat) switchView).setTextOff(mSwitchOff);
+            }
+
             switchView.setOnCheckedChangeListener(mListener);
         }
     }

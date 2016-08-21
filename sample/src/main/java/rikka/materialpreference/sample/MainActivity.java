@@ -1,8 +1,6 @@
 package rikka.materialpreference.sample;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -22,7 +20,7 @@ public class MainActivity extends BaseDayNightModeActivity {
         if (savedInstanceState == null) {
             MainActivityFragment fragment = new MainActivityFragment();
 
-            getFragmentManager().beginTransaction().replace(R.id.fragment,
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment,
                     fragment).commit();
         }
     }
