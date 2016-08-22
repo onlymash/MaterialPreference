@@ -58,7 +58,7 @@ public class EditTextPreference extends DialogPreference {
                 R.styleable.EditTextPreference_android_singleLine, true);
 
         mSelectAllOnFocus = TypedArrayUtils.getBoolean(a, R.styleable.EditTextPreference_selectAllOnFocus,
-                R.styleable.EditTextPreference_android_selectAllOnFocus, true);
+                R.styleable.EditTextPreference_android_selectAllOnFocus, false);
 
         mCommitOnEnter = a.getBoolean(R.styleable.EditTextPreference_commitOnEnter, false);
         a.recycle();
