@@ -70,6 +70,8 @@
         <attr name="switchPreferenceCompatStyle" format="reference" />
         <!-- Default style for seekbar preferences. -->
         <attr name="seekBarPreferenceStyle" format="reference" />
+
+        <attr name="simpleMenuPreferenceStyle" format="reference" />
     </declare-styleable>
 
     <!-- Base attributes available to PreferenceFragment. -->
@@ -298,5 +300,19 @@
         <attr name="android:entries" />
         <attr name="entryValues" />
         <attr name="android:entryValues" />
+    </declare-styleable>
+
+    <declare-styleable name="SimpleMenuPreference">
+        <attr name="listPadding" format="dimension"/>
+        <attr name="listItemHeight" format="dimension"/>
+        <attr name="popupBackground" format="reference"/>
+        <attr name="popupElevation" format="dimension"/>
+        <attr name="popupPadding" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="ForegroundCheckTextView">
+        <attr name="android:foregroundGravity"/>
+        <attr name="android:foreground"/>
+        <attr name="foregroundInsidePadding" format="boolean"/>
     </declare-styleable>
 </resources>

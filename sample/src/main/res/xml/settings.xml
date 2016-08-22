@@ -70,6 +70,24 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="SimpleMenuPreference">
+
+        <SimpleMenuPreference
+            android:key="drop_down3"
+            android:title="SimpleMenuPreference"
+            android:summary="%s"/>
+
+        <SimpleMenuPreference
+            android:key="drop_down4"
+            android:title="long item"
+            android:summary="%s"
+            android:entries="@array/entries"
+            android:entryValues="@array/entry_values"
+            android:defaultValue="1"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="OtherPreference">
 
         <DropDownPreference

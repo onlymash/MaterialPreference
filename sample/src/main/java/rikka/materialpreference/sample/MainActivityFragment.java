@@ -12,6 +12,7 @@ import java.util.Locale;
 import rikka.materialpreference.DropDownPreference;
 import rikka.materialpreference.PreferenceFragment;
 import rikka.materialpreference.PreferenceViewHolder;
+import rikka.materialpreference.SimpleMenuPreference;
 
 /**
  * PreferenceFragment example include set DropDownPreference entries programmatically
@@ -30,6 +31,13 @@ public class MainActivityFragment extends PreferenceFragment implements SharedPr
         dropDownPreference.setEntryValues(new CharSequence[]{Locale.CHINESE.toString(), Locale.ENGLISH.toString()});
         if (dropDownPreference.getValue() == null) {
             dropDownPreference.setValueIndex(1);
+        }
+
+        SimpleMenuPreference dropDownPreference3 = (SimpleMenuPreference) findPreference("drop_down3");
+        dropDownPreference3.setEntries(new CharSequence[]{"Item 1", "Item 1 Item 1 Item 1 Item 1 Item 1 Item 1", "Item 1 Item 1 Item"});
+        dropDownPreference3.setEntryValues(new CharSequence[]{"0", "1", "2"});
+        if (dropDownPreference3.getValue() == null) {
+            dropDownPreference3.setValueIndex(1);
         }
     }
 
