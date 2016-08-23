@@ -30,7 +30,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -119,8 +118,8 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
     private static final String DIALOG_FRAGMENT_TAG =
             "android.support.v14.preference.PreferenceFragment.DIALOG";
 
-    private static final String FIRST_COMPLETELY_VISIBLE_ITEM_POSITION_TAG =
-            "FIRST_COMPLETELY_VISIBLE_ITEM_POSITION_TAG";
+    private static final String SCROLL_TO_ITEM_POSITION_TAG =
+            "SCROLL_TO_ITEM_POSITION_TAG";
 
     private PreferenceManager mPreferenceManager;
     private RecyclerView mList;
@@ -377,7 +376,9 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
         if (getListView() != null
                 && getListView().getLayoutManager() != null
                 && getListView().getLayoutManager() instanceof LinearLayoutManager) {
-            outState.putInt(FIRST_COMPLETELY_VISIBLE_ITEM_POSITION_TAG, ((LinearLayoutManager) getListView().getLayoutManager()).findFirstCompletelyVisibleItemPosition());
+            LinearLayoutManager lm = ((LinearLayoutManager) getListView().getLayoutManager());
+            outState.putInt(SCROLL_TO_ITEM_POSITION_TAG,
+                    (lm.findFirstCompletelyVisibleItemPosition() + lm.findFirstCompletelyVisibleItemPosition()) / 2);
         }
     }
 
@@ -566,8 +567,11 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
         recyclerView.setLayoutManager(onCreateLayoutManager());
 
         if (savedInstanceState != null) {
-            recyclerView.smoothScrollToPosition(
-                    savedInstanceState.getInt(FIRST_COMPLETELY_VISIBLE_ITEM_POSITION_TAG, 0));
+            int position = savedInstanceState.getInt(SCROLL_TO_ITEM_POSITION_TAG, RecyclerView.NO_POSITION);
+
+            if (position != RecyclerView.NO_POSITION) {
+                recyclerView.smoothScrollToPosition(position);
+            }
         }
 
         return recyclerView;
@@ -580,20 +584,7 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
      * @return A new {@link android.support.v7.widget.RecyclerView.LayoutManager} instance.
      */
     public RecyclerView.LayoutManager onCreateLayoutManager() {
-        return new LinearLayoutManager(getActivity()) {
-            @Override
-            public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-                LinearSmoothScroller linearSmoothScroller =
-                        new LinearSmoothScroller(recyclerView.getContext()) {
-                            @Override
-                            protected int getVerticalSnapPreference() {
-                                return LinearSmoothScroller.SNAP_TO_START;
-                            }
-                        };
-                linearSmoothScroller.setTargetPosition(position);
-                startSmoothScroll(linearSmoothScroller);
-            }
-        };
+        return new LinearLayoutManager(getActivity());
     }
 
     /**
@@ -716,13 +707,13 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
         }
     }
 
+    /**
+     * Default DividerDecoration, divider will show between checkable items
+     */
     public class DefaultDividerDecoration extends DividerDecoration {
 
         @Override
         public boolean shouldDrawDividerAbove(View view, RecyclerView parent) {
-            /*final RecyclerView.ViewHolder holder = parent.getChildViewHolder(view);
-            return holder.getAdapterPosition() == 0 &&
-                    ((PreferenceViewHolder) holder).isDividerAllowedAbove();*/
             return false;
         }
 
@@ -740,7 +731,31 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
             }
             return nextAllowed && holder.isDividerAllowedBelow();
         }
+    }
 
+    /**
+     * An other DividerDecoration, divider show between category (uncheckable) items
+     */
+    public class CategoryDivideDividerDecoration extends DividerDecoration {
+        @Override
+        public boolean shouldDrawDividerAbove(View view, RecyclerView parent) {
+            PreferenceViewHolder holder =
+                    (PreferenceViewHolder) parent.getChildViewHolder(view);
 
+            boolean nextAllowed = false;
+            int index = parent.indexOfChild(view);
+            if (index < parent.getChildCount() - 1) {
+                View nextView = parent.getChildAt(index + 1);
+                PreferenceViewHolder nextHolder =
+                        (PreferenceViewHolder) parent.getChildViewHolder(nextView);
+                nextAllowed = nextHolder.isDividerAllowedAbove();
+            }
+            return nextAllowed && !holder.isDividerAllowedAbove() && index != 0;
+        }
+
+        @Override
+        public boolean shouldDrawDividerBelow(View view, RecyclerView parent) {
+            return false;
+        }
     }
 }

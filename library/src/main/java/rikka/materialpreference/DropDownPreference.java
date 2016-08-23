@@ -17,12 +17,10 @@
 package rikka.materialpreference;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatSpinner;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -79,7 +77,7 @@ public class DropDownPreference extends ListPreference {
      * @return The custom {@link android.widget.ArrayAdapter} that needs to be used with this class.
      */
     protected ArrayAdapter<String> createAdapter() {
-        return new ArrayAdapter<>(mContext, R.layout.spinner_dropdown_item);
+        return new ArrayAdapter<>(mContext, R.layout.preference_dropdown_item);
     }
 
     private void updateEntries() {

@@ -9,10 +9,9 @@ import android.view.View;
 
 import java.util.Locale;
 
-import rikka.materialpreference.DropDownPreference;
+import rikka.materialpreference.ListPreference;
 import rikka.materialpreference.PreferenceFragment;
 import rikka.materialpreference.PreferenceViewHolder;
-import rikka.materialpreference.SimpleMenuPreference;
 
 /**
  * PreferenceFragment example include set DropDownPreference entries programmatically
@@ -26,45 +25,32 @@ public class MainActivityFragment extends PreferenceFragment implements SharedPr
 
         setPreferencesFromResource(R.xml.settings, null);
 
-        DropDownPreference dropDownPreference = (DropDownPreference) findPreference("drop_down2");
-        dropDownPreference.setEntries(new CharSequence[]{Locale.CHINESE.getDisplayName(), Locale.ENGLISH.getDisplayName()});
-        dropDownPreference.setEntryValues(new CharSequence[]{Locale.CHINESE.toString(), Locale.ENGLISH.toString()});
-        if (dropDownPreference.getValue() == null) {
-            dropDownPreference.setValueIndex(1);
+        ListPreference listPreference;
+        listPreference = (ListPreference) findPreference("drop_down2");
+        listPreference.setEntries(new CharSequence[]{"Item 1", "Item 2"});
+        listPreference.setEntryValues(new CharSequence[]{Locale.CHINESE.toString(), Locale.ENGLISH.toString()});
+        if (listPreference.getValue() == null) {
+            listPreference.setValueIndex(1);
         }
 
-        SimpleMenuPreference dropDownPreference3 = (SimpleMenuPreference) findPreference("drop_down3");
-        dropDownPreference3.setEntries(new CharSequence[]{"Item 1", "Item 1 Item 1 Item 1 Item 1 Item 1 Item 1", "Item 1 Item 1 Item"});
-        dropDownPreference3.setEntryValues(new CharSequence[]{"0", "1", "2"});
-        if (dropDownPreference3.getValue() == null) {
-            dropDownPreference3.setValueIndex(1);
+        listPreference = (ListPreference) findPreference("drop_down3");
+        listPreference.setEntries(new CharSequence[]{"Vertical align selected item", "(｡>﹏<｡)", "(っ╹ ◡ ╹ )っ\uD83D\uDC8A\uFEFF ヽ(✿ﾟ▽ﾟ)ノ", "⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄"});
+        listPreference.setEntryValues(new CharSequence[]{"0", "1", "2", "3"});
+        if (listPreference.getValue() == null) {
+            listPreference.setValueIndex(2);
+        }
+
+        listPreference = (ListPreference) findPreference("drop_down5");
+        listPreference.setEntries(new CharSequence[]{"This is a very long item. It will use a simple dialog if its text may wraps to more than one line", "Don't put too many item when use simple dialog", "（<ゝω・）☆"});
+        listPreference.setEntryValues(new CharSequence[]{"0", "1", "2"});
+        if (listPreference.getValue() == null) {
+            listPreference.setValueIndex(2);
         }
     }
 
     @Override
     public DividerDecoration onCreateItemDecoration() {
-        return new DefaultDividerDecoration() {
-            @Override
-            public boolean shouldDrawDividerAbove(View view, RecyclerView parent) {
-                PreferenceViewHolder holder =
-                        (PreferenceViewHolder) parent.getChildViewHolder(view);
-
-                boolean nextAllowed = false;
-                int index = parent.indexOfChild(view);
-                if (index < parent.getChildCount() - 1) {
-                    View nextView = parent.getChildAt(index + 1);
-                    PreferenceViewHolder nextHolder =
-                            (PreferenceViewHolder) parent.getChildViewHolder(nextView);
-                    nextAllowed = nextHolder.isDividerAllowedAbove();
-                }
-                return nextAllowed && !holder.isDividerAllowedAbove() && index != 0;
-            }
-
-            @Override
-            public boolean shouldDrawDividerBelow(View view, RecyclerView parent) {
-                return false;
-            }
-        };
+        return new CategoryDivideDividerDecoration();
     }
 
     @Override

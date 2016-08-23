@@ -38,8 +38,7 @@
             android:title="EditTextPreference"
             android:summary="%s"
             android:singleLine="true"
-            android:selectAllOnFocus="true"
-            android:defaultValue="Nyanpasu~"/>
+            android:defaultValue="&gt;&lt;"/>
 
         <EditTextPreference
             android:key="edit_text_number"
@@ -49,6 +48,7 @@
             android:dialogMessage="selectAllOnFocus = true\ninputType=number\ncommitOnEnter = true"
             android:summary="%s"
             android:defaultValue="233"
+            android:selectAllOnFocus="true"
             app:commitOnEnter="true"
             android:inputType="number"/>
 
@@ -79,11 +79,16 @@
 
         <SimpleMenuPreference
             android:key="drop_down4"
-            android:title="long item"
+            android:title="SimpleMenuPreference"
             android:summary="%s"
             android:entries="@array/entries"
             android:entryValues="@array/entry_values"
             android:defaultValue="1"/>
+
+        <SimpleMenuPreference
+            android:key="drop_down5"
+            android:title="SimpleMenuPreference"
+            android:summary="%s"/>
 
     </PreferenceCategory>
 
@@ -94,14 +99,6 @@
             android:key="drop_down2"
             android:title="DropDownPreference"
             android:summary="%s"/>
-
-        <DropDownPreference
-            android:key="drop_down"
-            android:title="DropDownPreference"
-            android:summary="%s"
-            android:entries="@array/entries"
-            android:entryValues="@array/entry_values"
-            android:defaultValue="1"/>
 
     </PreferenceCategory>
 

@@ -143,7 +143,22 @@
         <item name="listItemHeight">48dp</item>
         <item name="popupElevation">4dp</item>
         <item name="popupBackground">@drawable/simple_menu_background</item>
-        <item name="popupPadding">16dp</item>
+        <item name="popupPadding">8dp</item>
+    </style>
+
+    <style name="Animation.SimpleMenuDown" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/grow_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/shrink_fade_out</item>
+    </style>
+
+    <style name="Animation.SimpleMenuCenter" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/grow_fade_in_center</item>
+        <item name="android:windowExitAnimation">@anim/shrink_fade_out_center</item>
+    </style>
+
+    <style name="Animation.SimpleMenuUp" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/grow_fade_in_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/shrink_fade_out_from_bottom</item>
     </style>
 
 </resources>
