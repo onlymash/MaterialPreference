@@ -18,8 +18,6 @@ Usage
 Contents
 --------
 
-#### Preference from support library
-
 `Preference`,`SwitchPreference`,`CheckBoxPreference`,`EditTextPreference`,`ListPreference`,`MultiSelectListPreference`,`DropDownPreference`,`SimpleMenuPreference`
 
 Feature
@@ -81,7 +79,7 @@ Download
         }
 
         dependencies {
-            compile 'com.github.RikkaW:MaterialPreference:v0.1.2'
+            compile 'com.github.RikkaW:MaterialPreference:v1.2'
         }  
 
 DemoApp
