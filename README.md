@@ -28,7 +28,9 @@ Feature
 A version of `ListPreference` that show a simple menu instead of dialog, looking and behavior follow [Simple Menus](https://material.google.com/components/menus.html#menus-simple-menus) of Material Design guideline
 
 > Menu is vertical aligned to selected item and show in the parent view
+
 > Menu width is a a multiple of a unit (56dp on mobile)
+
 > When item is too long use a simple dialog
 
 #### Small changes
