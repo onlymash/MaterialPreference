@@ -737,6 +737,14 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
      * An other DividerDecoration, divider show between category (uncheckable) items
      */
     public class CategoryDivideDividerDecoration extends DividerDecoration {
+
+        private final static int PADDING_DP = 8;
+        private int padding;
+
+        public CategoryDivideDividerDecoration() {
+            padding = (int) (PADDING_DP * getActivity().getResources().getDisplayMetrics().density);
+        }
+
         @Override
         public boolean shouldDrawDividerAbove(View view, RecyclerView parent) {
             PreferenceViewHolder holder =
@@ -756,6 +764,17 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
         @Override
         public boolean shouldDrawDividerBelow(View view, RecyclerView parent) {
             return false;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            PreferenceViewHolder holder =
+                    (PreferenceViewHolder) parent.getChildViewHolder(view);
+
+            if (holder != null && !holder.isDividerAllowedAbove()) {
+                outRect.top = padding;
+                outRect.bottom = padding;
+            }
         }
     }
 }
