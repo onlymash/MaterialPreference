@@ -12,6 +12,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
@@ -21,6 +22,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CheckedTextView;
 import android.widget.PopupWindow;
 
@@ -208,6 +210,24 @@ public class SimpleMenuPreference extends ListPreference {
         View parent = ((View) mViewHolder.itemView.getParent().getParent().getParent());
         int top = parent.getTop();
         int parentHeight = parent.getHeight();
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT
+                && ((View) parent.getParent()).getFitsSystemWindows()) {
+            Activity activity = null;
+            if (parent.getContext() instanceof Activity) {
+                activity = (Activity) parent.getContext();
+            } else if (parent.getContext() instanceof ContextWrapper) {
+                if (((ContextWrapper) parent.getContext()).getBaseContext() instanceof Activity) {
+                    activity = (Activity) parent.getContext();
+                }
+            }
+
+            if (activity != null) {
+                if ((activity.getWindow().getAttributes().flags & (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)) != 0) {
+                    statusBarHeight = 0;
+                }
+            }
+        }
 
         if (height > parentHeight) {
             y_off = top + statusBarHeight + POPUP_PADDING_Y;
