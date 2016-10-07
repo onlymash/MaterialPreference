@@ -17,7 +17,6 @@
 package rikka.materialpreference;
 
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 
 import java.util.HashSet;
@@ -27,15 +26,6 @@ public class MultiSelectListPreferenceDialogFragment extends PreferenceDialogFra
 
     private Set<String> mNewValues = new HashSet<>();
     private boolean mPreferenceChanged;
-
-    public static MultiSelectListPreferenceDialogFragment newInstance(String key) {
-        final MultiSelectListPreferenceDialogFragment fragment =
-                new MultiSelectListPreferenceDialogFragment();
-        final Bundle b = new Bundle(1);
-        b.putString(ARG_KEY, key);
-        fragment.setArguments(b);
-        return fragment;
-    }
 
     private MultiSelectListPreference getListPreference() {
         return (MultiSelectListPreference) getPreference();

@@ -17,20 +17,11 @@
 package rikka.materialpreference;
 
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 
 public class ListPreferenceDialogFragment extends PreferenceDialogFragment {
 
     private int mClickedDialogEntryIndex;
-
-    public static ListPreferenceDialogFragment newInstance(String key) {
-        final ListPreferenceDialogFragment fragment = new ListPreferenceDialogFragment();
-        final Bundle b = new Bundle(1);
-        b.putString(ARG_KEY, key);
-        fragment.setArguments(b);
-        return fragment;
-    }
 
     private ListPreference getListPreference() {
         return (ListPreference) getPreference();

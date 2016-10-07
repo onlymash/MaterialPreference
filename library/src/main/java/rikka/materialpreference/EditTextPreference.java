@@ -18,8 +18,11 @@ package rikka.materialpreference;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -85,6 +88,17 @@ public class EditTextPreference extends DialogPreference {
 
     public EditTextPreference(Context context) {
         this(context, null);
+    }
+
+    @NonNull
+    @Override
+    protected DialogFragment onCreateDialogFragment(String key) {
+        final EditTextPreferenceDialogFragment
+                fragment = new EditTextPreferenceDialogFragment();
+        final Bundle b = new Bundle(1);
+        b.putString(PreferenceDialogFragment.ARG_KEY, key);
+        fragment.setArguments(b);
+        return fragment;
     }
 
     /**

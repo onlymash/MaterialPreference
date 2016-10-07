@@ -20,6 +20,8 @@ public class MainActivityFragment extends PreferenceFragment implements SharedPr
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
+        getPreferenceManager().setDefaultPackages(new String[]{"rikka.materialpreference.sample."});
+
         getPreferenceManager().setSharedPreferencesName("settings");
         getPreferenceManager().setSharedPreferencesMode(Context.MODE_PRIVATE);
 
@@ -51,13 +53,6 @@ public class MainActivityFragment extends PreferenceFragment implements SharedPr
     @Override
     public DividerDecoration onCreateItemDecoration() {
         return new CategoryDivideDividerDecoration();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        //getPreferenceManager().setDefaultPackages(new String[]{"rikka."});
     }
 
     @Override

@@ -19,6 +19,8 @@ package rikka.materialpreference;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.util.AttributeSet;
@@ -261,4 +263,6 @@ public abstract class DialogPreference extends Preference {
         getPreferenceManager().showDialog(this);
     }
 
+    @NonNull
+    abstract protected DialogFragment onCreateDialogFragment(String key);
 }

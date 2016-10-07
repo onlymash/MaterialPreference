@@ -626,19 +626,15 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
             return;
         }
 
-        final DialogFragment f;
-        if (preference instanceof EditTextPreference) {
-            f = EditTextPreferenceDialogFragment.newInstance(preference.getKey());
-        } else if (preference instanceof ListPreference) {
-            f = ListPreferenceDialogFragment.newInstance(preference.getKey());
-        } else if (preference instanceof MultiSelectListPreference) {
-            f = MultiSelectListPreferenceDialogFragment.newInstance(preference.getKey());
-        } else {
-            throw new IllegalArgumentException("Tried to display dialog for unknown " +
-                    "preference type. Did you forget to override onDisplayPreferenceDialog()?");
+        DialogFragment f = null;
+        if (preference instanceof DialogPreference) {
+            f = ((DialogPreference) preference).onCreateDialogFragment(preference.getKey());
         }
-        f.setTargetFragment(this, 0);
-        f.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
+
+        if (f != null) {
+            f.setTargetFragment(this, 0);
+            f.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
+        }
     }
 
     /**

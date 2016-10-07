@@ -18,7 +18,6 @@ package rikka.materialpreference;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
@@ -29,15 +28,6 @@ import android.widget.TextView;
 public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
 
     private EditText mEditText;
-
-    public static EditTextPreferenceDialogFragment newInstance(String key) {
-        final EditTextPreferenceDialogFragment
-                fragment = new EditTextPreferenceDialogFragment();
-        final Bundle b = new Bundle(1);
-        b.putString(ARG_KEY, key);
-        fragment.setArguments(b);
-        return fragment;
-    }
 
     @Override
     protected void onBindDialogView(View view) {
@@ -87,9 +77,8 @@ public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
         return (EditTextPreference) getPreference();
     }
 
-    /** @hide */
     @Override
-    protected boolean needInputMethod() {
+    public boolean needInputMethod() {
         // We want the input method to show, if possible, when dialog is displayed
         return true;
     }
@@ -104,5 +93,4 @@ public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
             }
         }
     }
-
 }

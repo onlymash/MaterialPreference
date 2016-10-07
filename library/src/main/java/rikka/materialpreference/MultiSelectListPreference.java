@@ -19,10 +19,12 @@ package rikka.materialpreference;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ArrayRes;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.util.AttributeSet;
@@ -76,6 +78,17 @@ public class MultiSelectListPreference extends DialogPreference {
 
     public MultiSelectListPreference(Context context) {
         this(context, null);
+    }
+
+    @NonNull
+    @Override
+    protected DialogFragment onCreateDialogFragment(String key) {
+        final MultiSelectListPreferenceDialogFragment
+                fragment = new MultiSelectListPreferenceDialogFragment();
+        final Bundle b = new Bundle(1);
+        b.putString(PreferenceDialogFragment.ARG_KEY, key);
+        fragment.setArguments(b);
+        return fragment;
     }
 
     /**

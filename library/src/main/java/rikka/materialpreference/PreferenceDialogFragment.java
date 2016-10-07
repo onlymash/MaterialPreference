@@ -34,7 +34,7 @@ import android.widget.TextView;
 public abstract class PreferenceDialogFragment extends DialogFragment implements
         DialogInterface.OnClickListener {
 
-    protected static final String ARG_KEY = "key";
+    public static final String ARG_KEY = "key";
 
     private DialogPreference mPreference;
 
@@ -113,9 +113,8 @@ public abstract class PreferenceDialogFragment extends DialogFragment implements
      * Returns whether the preference needs to display a soft input method when the dialog
      * is displayed. Default is false. Subclasses should override this method if they need
      * the soft input method brought up automatically.
-     * @hide
      */
-    protected boolean needInputMethod() {
+    public boolean needInputMethod() {
         return false;
     }
 
