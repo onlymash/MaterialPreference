@@ -73,7 +73,7 @@
         android:id="@+id/simple_menu_popup_background">
         <shape android:shape="rectangle">
             <corners android:radius="1dp" />
-            <solid android:color="#FFFFFFFF" />
+            <solid android:color="@color/preference_simple_menu_background" />
             <padding
                 android:bottom="1px"/>
         </shape>

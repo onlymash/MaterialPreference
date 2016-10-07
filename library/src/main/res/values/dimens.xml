@@ -4,6 +4,6 @@
     <dimen name="simple_menu_padding">16dp</dimen>
 
     <integer name="simple_menu_max_units">5</integer>
-    <integer name="config_activityShortDur">150</integer>
+    <integer name="config_activityShortDur">550</integer>
     <integer name="config_activityDefaultDur">220</integer>
 </resources>

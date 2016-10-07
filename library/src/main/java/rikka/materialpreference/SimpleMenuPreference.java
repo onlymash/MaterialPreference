@@ -7,14 +7,11 @@ import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
@@ -45,10 +42,13 @@ public class SimpleMenuPreference extends ListPreference {
     private PreferenceViewHolder mViewHolder;
     private PopupWindow mPopupWindow;
 
-    private int mPopupLeftPadding;
-    private int mPopupPadding;
-    private int mListPadding;
-    private int mListItemHeight;
+    private final int POPUP_PADDING_X;
+    private final int POPUP_PADDING_Y;
+    private final int LIST_PADDING;
+    private final int LIST_ITEM_HEIGHT;
+    private final Drawable POPUP_BACKGROUND;
+    private final float POPUP_ELEVATION;
+
     private RecyclerView mRecyclerView;
 
     private boolean mRestorePopup;
@@ -57,7 +57,6 @@ public class SimpleMenuPreference extends ListPreference {
     private boolean mUseDialog;
 
     private int mPopupWidth;
-    private float mPopupElevation;
 
     public SimpleMenuPreference(Context context) {
         this(context, null);
@@ -78,69 +77,52 @@ public class SimpleMenuPreference extends ListPreference {
         TypedArray a = context.obtainStyledAttributes(
                 attrs, R.styleable.SimpleMenuPreference, defStyleAttr, defStyleRes);
 
+        LIST_PADDING = (int) a.getDimension(R.styleable.SimpleMenuPreference_listPadding, 0);
+        LIST_ITEM_HEIGHT = (int) a.getDimension(R.styleable.SimpleMenuPreference_listItemHeight, 0);
+        POPUP_PADDING_Y = (int) a.getDimension(R.styleable.SimpleMenuPreference_popupPadding, 0);
+        POPUP_ELEVATION = a.getDimension(R.styleable.SimpleMenuPreference_popupElevation, 0);
+        POPUP_BACKGROUND = a.getDrawable(R.styleable.SimpleMenuPreference_popupBackground);
+
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.listPreferredItemPaddingLeft, typedValue, true);
+
+        // for shadow
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            POPUP_PADDING_X = (int) context.getResources().getDimension(typedValue.resourceId) - 6;
+        } else {
+            POPUP_PADDING_X = (int) context.getResources().getDimension(typedValue.resourceId) - 4;
+        }
+
         mContext = context;
         mAdapter = createAdapter();
-        mPopupWindow = createPopupMenu(a);
+        mPopupWindow = createPopupMenu();
         a.recycle();
 
         updateEntries();
     }
 
-    protected Adapter createAdapter() {
+    private Adapter createAdapter() {
         return new Adapter();
     }
 
-    private PopupWindow createPopupMenu(TypedArray a) {
-        mListPadding = (int) a.getDimension(R.styleable.SimpleMenuPreference_listPadding, 0);
-        mListItemHeight = (int) a.getDimension(R.styleable.SimpleMenuPreference_listItemHeight, 0);
-        mPopupPadding = (int) a.getDimension(R.styleable.SimpleMenuPreference_popupPadding, 0);
-
+    private PopupWindow createPopupMenu() {
         mRecyclerView = (RecyclerView) LayoutInflater.from(mContext).inflate(R.layout.simple_menu_recycler_view, null);
-        mRecyclerView.setPadding(0, mListPadding, 0, mListPadding);
+        mRecyclerView.setPadding(0, LIST_PADDING, 0, LIST_PADDING);
         mRecyclerView.setFocusable(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mAdapter);
 
-        mPopupElevation = a.getDimension(R.styleable.SimpleMenuPreference_popupElevation, 0);
-        Drawable background = a.getDrawable(R.styleable.SimpleMenuPreference_popupBackground);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            LayerDrawable layerDrawable = (LayerDrawable) background;
-
-            Drawable in = ContextCompat.getDrawable(mContext, R.drawable.simple_menu_background_pre_lolipop);
-            TypedValue typedValue = new TypedValue();
-            if (background != null &&
-                    getContext().getTheme().resolveAttribute(android.R.attr.windowBackground, typedValue, true)) {
-
-                in = DrawableCompat.wrap(in);
-                DrawableCompat.setTint(in, ContextCompat.getColor(getContext(), typedValue.resourceId));
-
-                layerDrawable.setDrawableByLayerId(R.id.simple_menu_popup_background, in);
-            }
-        }
-
         PopupWindow popupWindow = new PopupWindow(mContext);
         popupWindow.setContentView(mRecyclerView);
         popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setBackgroundDrawable(background);
+        popupWindow.setBackgroundDrawable(POPUP_BACKGROUND);
         popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            popupWindow.setElevation(mPopupElevation);
+            popupWindow.setElevation(POPUP_ELEVATION);
         }
-
-        TypedValue typedValue = new TypedValue();
-        mContext.getTheme().resolveAttribute(R.attr.listPreferredItemPaddingLeft, typedValue, true);
-        mPopupLeftPadding = (int) mContext.getResources().getDimension(typedValue.resourceId);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            // 2px for drawable
-            mPopupLeftPadding -= 2;
-        }
-
-        mPopupLeftPadding -= 4;
 
         return popupWindow;
     }
@@ -184,13 +166,13 @@ public class SimpleMenuPreference extends ListPreference {
         int index = getValueIndex();
         index = index < 0 ? 0 : index;
 
-        final int height = mListItemHeight * getEntries().length + mListPadding * 2;
+        final int height = LIST_ITEM_HEIGHT * getEntries().length + LIST_PADDING * 2;
 
         View parent = ((View) mViewHolder.itemView.getParent().getParent().getParent());
         int parentHeight = parent.getHeight();
 
         if (height > parentHeight) {
-            mPopupWindow.setHeight(parentHeight - mListPadding * 2);
+            mPopupWindow.setHeight(parentHeight - LIST_PADDING * 2);
             mRecyclerView.setOverScrollMode(View.OVER_SCROLL_IF_CONTENT_SCROLLS);
             mRecyclerView.scrollToPosition(index);
         } else {
@@ -201,7 +183,7 @@ public class SimpleMenuPreference extends ListPreference {
             mPopupWindow.setElevation(48f);
         }
         mPopupWindow.setAnimationStyle(R.style.Animation_SimpleMenuCenter);
-        int width = mViewHolder.itemView.getWidth() - mPopupLeftPadding * 2;
+        int width = mViewHolder.itemView.getWidth() - POPUP_PADDING_X * 2;
         mPopupWindow.setWidth(width);
         mPopupWindow.showAtLocation(mViewHolder.itemView, Gravity.CENTER_VERTICAL, 0, 0);
     }
@@ -221,17 +203,17 @@ public class SimpleMenuPreference extends ListPreference {
         int y_off;
 
         int anchor_y = mViewHolder.itemView.getTop();
-        final int height = mListItemHeight * getEntries().length + mListPadding * 2;
+        final int height = LIST_ITEM_HEIGHT * getEntries().length + LIST_PADDING * 2;
 
         View parent = ((View) mViewHolder.itemView.getParent().getParent().getParent());
         int top = parent.getTop();
         int parentHeight = parent.getHeight();
 
         if (height > parentHeight) {
-            y_off = top + statusBarHeight + mPopupPadding;
+            y_off = top + statusBarHeight + POPUP_PADDING_Y;
 
             // scroll to select item
-            final int scroll = (int) (index * mListItemHeight - anchor_y + mPopupPadding * 0.5);
+            final int scroll = (int) (index * LIST_ITEM_HEIGHT - anchor_y + POPUP_PADDING_Y * 0.5);
             mRecyclerView.post(new Runnable() {
                 @Override
                 public void run() {
@@ -242,17 +224,17 @@ public class SimpleMenuPreference extends ListPreference {
 
             mRecyclerView.setOverScrollMode(View.OVER_SCROLL_IF_CONTENT_SCROLLS);
 
-            mPopupWindow.setHeight(parentHeight - mListPadding * 2);
+            mPopupWindow.setHeight(parentHeight - LIST_PADDING * 2);
         } else {
-            y_off = (int) (top + statusBarHeight + mPopupPadding + anchor_y - mListPadding * 0.5 - index * mListItemHeight);
+            y_off = (int) (top + statusBarHeight + POPUP_PADDING_Y + anchor_y - LIST_PADDING * 0.5 - index * LIST_ITEM_HEIGHT);
 
             int bottom = y_off - statusBarHeight -top + height;
 
             // make sure PopupWindow in window
-            if (bottom > parentHeight - mPopupPadding) {
-                y_off = top + parentHeight - mPopupPadding + statusBarHeight - height;
-            } else if (y_off < top + statusBarHeight + mPopupPadding) {
-                y_off = top + statusBarHeight + mPopupPadding;
+            if (bottom > parentHeight - POPUP_PADDING_Y) {
+                y_off = top + parentHeight - POPUP_PADDING_Y + statusBarHeight - height;
+            } else if (y_off < top + statusBarHeight + POPUP_PADDING_Y) {
+                y_off = top + statusBarHeight + POPUP_PADDING_Y;
             }
 
             mRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
@@ -283,7 +265,7 @@ public class SimpleMenuPreference extends ListPreference {
                 animationStyle = R.style.Animation_SimpleMenuCenter;
             }
         } else {
-            if (Math.abs(popup_center_y - anchor_center_y) < mListItemHeight * getEntries().length * 0.3) {
+            if (Math.abs(popup_center_y - anchor_center_y) < LIST_ITEM_HEIGHT * getEntries().length * 0.3) {
                 animationStyle = R.style.Animation_SimpleMenuCenter;
             } else if (anchor_center_y > popup_center_y) {
                 animationStyle = R.style.Animation_SimpleMenuUp;
@@ -293,11 +275,11 @@ public class SimpleMenuPreference extends ListPreference {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mPopupWindow.setElevation(mPopupElevation);
+            mPopupWindow.setElevation(POPUP_ELEVATION);
         }
 
         mPopupWindow.setAnimationStyle(animationStyle);
-        mPopupWindow.showAtLocation(mViewHolder.itemView, Gravity.NO_GRAVITY, mPopupLeftPadding, y_off);
+        mPopupWindow.showAtLocation(mViewHolder.itemView, Gravity.NO_GRAVITY, POPUP_PADDING_X, y_off);
     }
 
     @Override
@@ -337,7 +319,7 @@ public class SimpleMenuPreference extends ListPreference {
         int maxWidth = unit * maxUnits;
 
         if (mViewHolder.itemView.getWidth() < maxWidth) {
-            maxWidth = mViewHolder.itemView.getWidth() - mPopupLeftPadding * 3;
+            maxWidth = mViewHolder.itemView.getWidth() - POPUP_PADDING_X * 3;
         }
 
         mPopupWidth = unit * 2;
@@ -348,7 +330,7 @@ public class SimpleMenuPreference extends ListPreference {
 
         for (CharSequence chs : list) {
             textPaint.getTextBounds(chs.toString(), 0, chs.length(), bounds);
-            int width = bounds.width() + mPopupLeftPadding * 3;
+            int width = bounds.width() + POPUP_PADDING_X * 3;
             //Log.d("SimpleMenuPreference", "" + width + " " + mPopupMaxWidth);
 
             if (width > mPopupWidth) {
