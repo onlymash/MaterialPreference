@@ -40,9 +40,10 @@ A version of `ListPreference` that show a simple menu instead of dialog, looking
 -   Add `setDefaultPackages` method for `PreferenceManager` so if you add your `Preference` you don't need to write `<xxx.xxx.xxxPreference>` in XML
 
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-                getPreferenceManager().setDefaultPackages(new String[]{""});
+        public void onCreatePreferences(Bundle bundle, String s) {
+             getPreferenceManager().setDefaultPackages(new String[]{"});
+             
+             // setPreferencesFromResource()
         }
 
 -   Add `onCreateItemDecoration` for `PreferenceFragment` so we can change Divder behavior more easily
@@ -81,7 +82,7 @@ Download
         }
 
         dependencies {
-            compile 'com.github.RikkaW:MaterialPreference:v1.2'
+            compile 'com.github.RikkaW:MaterialPreference:'
         }  
 
 DemoApp
