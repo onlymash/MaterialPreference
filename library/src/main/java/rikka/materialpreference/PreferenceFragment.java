@@ -17,6 +17,7 @@
 package rikka.materialpreference;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -207,7 +208,7 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
         }
         mStyledContext = new ContextThemeWrapper(getActivity(), theme);
 
-        mPreferenceManager = new PreferenceManager(mStyledContext);
+        mPreferenceManager = new PreferenceManager(mStyledContext, this);
         mPreferenceManager.setOnNavigateToScreenListener(this);
         final Bundle args = getArguments();
         final String rootKey;
@@ -635,6 +636,13 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
             f.setTargetFragment(this, 0);
             f.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        getPreferenceManager().dispatchActivityResult(requestCode, resultCode, data);
     }
 
     /**

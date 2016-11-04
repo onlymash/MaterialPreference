@@ -95,6 +95,15 @@
     <PreferenceCategory
         android:title="OtherPreference">
 
+        <RingtonePreference
+            android:key="ringtone"
+            android:title="RingtonePreference"
+            android:summary="%s"
+            android:ringtoneType="notification"
+            android:defaultValue="content://settings/system/notification_sound">
+
+        </RingtonePreference>
+
         <DropDownPreference
             android:key="drop_down2"
             android:title="DropDownPreference"

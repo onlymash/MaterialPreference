@@ -17,8 +17,12 @@
 package rikka.materialpreference;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.SharedPreferencesCompat;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Used to help create {@link Preference} hierarchies
@@ -39,6 +43,9 @@ public class PreferenceManager {
      * The context to use. This should always be set.
      */
     private Context mContext;
+
+
+    private PreferenceFragment mFragment;
 
     /**
      * The counter for unique IDs.
@@ -91,8 +98,9 @@ public class PreferenceManager {
     /**
      * @hide
      */
-    public PreferenceManager(Context context) {
+    public PreferenceManager(Context context, PreferenceFragment fragment) {
         mContext = context;
+        mFragment = fragment;
 
         setSharedPreferencesName(getDefaultSharedPreferencesName(context));
     }
@@ -285,15 +293,15 @@ public class PreferenceManager {
      *            and clear it followed by a call to this method with this
      *            parameter set to true.
      */
-    public static void setDefaultValues(Context context, int resId, boolean readAgain) {
+    public static void setDefaultValues(Context context, PreferenceFragment fragment, int resId, boolean readAgain) {
 
         // Use the default shared preferences name and mode
-        setDefaultValues(context, getDefaultSharedPreferencesName(context),
+        setDefaultValues(context, fragment, getDefaultSharedPreferencesName(context),
                 getDefaultSharedPreferencesMode(), resId, readAgain);
     }
 
     /**
-     * Similar to {@link #setDefaultValues(Context, int, boolean)} but allows
+     * Similar to {@link #setDefaultValues(Context, PreferenceFragment, int, boolean)} but allows
      * the client to provide the filename and mode of the shared preferences
      * file.
      *
@@ -320,13 +328,13 @@ public class PreferenceManager {
      * @see #setSharedPreferencesName(String)
      * @see #setSharedPreferencesMode(int)
      */
-    public static void setDefaultValues(Context context, String sharedPreferencesName,
+    public static void setDefaultValues(Context context, PreferenceFragment fragment, String sharedPreferencesName,
             int sharedPreferencesMode, int resId, boolean readAgain) {
         final SharedPreferences defaultValueSp = context.getSharedPreferences(
                 KEY_HAS_SET_DEFAULT_VALUES, Context.MODE_PRIVATE);
 
         if (readAgain || !defaultValueSp.getBoolean(KEY_HAS_SET_DEFAULT_VALUES, false)) {
-            final PreferenceManager pm = new PreferenceManager(context);
+            final PreferenceManager pm = new PreferenceManager(context, fragment);
             pm.setSharedPreferencesName(sharedPreferencesName);
             pm.setSharedPreferencesMode(sharedPreferencesMode);
             pm.inflateFromResource(context, resId, null);
@@ -427,6 +435,10 @@ public class PreferenceManager {
         mDefaultPackages = array;
     }
 
+    public PreferenceFragment getFragment() {
+        return mFragment;
+    }
+
     /**
      * Sets the callback to be invoked when a {@link Preference} in the
      * hierarchy rooted at this {@link PreferenceManager} is clicked.
@@ -502,4 +514,84 @@ public class PreferenceManager {
         void onNavigateToScreen(PreferenceScreen preferenceScreen);
     }
 
+
+    /**
+     * List of activity result listeners.
+     */
+    private List<OnActivityResultListener> mActivityResultListeners;
+
+    public interface OnActivityResultListener {
+
+        /**
+         * See Activity's onActivityResult.
+         *
+         * @return Whether the request code was handled (in which case
+         *         subsequent listeners will not be called.
+         */
+        boolean onActivityResult(int requestCode, int resultCode, Intent data);
+    }
+
+    /**
+     * Registers a listener.
+     *
+     * @see OnActivityResultListener
+     */
+    void registerOnActivityResultListener(OnActivityResultListener listener) {
+        synchronized (this) {
+            if (mActivityResultListeners == null) {
+                mActivityResultListeners = new ArrayList<OnActivityResultListener>();
+            }
+
+            if (!mActivityResultListeners.contains(listener)) {
+                mActivityResultListeners.add(listener);
+            }
+        }
+    }
+
+    /**
+     * Unregisters a listener.
+     *
+     * @see OnActivityResultListener
+     */
+    void unregisterOnActivityResultListener(OnActivityResultListener listener) {
+        synchronized (this) {
+            if (mActivityResultListeners != null) {
+                mActivityResultListeners.remove(listener);
+            }
+        }
+    }
+
+    /**
+     * Called by the {@link PreferenceManager} to dispatch a subactivity result.
+     */
+    void dispatchActivityResult(int requestCode, int resultCode, Intent data) {
+        List<OnActivityResultListener> list;
+
+        synchronized (this) {
+                if (mActivityResultListeners == null) return;
+            list = new ArrayList<OnActivityResultListener>(mActivityResultListeners);
+        }
+
+        final int N = list.size();
+        for (int i = 0; i < N; i++) {
+            if (list.get(i).onActivityResult(requestCode, resultCode, data)) {
+                break;
+            }
+        }
+    }
+
+    private int mNextRequestCode = 9999;
+
+    /**
+     * Returns a request code that is unique for the activity. Each subsequent
+     * call to this method should return another unique request code.
+     *
+     * @return A unique request code that will never be used by anyone other
+     *         than the caller of this method.
+     */
+    int getNextRequestCode() {
+        synchronized (this) {
+            return mNextRequestCode++;
+        }
+    }
 }

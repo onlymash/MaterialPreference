@@ -315,4 +315,23 @@
         <attr name="android:foreground"/>
         <attr name="foregroundInsidePadding" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="RingtonePreference">
+        <!-- Which ringtone type(s) to show in the picker. -->
+        <attr name="ringtoneType">
+            <flag name="ringtone" value="1" />
+            <flag name="notification" value="2" />
+            <flag name="alarm" value="4" />
+            <flag name="all" value="7" />
+        </attr>
+        <attr name="android:ringtoneType"/>
+
+        <!-- Whether to show an item for a default sound. -->
+        <attr name="showDefault" format="boolean"/>
+        <attr name="android:showDefault"/>
+
+        <!-- Whether to show an item for 'Silent'. -->
+        <attr name="showSilent" format="boolean"/>
+        <attr name="android:showSilent" />
+    </declare-styleable>
 </resources>
