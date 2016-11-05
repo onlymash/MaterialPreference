@@ -50,6 +50,7 @@ public class RingtonePreference extends Preference implements
     private String mSummary;
     private String mValue;
     private Uri mUri;
+    private String mSummaryNone;
 
     private int mRingtoneType;
     private boolean mShowDefault;
@@ -69,6 +70,7 @@ public class RingtonePreference extends Preference implements
                 R.styleable.RingtonePreference_android_showDefault, true);
         mShowSilent = TypedArrayUtils.getBoolean(a, R.styleable.RingtonePreference_showSilent,
                 R.styleable.RingtonePreference_android_showSilent, true);
+        mSummaryNone = a.getString(R.styleable.RingtonePreference_summaryNone);
         a.recycle();
 
         /* Retrieve the Preference summary attribute since it's private
@@ -200,6 +202,7 @@ public class RingtonePreference extends Preference implements
      */
     protected void onSaveRingtone(Uri ringtoneUri) {
         persistString(ringtoneUri != null ? ringtoneUri.toString() : "");
+        setValue(ringtoneUri);
     }
 
     /**
@@ -222,8 +225,13 @@ public class RingtonePreference extends Preference implements
     }
 
     @Override
-    protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValueObj) {
-        String defaultValue = (String) defaultValueObj;
+    protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
+        String uri = restorePersistedValue ? getPersistedString(null) : (String) defaultValue;
+        if (!TextUtils.isEmpty(uri)) {
+            setValue(Uri.parse(uri));
+        } else {
+            setValue(mSummaryNone == null ? "" : mSummaryNone);
+        }
 
         /*
          * This method is normally to make sure the internal state and UI
@@ -237,8 +245,8 @@ public class RingtonePreference extends Preference implements
         }
 
         // If we are setting to the default value, we should persist it.
-        if (!TextUtils.isEmpty(defaultValue)) {
-            onSaveRingtone(Uri.parse(defaultValue));
+        if (!TextUtils.isEmpty((String) defaultValue)) {
+            onSaveRingtone(Uri.parse((String) defaultValue));
         }
     }
 
@@ -280,6 +288,18 @@ public class RingtonePreference extends Preference implements
         }
     }
 
+    public void setValue(Uri uri) {
+        if (uri != null) {
+            Ringtone rng = RingtoneManager.getRingtone(getContext(), uri);
+            if (rng != null) {
+                setValue(rng.getTitle(getContext()));
+            }
+        } else {
+            setValue(mSummaryNone == null ? "" : mSummaryNone);
+        }
+        notifyChanged();
+    }
+
     public void setValue(String value) {
         mValue = value;
     }
@@ -302,16 +322,6 @@ public class RingtonePreference extends Preference implements
 
                     mUri = uri;
                     onSaveRingtone(mUri);
-
-                    if (uri != null) {
-                        Ringtone rng = RingtoneManager.getRingtone(getContext(), uri);
-                        if (rng != null) {
-                            setValue(rng.getTitle(getContext()));
-                        }
-                    } else {
-                        setValue("");
-                    }
-                    notifyChanged();
                 }
             }
             return true;

@@ -333,5 +333,7 @@
         <!-- Whether to show an item for 'Silent'. -->
         <attr name="showSilent" format="boolean"/>
         <attr name="android:showSilent" />
+
+        <attr name="summaryNone" format="string"/>
     </declare-styleable>
 </resources>
