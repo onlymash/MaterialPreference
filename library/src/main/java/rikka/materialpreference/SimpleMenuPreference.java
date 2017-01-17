@@ -12,10 +12,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.transition.TransitionSet;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -59,6 +61,9 @@ public class SimpleMenuPreference extends ListPreference {
     private boolean mUseDialog;
 
     private int mPopupWidth;
+
+    private Transition mEnterTransition;
+    private Rect mEpicenterBounds = new Rect();
 
     public SimpleMenuPreference(Context context) {
         this(context, null);
@@ -121,6 +126,13 @@ public class SimpleMenuPreference extends ListPreference {
         popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(false);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            TransitionSet set = (TransitionSet) TransitionInflater.from(mContext).inflateTransition(R.transition.simple_menu_enter);
+            ((ForceEpicenterTranslateClipReveal) set.getTransitionAt(0)).setEpicenterBounds(mEpicenterBounds);
+            popupWindow.setEnterTransition(set);
+            mEnterTransition = set;
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             popupWindow.setElevation(POPUP_ELEVATION);
@@ -187,6 +199,11 @@ public class SimpleMenuPreference extends ListPreference {
         mPopupWindow.setAnimationStyle(R.style.Animation_SimpleMenuCenter);
         int width = mViewHolder.itemView.getWidth() - POPUP_PADDING_X * 2;
         mPopupWindow.setWidth(width);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mPopupWindow.setEnterTransition(null);
+        }
+
         mPopupWindow.showAtLocation(mViewHolder.itemView, Gravity.CENTER_VERTICAL, 0, 0);
     }
 
@@ -205,7 +222,7 @@ public class SimpleMenuPreference extends ListPreference {
         int y_off;
 
         int anchor_y = mViewHolder.itemView.getTop();
-        final int height = LIST_ITEM_HEIGHT * getEntries().length + LIST_PADDING * 2;
+        final int popupHeight = LIST_ITEM_HEIGHT * getEntries().length + LIST_PADDING * 2;
 
         View parent = ((View) mViewHolder.itemView.getParent().getParent().getParent());
         int top = parent.getTop();
@@ -229,7 +246,7 @@ public class SimpleMenuPreference extends ListPreference {
             }
         }
 
-        if (height > parentHeight) {
+        if (popupHeight > parentHeight) {
             y_off = top + statusBarHeight + POPUP_PADDING_Y;
 
             // scroll to select item
@@ -237,7 +254,7 @@ public class SimpleMenuPreference extends ListPreference {
             mRecyclerView.post(new Runnable() {
                 @Override
                 public void run() {
-                    mRecyclerView.scrollBy(0, -height);
+                    mRecyclerView.scrollBy(0, -popupHeight);
                     mRecyclerView.scrollBy(0, scroll);
                 }
             });
@@ -248,11 +265,11 @@ public class SimpleMenuPreference extends ListPreference {
         } else {
             y_off = (int) (top + statusBarHeight + POPUP_PADDING_Y + anchor_y - LIST_PADDING * 0.5 - index * LIST_ITEM_HEIGHT);
 
-            int bottom = y_off - statusBarHeight -top + height;
+            int bottom = y_off - statusBarHeight -top + popupHeight;
 
             // make sure PopupWindow in window
             if (bottom > parentHeight - POPUP_PADDING_Y) {
-                y_off = top + parentHeight - POPUP_PADDING_Y + statusBarHeight - height;
+                y_off = top + parentHeight - POPUP_PADDING_Y + statusBarHeight - popupHeight;
             } else if (y_off < top + statusBarHeight + POPUP_PADDING_Y) {
                 y_off = top + statusBarHeight + POPUP_PADDING_Y;
             }
@@ -274,9 +291,14 @@ public class SimpleMenuPreference extends ListPreference {
         // calc what animation should use
         @StyleRes int animationStyle;
         int anchor_center_y = anchor_y + mViewHolder.itemView.getHeight() / 2;
-        int popup_center_y = y_off - top - statusBarHeight + height / 2;
+        int popup_center_y = y_off - top - statusBarHeight + popupHeight / 2;
 
-        if (height > parentHeight) {
+        int epicenterLeft = (int) (mPopupWidth * 0.1);
+        int epicenterTop;
+        int epicenterRight = (int) (mPopupWidth * 0.8);
+        int epicenterBottom;
+
+        if (popupHeight > parentHeight) {
             animationStyle = R.style.Animation_SimpleMenuDown;
             float f = (float) anchor_center_y / popup_center_y;
             if (f > 0.7) {
@@ -294,11 +316,22 @@ public class SimpleMenuPreference extends ListPreference {
             }
         }
 
+        epicenterTop = (int) (popupHeight * 0.5 - (popup_center_y - anchor_center_y));
+
+        epicenterBottom = epicenterTop;
+
+        mEpicenterBounds.set(epicenterLeft, epicenterTop, epicenterRight, epicenterBottom);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mPopupWindow.setElevation(POPUP_ELEVATION);
         }
 
-        mPopupWindow.setAnimationStyle(animationStyle);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            mPopupWindow.setAnimationStyle(animationStyle);
+        } else {
+            mPopupWindow.setEnterTransition(mEnterTransition);
+        }
+
         mPopupWindow.showAtLocation(mViewHolder.itemView, Gravity.NO_GRAVITY, POPUP_PADDING_X, y_off);
     }
 
