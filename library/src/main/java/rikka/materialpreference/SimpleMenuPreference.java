@@ -15,6 +15,7 @@ import android.support.annotation.StyleRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
+import android.transition.Fade;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
@@ -293,9 +294,9 @@ public class SimpleMenuPreference extends ListPreference {
         int anchor_center_y = anchor_y + mViewHolder.itemView.getHeight() / 2;
         int popup_center_y = y_off - top - statusBarHeight + popupHeight / 2;
 
-        int epicenterLeft = (int) (mPopupWidth * 0.1);
+        int epicenterLeft = LIST_PADDING;
         int epicenterTop;
-        int epicenterRight = (int) (mPopupWidth * 0.8);
+        int epicenterRight = mPopupWidth - LIST_PADDING;
         int epicenterBottom;
 
         if (popupHeight > parentHeight) {
@@ -326,9 +327,9 @@ public class SimpleMenuPreference extends ListPreference {
             mPopupWindow.setElevation(POPUP_ELEVATION);
         }
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            mPopupWindow.setAnimationStyle(animationStyle);
-        } else {
+        mPopupWindow.setAnimationStyle(animationStyle);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mPopupWindow.setEnterTransition(mEnterTransition);
         }
 
