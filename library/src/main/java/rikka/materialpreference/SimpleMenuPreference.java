@@ -128,7 +128,7 @@ public class SimpleMenuPreference extends ListPreference {
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(false);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             TransitionSet set = (TransitionSet) TransitionInflater.from(mContext).inflateTransition(R.transition.simple_menu_enter);
             ((ForceEpicenterTranslateClipReveal) set.getTransitionAt(0)).setEpicenterBounds(mEpicenterBounds);
             popupWindow.setEnterTransition(set);
@@ -201,7 +201,7 @@ public class SimpleMenuPreference extends ListPreference {
         int width = mViewHolder.itemView.getWidth() - POPUP_PADDING_X * 2;
         mPopupWindow.setWidth(width);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             mPopupWindow.setEnterTransition(null);
         }
 
@@ -329,7 +329,7 @@ public class SimpleMenuPreference extends ListPreference {
 
         mPopupWindow.setAnimationStyle(animationStyle);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             mPopupWindow.setEnterTransition(mEnterTransition);
         }
 
