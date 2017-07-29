@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        android:title="Preference"
+        android:summary="Summary">
+    </Preference>
+
+    <Preference
+        android:title="Preference"
+        android:summary="with icon"
+        android:icon="@mipmap/ic_launcher">
+    </Preference>
+
+    <PreferenceCategory
+        android:title="TwoStatePreference">
+
+        <SwitchPreference
+            android:key="switch"
+            android:title="SwitchPreference"
+            android:summaryOn="On"
+            android:summaryOff="Off"/>
+
+        <CheckBoxPreference
+            android:key="checkbox"
+            android:title="CheckBoxPreference"
+            android:summaryOn="On"
+            android:summaryOff="Off"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="DialogPreference">
+
+        <EditTextPreference
+            android:key="edit_text"
+            android:title="EditTextPreference"
+            android:summary="%s"
+            android:singleLine="true"
+            android:defaultValue="&gt;&lt;"/>
+
+        <EditTextPreference
+            android:key="edit_text_number"
+            android:title="EditTextPreference"
+            android:dialogIcon="@mipmap/ic_launcher"
+            android:dialogTitle="summary"
+            android:dialogMessage="selectAllOnFocus = true\ninputType=number\ncommitOnEnter = true"
+            android:summary="%s"
+            android:defaultValue="233"
+            android:selectAllOnFocus="true"
+            app:commitOnEnter="true"
+            android:inputType="number"/>
+
+        <ListPreference
+            android:key="list"
+            android:title="ListPreference"
+            android:summary="%s"
+            android:entries="@array/entries"
+            android:entryValues="@array/entry_values"
+            android:defaultValue="1"/>
+
+        <MultiSelectListPreference
+            android:key="multi_select_list"
+            android:title="MultiSelectListPreference"
+            android:entries="@array/entries"
+            android:entryValues="@array/entry_values"
+            android:defaultValue="@array/default_value"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="SimpleMenuPreference">
+
+        <SimpleMenuPreference
+            android:key="drop_down3"
+            android:title="SimpleMenuPreference"
+            android:summary="%s"/>
+
+        <SimpleMenuPreference
+            android:key="drop_down4"
+            android:title="SimpleMenuPreference"
+            android:summary="%s"
+            android:entries="@array/entries"
+            android:entryValues="@array/entry_values"
+            android:defaultValue="1"/>
+
+        <SimpleMenuPreference
+            android:key="drop_down5"
+            android:title="SimpleMenuPreference"
+            android:summary="%s"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="OtherPreference">
+
+        <RingtonePreference
+            android:key="ringtone"
+            android:title="RingtonePreference"
+            android:summary="%s"
+            android:ringtoneType="notification"
+            android:defaultValue="content://settings/system/notification_sound"
+            app:summaryNone="None">
+
+        </RingtonePreference>
+
+        <DropDownPreference
+            android:key="drop_down2"
+            android:title="DropDownPreference"
+            android:summary="%s"/>
+
+        <NumberPickerPreference
+            android:key="number_picker"
+            android:title="NumberPickerPreference"
+            android:summary="%s"
+            android:defaultValue="49"
+            app:min="0"
+            app:max="99"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
