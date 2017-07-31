@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
 
 android {
     compileSdkVersion rootProject.ext.targetSdkVersion
@@ -22,27 +21,16 @@ android {
 }
 
 dependencies {
+    implementation "com.android.support:support-annotations:$supportLibraryVersion"
     implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
 }
 
-task androidSourcesJar(type: Jar) {
-    classifier = "sources"
-    from android.sourceSets.main.java.srcDirs
+ext {
+    libraryName = 'MaterialPreference-AppCompatDialog'
+    libraryDescription = 'Part of MaterialPreference that make it use appcompat dialog.'
+    libraryVersion = versionName
+    artifact = project.name
+    bintrayName = project.name
 }
 
-artifacts {
-    archives androidSourcesJar
-}
-
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: repositoryUrl)
-        pom.project {
-            name project.name
-            groupId "moe.shizuku.preference"
-            artifactId project.name
-            version rootProject.ext.versionName
-            packaging 'aar'
-        }
-    }
-}
+apply from: project.rootProject.file('bintray.gradle')

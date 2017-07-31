@@ -27,7 +27,7 @@ public class ListPreferenceDialogFragment extends PreferenceDialogFragment {
     }
 
     @Override
-    protected void onPrepareDialogBuilder(PreferenceAlertDialog.Builder builder) {
+    protected void onPrepareDialogBuilder(PreferenceDialogBuilder builder) {
         super.onPrepareDialogBuilder(builder);
 
         final ListPreference preference = getListPreference();

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
 
 android {
     compileSdkVersion rootProject.ext.targetSdkVersion
@@ -25,27 +24,15 @@ dependencies {
     implementation "com.android.support:support-fragment:$supportLibraryVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
 
-    api "moe.shizuku.preference:preference:$versionName"
+    compileOnly project(':preference')
 }
 
-task androidSourcesJar(type: Jar) {
-    classifier = "sources"
-    from android.sourceSets.main.java.srcDirs
+ext {
+    libraryName = 'MaterialPreference-SimpleMenu'
+    libraryDescription = 'An extend of MaterialPreference, adding a version of ListPreference that use Simple Menus from Material Design as drop down.'
+    libraryVersion = versionName
+    artifact = project.name
+    bintrayName = project.name
 }
 
-artifacts {
-    archives androidSourcesJar
-}
-
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: repositoryUrl)
-        pom.project {
-            name project.name
-            groupId "moe.shizuku.preference"
-            artifactId project.name
-            version rootProject.ext.versionName
-            packaging 'aar'
-        }
-    }
-}
+apply from: project.rootProject.file('bintray.gradle')

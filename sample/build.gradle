@@ -27,7 +27,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
     implementation "com.android.support:design:$supportLibraryVersion"
 
-    implementation "moe.shizuku.preference:preference:$versionName"
-    implementation "moe.shizuku.preference:preference-dialog-android:$versionName"
-    implementation "moe.shizuku.preference:preference-simplemenu:$versionName"
+    implementation project(':preference')
+    implementation project(':preference-dialog-appcompat')
+    implementation project(':preference-simplemenu')
 }
