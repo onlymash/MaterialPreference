@@ -31,7 +31,7 @@ public class MultiSelectListPreferenceDialogFragment extends PreferenceDialogFra
     }
 
     @Override
-    protected void onPrepareDialogBuilder(PreferenceAlertDialog.Builder builder) {
+    protected void onPrepareDialogBuilder(PreferenceDialogBuilder builder) {
         super.onPrepareDialogBuilder(builder);
 
         final MultiSelectListPreference preference = getListPreference();

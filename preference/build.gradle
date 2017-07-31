@@ -28,24 +28,13 @@ dependencies {
     compileOnly project(':preference-dialog-android')
 }
 
-task androidSourcesJar(type: Jar) {
-    classifier = "sources"
-    from android.sourceSets.main.java.srcDirs
+ext {
+    libraryName = 'MaterialPreference'
+    libraryDescription = 'Main part of MaterialPreference.'
+    libraryVersion = versionName
+    artifact = project.name
+    bintrayName = project.name
+
 }
 
-artifacts {
-    archives androidSourcesJar
-}
-
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: repositoryUrl)
-        pom.project {
-            name project.name
-            groupId "moe.shizuku.preference"
-            artifactId project.name
-            version rootProject.ext.versionName
-            packaging 'aar'
-        }
-    }
-}
+apply from: project.rootProject.file('bintray.gradle')

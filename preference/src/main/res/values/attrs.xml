@@ -70,8 +70,7 @@
         <attr name="switchPreferenceCompatStyle" format="reference" />
         <!-- Default style for seekbar preferences. -->
         <attr name="seekBarPreferenceStyle" format="reference" />
-        <!-- Default style for simple menu preferences. -->
-        <attr name="simpleMenuPreferenceStyle" format="reference" />
+
     </declare-styleable>
 
     <!-- Base attributes available to PreferenceFragment. -->
