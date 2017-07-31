@@ -7,8 +7,21 @@ Based on support-preference from Android Support Library, adding a lot of exciti
 
 ![sample](https://github.com/RikkaW/MaterialPreference/blob/master/art/sample.gif)
 
-#### How to use or run the sample (temporary)
+#### How to use
 
-1. add `repositoryUrl=[your local maven repo]` to `gradle.properties`
-2. run `uploadArchives`
-3. add dependencies in your project / run sample
+1. add to line below into root project ```build.gradle``` 
+```
+allprojects {
+    repositories {
+		// add this
+        maven { url 'https://dl.bintray.com/rikkaw/MaterialPreference/' }
+    }
+}
+```
+2. add dependencies
+```
+implementation 'moe.shizuku.preference:preference:2.0'
+implementation 'moe.shizuku.preference:preference-dialog-android:2.0'
+//implementation 'moe.shizuku.preference:preference-dialog-appcompat:2.0' // if you want to use appcompat version dialog
+//implementation 'moe.shizuku.preference:preference-simplemenu:2.0' // if you want try SimpleMenuPreference
+```
