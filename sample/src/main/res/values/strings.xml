@@ -50,4 +50,7 @@
         <item>999</item>
         <item>0</item>
     </string-array>
+
+    <string name="on_preference_change_toast_message">onPreferenceChange: key = %1$s, newValue = %2$s</string>
+
 </resources>

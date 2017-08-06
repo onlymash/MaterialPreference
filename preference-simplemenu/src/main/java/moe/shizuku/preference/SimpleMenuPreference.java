@@ -44,7 +44,10 @@ public class SimpleMenuPreference extends ListPreference {
         mPopupWindow.setOnItemClickListener(new SimpleMenuPopupWindow.OnItemClickListener() {
             @Override
             public void onClick(int i) {
-                setValueIndex(i);
+                String value = getEntryValues()[i].toString();
+                if (callChangeListener(value)) {
+                    setValue(value);
+                }
             }
         });
 

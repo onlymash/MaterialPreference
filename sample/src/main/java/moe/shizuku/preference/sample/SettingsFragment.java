@@ -8,13 +8,16 @@ import android.util.Log;
 import java.util.Locale;
 
 import moe.shizuku.preference.ListPreference;
+import moe.shizuku.preference.Preference;
 import moe.shizuku.preference.PreferenceFragment;
 
 /**
  * An example of the usage of {@link PreferenceFragment}.
  */
 
-public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
+
+	private static final String TAG = SettingsFragment.class.getSimpleName();
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -32,6 +35,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if (listPreference.getValue() == null) {
             listPreference.setValueIndex(1);
         }
+        listPreference.setOnPreferenceChangeListener(this);
 
         listPreference = (ListPreference) findPreference("drop_down3");
         listPreference.setEntries(new CharSequence[]{"Vertical align selected item", "(｡>﹏<｡)", "(っ╹ ◡ ╹ )っ\uD83D\uDC8A\uFEFF ヽ(✿ﾟ▽ﾟ)ノ", "⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄"});
@@ -39,6 +43,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if (listPreference.getValue() == null) {
             listPreference.setValueIndex(2);
         }
+        listPreference.setOnPreferenceChangeListener(this);
+
+        findPreference("drop_down4").setOnPreferenceChangeListener(this);
 
         listPreference = (ListPreference) findPreference("drop_down5");
         listPreference.setEntries(new CharSequence[]{"This is a very long item. It will use a simple dialog if its text may wraps to more than one line", "Don't put too many item when use simple dialog", "（<ゝω・）☆"});
@@ -46,6 +53,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if (listPreference.getValue() == null) {
             listPreference.setValueIndex(2);
         }
+        listPreference.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -69,6 +77,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.d("SettingsFragment", "onSharedPreferenceChanged " + key);
+        Log.d(TAG, "onSharedPreferenceChanged " + key);
     }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        Log.d(TAG, getString(R.string.on_preference_change_toast_message, preference.getKey(), newValue.toString()));
+        return true;
+    }
+
 }
