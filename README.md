@@ -9,19 +9,12 @@ Based on support-preference from Android Support Library, adding a lot of exciti
 
 #### How to use
 
-1. add to line below into root project ```build.gradle``` 
+1. add dependencies
 ```
-allprojects {
-    repositories {
-		// add this
-        maven { url 'https://dl.bintray.com/rikkaw/MaterialPreference/' }
-    }
-}
+implementation 'moe.shizuku.preference:preference:<latest-release>'
+implementation 'moe.shizuku.preference:preference-dialog-android:<latest-release>'
+//implementation 'moe.shizuku.preference:preference-dialog-appcompat:<latest-release>' // if you want to use appcompat version dialog
+//implementation 'moe.shizuku.preference:preference-switchcompat:<latest-release>' // appcompat version of SwitchCompat, only need if you want to support pre-21
+//implementation 'moe.shizuku.preference:preference-simplemenu:<latest-release>' // if you want try SimpleMenuPreference, on pre-21 it will fallback to ListPreference
 ```
-2. add dependencies
-```
-implementation 'moe.shizuku.preference:preference:2.0'
-implementation 'moe.shizuku.preference:preference-dialog-android:2.0'
-//implementation 'moe.shizuku.preference:preference-dialog-appcompat:2.0' // if you want to use appcompat version dialog
-//implementation 'moe.shizuku.preference:preference-simplemenu:2.0' // if you want try SimpleMenuPreference
-```
+2. sample will tell you everything
