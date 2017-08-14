@@ -2,6 +2,7 @@ package moe.shizuku.preference;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
@@ -13,6 +14,8 @@ import moe.shizuku.preference.widget.SimpleMenuPopupWindow;
  * A version of {@link ListPreference} that use
  * <a href="https://material.io/guidelines/components/menus.html#menus-simple-menus">Simple Menus</a>
  * in Material Design as drop down.
+ *
+ * On pre-Lollipop, it will fallback {@link ListPreference}.
  */
 public class SimpleMenuPreference extends ListPreference {
 
@@ -24,7 +27,7 @@ public class SimpleMenuPreference extends ListPreference {
     }
 
     public SimpleMenuPreference(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.simpleMenuPreferenceStyle);
+        this(context, attrs, Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP ? 0 : R.attr.simpleMenuPreferenceStyle);
     }
 
     public SimpleMenuPreference(Context context, AttributeSet attrs, int defStyle) {
@@ -34,6 +37,10 @@ public class SimpleMenuPreference extends ListPreference {
     public SimpleMenuPreference(Context context, AttributeSet attrs, int defStyleAttr,
                               int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+            return;
+        }
 
         TypedArray a = context.obtainStyledAttributes(
                 attrs, R.styleable.SimpleMenuPreference, defStyleAttr, defStyleRes);
@@ -56,6 +63,11 @@ public class SimpleMenuPreference extends ListPreference {
 
     @Override
     protected void onClick() {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+            super.onClick();
+            return;
+        }
+
         if (getEntries() == null || getEntries().length == 0) {
             return;
         }
@@ -73,6 +85,10 @@ public class SimpleMenuPreference extends ListPreference {
     public void setEntries(@NonNull CharSequence[] entries) {
         super.setEntries(entries);
 
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+            return;
+        }
+
         mPopupWindow.requestMeasure();
     }
 
@@ -84,6 +100,10 @@ public class SimpleMenuPreference extends ListPreference {
     @Override
     public void onBindViewHolder(PreferenceViewHolder view) {
         super.onBindViewHolder(view);
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+            return;
+        }
 
         mItemView = view.itemView;
     }
