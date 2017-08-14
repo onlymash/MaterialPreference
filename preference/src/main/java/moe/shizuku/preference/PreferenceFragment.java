@@ -112,12 +112,12 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
      * {@link PreferenceScreen} object.
      */
     public static final String ARG_PREFERENCE_ROOT =
-            "android.support.v7.preference.PreferenceFragmentCompat.PREFERENCE_ROOT";
+            "moe.shizuku.preference.PreferenceFragment.PREFERENCE_ROOT";
 
     private static final String PREFERENCES_TAG = "android:preferences";
 
     private static final String DIALOG_FRAGMENT_TAG =
-            "android.support.v14.preference.PreferenceFragment.DIALOG";
+            "moe.shizuku.preference.PreferenceFragment.DIALOG";
 
     private static final String SCROLL_TO_ITEM_POSITION_TAG =
             "SCROLL_TO_ITEM_POSITION_TAG";

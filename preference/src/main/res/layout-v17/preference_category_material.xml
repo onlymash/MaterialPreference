@@ -21,7 +21,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textAppearance="@style/Preference_TextAppearanceMaterialBody2"
-    android:textColor="?android:colorAccent"
+    android:textColor="?accentColorCompat"
     android:paddingStart="?android:listPreferredItemPaddingLeft"
     android:paddingEnd="?android:listPreferredItemPaddingRight"
     android:paddingTop="16dp" />

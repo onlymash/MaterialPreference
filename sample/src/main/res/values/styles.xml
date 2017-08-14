@@ -22,6 +22,9 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="AppTheme.PreferenceTheme" parent="PreferenceThemeOverlay">
+        <!-- Only need this on pre-Lollipop -->
+        <item name="accentColorCompat">?colorAccent</item>
+
         <item name="simpleMenuPreferenceStyle">@style/Preference.SimpleMenuPreference</item>
     </style>
 

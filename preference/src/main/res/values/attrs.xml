@@ -26,6 +26,9 @@
         <!-- Theme for inflating Preference objects -->
         <attr name="preferenceTheme" format="reference" />
 
+        <!-- Fallback accent color for pre-Lollipop -->
+        <attr name="accentColorCompat" format="color" />
+
         <!-- Default style for PreferenceScreen. -->
         <attr name="preferenceScreenStyle" format="reference" />
         <!-- Default style for the PreferenceActivity. -->
@@ -66,11 +69,6 @@
         <attr name="preferenceFragmentPaddingSide" format="dimension" />
         <!-- Default style for switch preferences. -->
         <attr name="switchPreferenceStyle" format="reference" />
-        <!-- Default style for switch compat preferences. -->
-        <attr name="switchPreferenceCompatStyle" format="reference" />
-        <!-- Default style for seekbar preferences. -->
-        <attr name="seekBarPreferenceStyle" format="reference" />
-
     </declare-styleable>
 
     <!-- Base attributes available to PreferenceFragment. -->
