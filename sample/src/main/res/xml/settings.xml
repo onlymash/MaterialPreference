@@ -22,6 +22,11 @@
             android:summaryOn="On"
             android:summaryOff="Off"/>
 
+        <SwitchPreferenceCompat
+            android:key="switch"
+            android:title="SwitchPreferenceCompat"
+            android:summary="Not recommended on 21+, SwitchCompat have less animation than native version."/>
+
         <CheckBoxPreference
             android:key="checkbox"
             android:title="CheckBoxPreference"

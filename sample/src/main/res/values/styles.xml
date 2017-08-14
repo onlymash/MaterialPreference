@@ -26,6 +26,7 @@
         <item name="accentColorCompat">?colorAccent</item>
 
         <item name="simpleMenuPreferenceStyle">@style/Preference.SimpleMenuPreference</item>
+        <item name="switchPreferenceCompatStyle">@style/Preference.SwitchPreferenceCompat</item>
     </style>
 
     <!--<style name="SimpleMenuPreference" parent="Preference.SimpleMenuPreference">

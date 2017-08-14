@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion rootProject.ext.targetSdkVersion
@@ -9,7 +9,6 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
-        consumerProguardFiles 'proguard-rules.pro'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -22,13 +21,17 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.12'
     implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
-    implementation "com.android.support:design:$supportLibraryVersion"
 
-    implementation project(':preference')
-    implementation project(':preference-dialog-appcompat')
-    implementation project(':preference-simplemenu')
-    implementation project(':preference-switchcompat')
+    compileOnly project(':preference')
 }
+
+ext {
+    libraryName = 'MaterialPreference-SwitchCompat'
+    libraryDescription = 'An extend of MaterialPreference, adding a version of SwitchPreference that use SwitchCompat from appcompat.'
+    libraryVersion = versionName
+    artifact = project.name
+    bintrayName = project.name
+}
+
+apply from: project.rootProject.file('bintray.gradle')
