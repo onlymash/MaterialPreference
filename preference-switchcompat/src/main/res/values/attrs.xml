@@ -18,11 +18,11 @@
         <attr name="android:summaryOff" />
         <!-- The text used on the switch itself when in the "on" state.
              This should be a very SHORT string, as it appears in a small space. -->
-        <attr name="switchTextOn" format="string" />
+        <attr name="switchTextOn" />
         <attr name="android:switchTextOn" />
         <!-- The text used on the switch itself when in the "off" state.
              This should be a very SHORT string, as it appears in a small space. -->
-        <attr name="switchTextOff" format="string" />
+        <attr name="switchTextOff" />
         <attr name="android:switchTextOff" />
         <!-- The state (true for on, or false for off) that causes dependents to be disabled. By default,
              dependents will be disabled when this is unchecked, so the value of this preference is false. -->
