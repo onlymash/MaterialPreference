@@ -6,6 +6,8 @@ import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
@@ -30,6 +32,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * in Material Design.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class SimpleMenuPopupWindow extends PopupWindow {
 
     public static final int POPUP_MENU = 0;
@@ -152,6 +155,11 @@ public class SimpleMenuPopupWindow extends PopupWindow {
 
     @Override
     public FixedBoundsDrawable getBackground() {
+        Drawable background = super.getBackground();
+        if (background != null
+                && !(background instanceof FixedBoundsDrawable)) {
+            setBackgroundDrawable(background);
+        }
         return (FixedBoundsDrawable) super.getBackground();
     }
 

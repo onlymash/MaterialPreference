@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -17,6 +18,8 @@ import moe.shizuku.preference.widget.SimpleMenuPopupWindow;
  *
  * On pre-Lollipop, it will fallback {@link ListPreference}.
  */
+
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class SimpleMenuPreference extends ListPreference {
 
     private View mItemView;
@@ -27,7 +30,7 @@ public class SimpleMenuPreference extends ListPreference {
     }
 
     public SimpleMenuPreference(Context context, AttributeSet attrs) {
-        this(context, attrs, Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP ? 0 : R.attr.simpleMenuPreferenceStyle);
+        this(context, attrs, Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ? 0 : R.attr.simpleMenuPreferenceStyle);
     }
 
     public SimpleMenuPreference(Context context, AttributeSet attrs, int defStyle) {
@@ -38,7 +41,7 @@ public class SimpleMenuPreference extends ListPreference {
                               int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return;
         }
 
@@ -63,7 +66,7 @@ public class SimpleMenuPreference extends ListPreference {
 
     @Override
     protected void onClick() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             super.onClick();
             return;
         }
@@ -85,7 +88,7 @@ public class SimpleMenuPreference extends ListPreference {
     public void setEntries(@NonNull CharSequence[] entries) {
         super.setEntries(entries);
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return;
         }
 
@@ -101,7 +104,7 @@ public class SimpleMenuPreference extends ListPreference {
     public void onBindViewHolder(PreferenceViewHolder view) {
         super.onBindViewHolder(view);
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return;
         }
 
