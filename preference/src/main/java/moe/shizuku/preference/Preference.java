@@ -298,7 +298,7 @@ public class Preference implements Comparable<Preference> {
      * @see #Preference(Context, AttributeSet)
      */
     public Preference(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        this(context, attrs, defStyleAttr, R.style.Preference_Material);
     }
 
     /**

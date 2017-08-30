@@ -27,7 +27,7 @@ public class DropDownPreference extends ListPreference {
     }
 
     public DropDownPreference(Context context, AttributeSet attrs, int defStyle) {
-        this(context, attrs, defStyle, 0);
+        this(context, attrs, defStyle, R.style.Preference_DropDownPreference);
     }
 
     public DropDownPreference(Context context, AttributeSet attrs, int defStyleAttr,

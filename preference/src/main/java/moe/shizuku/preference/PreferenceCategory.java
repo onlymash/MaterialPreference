@@ -39,7 +39,7 @@ public class PreferenceCategory extends PreferenceGroup {
     }
 
     public PreferenceCategory(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        this(context, attrs, defStyleAttr, R.style.Preference_Category_Material);
     }
 
     public PreferenceCategory(Context context, AttributeSet attrs) {

@@ -87,7 +87,7 @@ public class SwitchPreference extends TwoStatePreference {
      *        the view. Can be 0 to not look for defaults.
      */
     public SwitchPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        this(context, attrs, defStyleAttr, R.style.Preference_SwitchPreference);
     }
     /**
      * Construct a new SwitchPreference with the given style options.

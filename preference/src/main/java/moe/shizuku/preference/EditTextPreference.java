@@ -79,7 +79,7 @@ public class EditTextPreference extends DialogPreference {
     }
 
     public EditTextPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        this(context, attrs, defStyleAttr, R.style.Preference_DialogPreference_EditTextPreference_Material);
     }
 
     public EditTextPreference(Context context, AttributeSet attrs) {

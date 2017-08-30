@@ -72,7 +72,7 @@ public class ListPreference extends DialogPreference {
     }
 
     public ListPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        this(context, attrs, defStyleAttr, R.style.Preference_Material);
     }
 
     public ListPreference(Context context, AttributeSet attrs) {

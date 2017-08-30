@@ -7,8 +7,10 @@ import android.util.Log;
 
 import java.util.Locale;
 
+import moe.shizuku.preference.CheckBoxPreference;
 import moe.shizuku.preference.ListPreference;
 import moe.shizuku.preference.Preference;
+import moe.shizuku.preference.PreferenceCategory;
 import moe.shizuku.preference.PreferenceFragment;
 
 /**
@@ -54,6 +56,16 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             listPreference.setValueIndex(2);
         }
         listPreference.setOnPreferenceChangeListener(this);
+
+        PreferenceCategory preferenceCategory = new PreferenceCategory(getContext());
+        preferenceCategory.setTitle("Test add dynamically");
+        getPreferenceScreen().addPreference(preferenceCategory);
+
+        CheckBoxPreference checkBoxPreference = new CheckBoxPreference(getContext());
+        checkBoxPreference.setTitle("Test");
+        checkBoxPreference.setSummaryOn("ON");
+        checkBoxPreference.setSummaryOff("OFF");
+        getPreferenceScreen().addPreference(checkBoxPreference);
     }
 
     @Override

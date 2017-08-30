@@ -69,7 +69,7 @@ public class MultiSelectListPreference extends DialogPreference {
     }
 
     public MultiSelectListPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        this(context, attrs, defStyleAttr, R.style.Preference_Material);
     }
 
     public MultiSelectListPreference(Context context, AttributeSet attrs) {

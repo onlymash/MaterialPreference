@@ -52,7 +52,7 @@ public class CheckBoxPreference extends TwoStatePreference {
     }
 
     public CheckBoxPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        this(context, attrs, defStyleAttr, R.style.Preference_CheckBoxPreference_Material);
     }
 
     public CheckBoxPreference(

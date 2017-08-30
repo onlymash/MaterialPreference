@@ -88,7 +88,7 @@ public abstract class DialogPreference extends Preference {
     }
 
     public DialogPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        this(context, attrs, defStyleAttr, R.style.Preference_DialogPreference_Material);
     }
 
     public DialogPreference(Context context, AttributeSet attrs) {
