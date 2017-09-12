@@ -524,6 +524,10 @@ public class Preference implements Comparable<Preference> {
         holder.setDividerAllowedBelow(selectable);
     }
 
+    public void onViewRecycled(PreferenceViewHolder holder) {
+
+    }
+
     /**
      * Makes sure the view (and any children) get the enabled state changed.
      */
