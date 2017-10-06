@@ -30,6 +30,7 @@ import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.AbsSavedState;
 import android.view.View;
 import android.view.ViewGroup;
@@ -964,7 +965,16 @@ public class Preference implements Comparable<Preference> {
 
         if (mIntent != null) {
             Context context = getContext();
-            context.startActivity(mIntent);
+            if (mIntent.resolveActivity(context.getPackageManager()) != null) {
+                // we still need try here because of some strange condition
+                try {
+                    context.startActivity(mIntent);
+                } catch (Exception e) {
+                    Log.w("Preference", "can't start intent " + mIntent, e);
+                }
+            } else {
+                Log.w("Preference", "can't start intent " + mIntent + " because no matching activity found");
+            }
         }
     }
 

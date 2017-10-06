@@ -106,6 +106,7 @@ public class SwitchPreference extends TwoStatePreference {
     public SwitchPreference(Context context) {
         this(context, null);
     }
+
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
