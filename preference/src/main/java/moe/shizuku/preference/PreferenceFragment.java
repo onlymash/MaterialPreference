@@ -747,11 +747,15 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
      */
     public class CategoryDivideDividerDecoration extends DividerDecoration {
 
-        private final static int PADDING_DP = 8;
+        private static final int PADDING_DP = 8;
         private int padding;
 
         public CategoryDivideDividerDecoration() {
-            padding = (int) (PADDING_DP * getActivity().getResources().getDisplayMetrics().density);
+            this((int) (PADDING_DP * getActivity().getResources().getDisplayMetrics().density));
+        }
+
+        public CategoryDivideDividerDecoration(int padding) {
+            this.padding = padding;
         }
 
         @Override

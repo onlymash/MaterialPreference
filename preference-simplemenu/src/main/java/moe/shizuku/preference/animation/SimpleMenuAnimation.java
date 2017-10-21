@@ -5,13 +5,16 @@ import android.animation.AnimatorSet;
 import android.animation.FloatEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
+import android.annotation.TargetApi;
 import android.graphics.Rect;
+import android.os.Build;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
 import moe.shizuku.preference.drawable.FixedBoundsDrawable;
+import moe.shizuku.preference.widget.SimpleMenuPopupWindow;
 
 /**
  * Helper class to create and start animation of Simple Menu.
@@ -19,45 +22,51 @@ import moe.shizuku.preference.drawable.FixedBoundsDrawable;
  * TODO let params styleable
  */
 
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class SimpleMenuAnimation {
 
-    public static void postStartEnterAnimation(final ViewGroup list, final FixedBoundsDrawable background,
+    public static void postStartEnterAnimation(final SimpleMenuPopupWindow popupWindow, final FixedBoundsDrawable background,
                                                final int width, final int height,
                                                final int startX, final int startY, final Rect start,
                                                final int itemHeight, final int elevation, final int selectedIndex) {
-        list.post(new Runnable() {
+        popupWindow.getBackground().setFixedBounds(new Rect());
+        popupWindow.getContentView().setClipBounds(new Rect());
+
+        popupWindow.getContentView().post(new Runnable() {
             @Override
             public void run() {
                 // return if already dismissed
-                if (list.getParent() == null) {
+                if (popupWindow.getContentView().getParent() == null) {
                     return;
                 }
-                startEnterAnimation(list, background, width, height, startX, startY, start, itemHeight, elevation, selectedIndex);
+                startEnterAnimation(popupWindow.getContentView(), background, width, height, startX, startY, start, itemHeight, elevation, selectedIndex);
             }
         });
     }
 
-    public static void startEnterAnimation(final ViewGroup list, final FixedBoundsDrawable background,
+    public static void startEnterAnimation(final View view, final FixedBoundsDrawable background,
                                            int width, int height,
                                            int centerX, int centerY, Rect start,
                                            int itemHeight, int elevation, int selectedIndex) {
-        PropertyHolder holder = new PropertyHolder(background, list);
+        PropertyHolder holder = new PropertyHolder(background, view);
         Animator backgroundAnimator = createBoundsAnimator(
                 holder, width, height, centerX, centerY, start);
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(
                 backgroundAnimator,
-                createElevationAnimator((View) list.getParent(), elevation));
+                createElevationAnimator((View) view.getParent(), elevation));
         animatorSet.setDuration(backgroundAnimator.getDuration());
         animatorSet.start();
 
         long delay = 0;
 
-        for (int i = 0; i < list.getChildCount(); i++) {
-            int offset = selectedIndex - i;
-            startChild(list.getChildAt(i), delay + 20 * Math.abs(offset),
-                    offset == 0 ? 0 : (int) (itemHeight * 0.2) * (offset < 0 ? -1 : 1));
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                int offset = selectedIndex - i;
+                startChild(((ViewGroup) view).getChildAt(i), delay + 25 * Math.abs(offset),
+                        offset == 0 ? 0 : (int) (itemHeight * 0.2) * (offset < 0 ? -1 : 1));
+            }
         }
     }
 
@@ -92,7 +101,7 @@ public class SimpleMenuAnimation {
 
     private static Animator createBoundsAnimator(PropertyHolder holder,
                                                  int width, int height, int centerX, int centerY, Rect start) {
-        int speed = 4096;
+        int speed = 3072;
 
         int endWidth = Math.max(centerX, width - centerX);
         int endHeight = Math.max(centerY, height - centerY);
@@ -102,7 +111,7 @@ public class SimpleMenuAnimation {
         Rect max = rect[1];
 
         long duration = (long) ((float) Math.max(endWidth, endHeight) / speed * 1000);
-        duration = Math.min(duration, 300);
+        duration = Math.min(duration, 450);
 
         Animator animator = ObjectAnimator
                 .ofObject(holder, SimpleMenuBoundsProperty.BOUNDS, new RectEvaluator(max), start, end);

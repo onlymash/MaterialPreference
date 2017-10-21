@@ -112,8 +112,8 @@ public class SimpleMenuPopupWindow extends PopupWindow {
         a.recycle();
 
         // TODO do not hardcode
-        itemHeight = (int) (context.getResources().getDisplayMetrics().density * 48);
-        listPadding[POPUP_MENU][VERTICAL] = listPadding[DIALOG][VERTICAL] = (int) (context.getResources().getDisplayMetrics().density * 8);
+        itemHeight = Math.round(context.getResources().getDisplayMetrics().density * 48);
+        listPadding[POPUP_MENU][VERTICAL] = listPadding[DIALOG][VERTICAL] = Math.round(context.getResources().getDisplayMetrics().density * 8);
     }
 
     public OnItemClickListener getOnItemClickListener() {
@@ -329,6 +329,11 @@ public class SimpleMenuPopupWindow extends PopupWindow {
         setElevation(elevation);
         setAnimationStyle(R.style.Animation_SimpleMenuCenter);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            setEnterTransition(null);
+            setExitTransition(null);
+        }
+
         super.showAtLocation(anchor, Gravity.NO_GRAVITY, margin[POPUP_MENU][HORIZONTAL], y);
 
         int startTop = centerY - (int) (itemHeight * 0.2);
@@ -340,7 +345,7 @@ public class SimpleMenuPopupWindow extends PopupWindow {
 
         int animElevation = (int) Math.round(elevation * 0.25);
 
-        SimpleMenuAnimation.postStartEnterAnimation(getContentView(), getBackground(),
+        SimpleMenuAnimation.postStartEnterAnimation(this, getBackground(),
                 width, height, centerX, centerY, animStartRect, animItemHeight, animElevation, animIndex);
     }
 

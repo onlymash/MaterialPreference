@@ -1,10 +1,12 @@
 package moe.shizuku.preference.drawable;
 
+import android.annotation.TargetApi;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -15,6 +17,7 @@ import android.support.annotation.Nullable;
  * one or two frame using wrong bounds because of parent view sets bounds.
  */
 
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class FixedBoundsDrawable extends Drawable implements Drawable.Callback {
 
     private final Drawable mDrawable;

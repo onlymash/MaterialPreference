@@ -1,9 +1,11 @@
 package moe.shizuku.preference.animation;
 
+import android.annotation.TargetApi;
 import android.graphics.Rect;
+import android.os.Build;
 import android.util.Property;
 
-
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class SimpleMenuBoundsProperty extends Property<PropertyHolder, Rect> {
 
     public static final Property<PropertyHolder, Rect> BOUNDS;
