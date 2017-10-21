@@ -111,6 +111,7 @@ public class SimpleMenuAnimation {
         Rect max = rect[1];
 
         long duration = (long) ((float) Math.max(endWidth, endHeight) / speed * 1000);
+        duration = Math.max(duration, 225);
         duration = Math.min(duration, 450);
 
         Animator animator = ObjectAnimator

@@ -4,4 +4,9 @@
         android:title="@string/night_mode"
         android:id="@+id/menu_night_mode">
     </item>
+
+    <item
+        android:title="@string/rtl"
+        android:id="@+id/rtl">
+    </item>
 </menu>

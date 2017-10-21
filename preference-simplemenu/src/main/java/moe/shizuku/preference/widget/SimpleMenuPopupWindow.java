@@ -256,6 +256,8 @@ public class SimpleMenuPopupWindow extends PopupWindow {
      * @param width Measured width of this window
      */
     private void showPopupMenu(View anchor, View container, int width) {
+        final boolean rtl = container.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+
         final int index = Math.max(0, mSelectedIndex);
         final int count = mEntries.length;
 
@@ -281,6 +283,10 @@ public class SimpleMenuPopupWindow extends PopupWindow {
         int animItemHeight = itemHeight + listPadding[POPUP_MENU][VERTICAL] * 2;
         int animIndex = index;
         Rect animStartRect;
+
+        if (rtl) {
+            centerX = container.getWidth() - centerX - width;
+        }
 
         if (height > maxHeight) {
             // too high, use scroll
@@ -334,12 +340,20 @@ public class SimpleMenuPopupWindow extends PopupWindow {
             setExitTransition(null);
         }
 
-        super.showAtLocation(anchor, Gravity.NO_GRAVITY, margin[POPUP_MENU][HORIZONTAL], y);
+        super.showAtLocation(anchor, Gravity.NO_GRAVITY, centerX, y);
 
         int startTop = centerY - (int) (itemHeight * 0.2);
         int startBottom = centerY + (int) (itemHeight * 0.2);
-        int startLeft = centerX;
-        int startRight = centerX + (int) (width * 0.7);
+        int startLeft;
+        int startRight;
+
+        if (!rtl) {
+            startLeft = centerX;
+            startRight = centerX + (int) (width * 0.7);
+        } else {
+            startLeft = centerX + width - (int) (width * 0.7);
+            startRight = centerX + width;
+        }
 
         animStartRect = new Rect(startLeft, startTop, startRight, startBottom);
 

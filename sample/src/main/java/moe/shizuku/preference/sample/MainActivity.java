@@ -1,11 +1,18 @@
 package moe.shizuku.preference.sample;
 
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +45,22 @@ public class MainActivity extends AppCompatActivity {
                         AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
 
                 recreate();
+
+                return true;
+            case R.id.rtl:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    Resources resources = getBaseContext().getResources();
+
+                    Locale locale = resources.getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL
+                            ? Locale.ENGLISH : new Locale("ar");
+                    Locale.setDefault(locale);
+
+                    resources.getConfiguration().setLocale(locale);
+                    resources.updateConfiguration(resources.getConfiguration(), resources.getDisplayMetrics());
+
+                    startActivity(new Intent(this, this.getClass()));
+                    finish();
+                }
 
                 return true;
         }
