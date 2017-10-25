@@ -11,6 +11,7 @@ import android.os.Build;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import moe.shizuku.preference.drawable.FixedBoundsDrawable;
@@ -64,7 +65,7 @@ public class SimpleMenuAnimation {
         if (view instanceof ViewGroup) {
             for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
                 int offset = selectedIndex - i;
-                startChild(((ViewGroup) view).getChildAt(i), delay + 25 * Math.abs(offset),
+                startChild(((ViewGroup) view).getChildAt(i), delay + 30 * Math.abs(offset),
                         offset == 0 ? 0 : (int) (itemHeight * 0.2) * (offset < 0 ? -1 : 1));
             }
         }
@@ -73,13 +74,17 @@ public class SimpleMenuAnimation {
     private static void startChild(View child, long delay, int translationY) {
         child.setAlpha(0);
 
+        Animator alphaAnimator = ObjectAnimator.ofFloat(child, "alpha", 0.0f, 1.0f);
+        alphaAnimator.setDuration(200);
+        alphaAnimator.setInterpolator(new AccelerateInterpolator());
+
+        Animator translationAnimator = ObjectAnimator.ofFloat(child, "translationY", translationY, 0);
+        translationAnimator.setDuration(275);
+        translationAnimator.setInterpolator(new DecelerateInterpolator());
+
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(
-                ObjectAnimator.ofFloat(child, "alpha", 0.0f, 1.0f),
-                ObjectAnimator.ofFloat(child, "translationY", translationY, 0));
-        animatorSet.setDuration(200);
+        animatorSet.playTogether(alphaAnimator, translationAnimator);
         animatorSet.setStartDelay(delay);
-        animatorSet.setInterpolator(new DecelerateInterpolator());
         animatorSet.start();
     }
 
@@ -101,7 +106,7 @@ public class SimpleMenuAnimation {
 
     private static Animator createBoundsAnimator(PropertyHolder holder,
                                                  int width, int height, int centerX, int centerY, Rect start) {
-        int speed = 3072;
+        int speed = 4096;
 
         int endWidth = Math.max(centerX, width - centerX);
         int endHeight = Math.max(centerY, height - centerY);
@@ -111,8 +116,8 @@ public class SimpleMenuAnimation {
         Rect max = rect[1];
 
         long duration = (long) ((float) Math.max(endWidth, endHeight) / speed * 1000);
-        duration = Math.max(duration, 225);
-        duration = Math.min(duration, 450);
+        duration = Math.max(duration, 150);
+        duration = Math.min(duration, 300);
 
         Animator animator = ObjectAnimator
                 .ofObject(holder, SimpleMenuBoundsProperty.BOUNDS, new RectEvaluator(max), start, end);

@@ -308,9 +308,9 @@ public class SimpleMenuPopupWindow extends PopupWindow {
 
             height = containerHeight - margin[POPUP_MENU][VERTICAL] * 2;
 
-            // TODO: should we align to anchor view ?
-            centerY = scroll;
             animIndex = index;
+
+            centerY = itemHeight * index;
         } else {
             // calc align to selected
             y = containerTopInWindow + anchorTop + anchorHeight / 2 - itemHeight / 2
@@ -349,9 +349,9 @@ public class SimpleMenuPopupWindow extends PopupWindow {
 
         if (!rtl) {
             startLeft = centerX;
-            startRight = centerX + (int) (width * 0.7);
+            startRight = centerX + unit;
         } else {
-            startLeft = centerX + width - (int) (width * 0.7);
+            startLeft = centerX + width - unit;
             startRight = centerX + width;
         }
 
