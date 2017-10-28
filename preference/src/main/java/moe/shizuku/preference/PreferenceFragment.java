@@ -354,6 +354,12 @@ public abstract class PreferenceFragment extends android.support.v4.app.Fragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getListView().scrollBy(0, 0);
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         mPreferenceManager.setOnPreferenceTreeClickListener(null);

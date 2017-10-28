@@ -22,4 +22,6 @@
     android:layout_height="match_parent"
     android:paddingTop="0dp"
     android:paddingBottom="0dp"
+    android:scrollbars="vertical"
+    android:fadeScrollbars="true"
     android:clipToPadding="false" />
