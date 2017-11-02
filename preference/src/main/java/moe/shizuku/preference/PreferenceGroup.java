@@ -16,10 +16,16 @@
 
 package moe.shizuku.preference;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.RestrictTo;
 import android.support.v4.content.res.TypedArrayUtils;
+import android.support.v4.util.SimpleArrayMap;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
@@ -39,7 +45,7 @@ import java.util.List;
  * guide.</p>
  * </div>
  *
- * @attr ref android.R.styleable#PreferenceGroup_orderingFromXml
+ * @attr name android:orderingFromXml
  */
 public abstract class PreferenceGroup extends Preference {
     /**
@@ -55,6 +61,18 @@ public abstract class PreferenceGroup extends Preference {
 
     private boolean mAttachedToHierarchy = false;
 
+    private final SimpleArrayMap<String, Long> mIdRecycleCache = new SimpleArrayMap<>();
+    private final Handler mHandler = new Handler();
+    private final Runnable mClearRecycleCacheRunnable = new Runnable() {
+        @Override
+        public void run() {
+            synchronized (this) {
+                mIdRecycleCache.clear();
+            }
+        }
+    };
+
+    @SuppressLint("RestrictedApi")
     public PreferenceGroup(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
@@ -166,7 +184,17 @@ public abstract class PreferenceGroup extends Preference {
             mPreferenceList.add(insertionIndex, preference);
         }
 
-        preference.onAttachedToHierarchy(getPreferenceManager());
+        final PreferenceManager preferenceManager = getPreferenceManager();
+        final String key = preference.getKey();
+        final long id;
+        if (key != null && mIdRecycleCache.containsKey(key)) {
+            id = mIdRecycleCache.get(key);
+            mIdRecycleCache.remove(key);
+        } else {
+            id = preferenceManager.getNextId();
+        }
+        preference.onAttachedToHierarchy(preferenceManager, id);
+        preference.assignParent(this);
 
         if (mAttachedToHierarchy) {
             preference.onAttached();
@@ -192,7 +220,34 @@ public abstract class PreferenceGroup extends Preference {
     private boolean removePreferenceInt(Preference preference) {
         synchronized(this) {
             preference.onPrepareForRemoval();
-            return mPreferenceList.remove(preference);
+            if (preference.getParent() == this) {
+                preference.assignParent(null);
+            }
+            boolean success = mPreferenceList.remove(preference);
+            if (success) {
+                // If this preference, or another preference with the same key, gets re-added
+                // immediately, we want it to have the same id so that it can be correctly tracked
+                // in the adapter by RecyclerView, to make it appear as if it has only been
+                // seamlessly updated. If the preference is not re-added by the time the handler
+                // runs, we take that as a signal that the preference will not be re-added soon
+                // in which case it does not need to retain the same id.
+
+                // If two (or more) preferences have the same (or null) key and both are removed
+                // and then re-added, only one id will be recycled and the second (and later)
+                // preferences will receive a newly generated id. This use pattern of the preference
+                // API is strongly discouraged.
+                final String key = preference.getKey();
+                if (key != null) {
+                    mIdRecycleCache.put(key, preference.getId());
+                    mHandler.removeCallbacks(mClearRecycleCacheRunnable);
+                    mHandler.post(mClearRecycleCacheRunnable);
+                }
+                if (mAttachedToHierarchy) {
+                    preference.onDetached();
+                }
+            }
+
+            return success;
         }
     }
 
@@ -269,6 +324,15 @@ public abstract class PreferenceGroup extends Preference {
         return true;
     }
 
+    /**
+     * Returns true if we're between {@link #onAttached()} and {@link #onPrepareForRemoval()}
+     * @hide
+     */
+    @RestrictTo(LIBRARY_GROUP)
+    public boolean isAttached() {
+        return mAttachedToHierarchy;
+    }
+
     @Override
     public void onAttached() {
         super.onAttached();
@@ -285,11 +349,17 @@ public abstract class PreferenceGroup extends Preference {
     }
 
     @Override
-    protected void onPrepareForRemoval() {
-        super.onPrepareForRemoval();
+    public void onDetached() {
+        super.onDetached();
 
         // We won't be attached to the activity anymore
         mAttachedToHierarchy = false;
+
+        // Dispatch to all contained preferences
+        final int preferenceCount = getPreferenceCount();
+        for (int i = 0; i < preferenceCount; i++) {
+            getPreference(i).onDetached();
+        }
     }
 
     @Override
@@ -332,4 +402,28 @@ public abstract class PreferenceGroup extends Preference {
         }
     }
 
+    /**
+     * Interface for PreferenceGroup Adapters to implement so that
+     * {@link PreferenceFragment#scrollToPreference(String)} and
+     * {@link PreferenceFragment#scrollToPreference(Preference)} or
+     * can determine the correct scroll position to request.
+     */
+    public interface PreferencePositionCallback {
+
+        /**
+         * Return the adapter position of the first {@link Preference} with the specified key
+         * @param key Key of {@link Preference} to find
+         * @return Adapter position of the {@link Preference} or
+         *         {@link android.support.v7.widget.RecyclerView#NO_POSITION} if not found
+         */
+        int getPreferenceAdapterPosition(String key);
+
+        /**
+         * Return the adapter position of the specified {@link Preference} object
+         * @param preference {@link Preference} object to find
+         * @return Adapter position of the {@link Preference} or
+         *         {@link android.support.v7.widget.RecyclerView#NO_POSITION} if not found
+         */
+        int getPreferenceAdapterPosition(Preference preference);
+    }
 }

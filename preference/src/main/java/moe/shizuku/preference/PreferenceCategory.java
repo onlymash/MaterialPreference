@@ -17,11 +17,13 @@
 package moe.shizuku.preference;
 
 import android.content.Context;
+import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
+import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import android.util.AttributeSet;
 
 /**
- * Used to group {@link android.preference.Preference} objects
- * and provide a disabled title above the group.
+ * Used to group {@link Preference} objects and provide a disabled title above
+ * the group.
  *
  * <div class="special reference">
  * <h3>Developer Guides</h3>
@@ -71,7 +73,21 @@ public class PreferenceCategory extends PreferenceGroup {
     }
 
     @Override
-    public void onBindViewHolder(PreferenceViewHolder holder) {
-        super.onBindViewHolder(holder);
+    public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfoCompat info) {
+        super.onInitializeAccessibilityNodeInfo(info);
+
+        CollectionItemInfoCompat existingItemInfo = info.getCollectionItemInfo();
+        if (existingItemInfo == null) {
+            return;
+        }
+
+        final CollectionItemInfoCompat newItemInfo = CollectionItemInfoCompat.obtain(
+                existingItemInfo.getRowIndex(),
+                existingItemInfo.getRowSpan(),
+                existingItemInfo.getColumnIndex(),
+                existingItemInfo.getColumnSpan(),
+                true /* heading */,
+                existingItemInfo.isSelected());
+        info.setCollectionItemInfo(newItemInfo);
     }
 }

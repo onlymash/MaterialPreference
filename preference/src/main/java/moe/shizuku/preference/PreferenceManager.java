@@ -16,10 +16,18 @@
 
 package moe.shizuku.preference;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.SharedPreferencesCompat;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +37,7 @@ import java.util.List;
  * from activities or XML.
  * <p>
  * In most cases, clients should use
- * {@link PreferenceFragment#addPreferencesFromResource(int)}}.
+ * {@link PreferenceFragment#addPreferencesFromResource(int)}
  *
  * @see PreferenceFragment
  */
@@ -40,12 +48,19 @@ public class PreferenceManager {
     public static final String KEY_HAS_SET_DEFAULT_VALUES = "_has_set_default_values";
 
     /**
+     * Fragment that owns this instance.
+     */
+    private PreferenceFragment mFragment;
+
+    /**
      * The context to use. This should always be set.
      */
     private Context mContext;
 
-
-    private PreferenceFragment mFragment;
+    /**
+     * The default package that will be searched for classes to construct
+     */
+    private String[] mDefaultPackages;
 
     /**
      * The counter for unique IDs.
@@ -55,12 +70,21 @@ public class PreferenceManager {
     /**
      * Cached shared preferences.
      */
+    @Nullable
     private SharedPreferences mSharedPreferences;
+
+    /**
+     * Data store to be used by the Preferences or null if {@link android.content.SharedPreferences}
+     * should be used.
+     */
+    @Nullable
+    private PreferenceDataStore mPreferenceDataStore;
 
     /**
      * If in no-commit mode, the shared editor to give out (which will be
      * committed when exiting no-commit mode).
      */
+    @Nullable
     private SharedPreferences.Editor mEditor;
 
     /**
@@ -81,16 +105,39 @@ public class PreferenceManager {
      */
     private int mSharedPreferencesMode;
 
+    private static final int STORAGE_DEFAULT = 0;
+    private static final int STORAGE_DEVICE_PROTECTED = 1;
+
+    private int mStorage = STORAGE_DEFAULT;
+
     /**
      * The {@link PreferenceScreen} at the root of the preference hierarchy.
      */
     private PreferenceScreen mPreferenceScreen;
 
     /**
-     * The default package that will be searched for classes to construct
+     * The counter for unique request codes.
      */
-    private String[] mDefaultPackages;
+    private int mNextRequestCode = 30000;
 
+    /**
+     * List of activity result listeners.
+     */
+    private List<OnActivityResultListener> mActivityResultListeners;
+
+    /**
+     * List of activity stop listeners.
+     */
+    @Nullable
+    private List<OnActivityStopListener> mActivityStopListeners;
+
+    /**
+     * List of activity destroy listeners.
+     */
+    @Nullable
+    private List<OnActivityDestroyListener> mActivityDestroyListeners;
+
+    private PreferenceComparisonCallback mPreferenceComparisonCallback;
     private OnPreferenceTreeClickListener mOnPreferenceTreeClickListener;
     private OnDisplayPreferenceDialogListener mOnDisplayPreferenceDialogListener;
     private OnNavigateToScreenListener mOnNavigateToScreenListener;
@@ -98,11 +145,25 @@ public class PreferenceManager {
     /**
      * @hide
      */
-    public PreferenceManager(Context context, PreferenceFragment fragment) {
+    @RestrictTo(LIBRARY_GROUP)
+    public PreferenceManager(Context context) {
         mContext = context;
-        mFragment = fragment;
 
         setSharedPreferencesName(getDefaultSharedPreferencesName(context));
+    }
+
+    /**
+     * Sets the owning preference fragment
+     */
+    void setFragment(PreferenceFragment fragment) {
+        mFragment = fragment;
+    }
+    /**
+     * Returns the owning preference fragment, if any.
+     */
+    @Nullable
+    PreferenceFragment getFragment() {
+        return mFragment;
     }
 
     /**
@@ -117,8 +178,9 @@ public class PreferenceManager {
      *         root).
      * @hide
      */
+    @RestrictTo(LIBRARY_GROUP)
     public PreferenceScreen inflateFromResource(Context context, int resId,
-            PreferenceScreen rootPreferences) {
+                                                PreferenceScreen rootPreferences) {
         // Block commits
         setNoCommit(true);
 
@@ -151,7 +213,7 @@ public class PreferenceManager {
     }
 
     /**
-     * Returns the current name of the SharedPreferences file that preferences managed by
+     * Returns the current name of the {@link SharedPreferences} file that preferences managed by
      * this will use.
      *
      * @return The name that can be passed to {@link Context#getSharedPreferences(String, int)}.
@@ -162,11 +224,14 @@ public class PreferenceManager {
     }
 
     /**
-     * Sets the name of the SharedPreferences file that preferences managed by this
+     * Sets the name of the {@link SharedPreferences} file that preferences managed by this
      * will use.
+     *
+     * <p>If custom {@link PreferenceDataStore} is set, this won't override its usage.
      *
      * @param sharedPreferencesName The name of the SharedPreferences file.
      * @see Context#getSharedPreferences(String, int)
+     * @see #setPreferenceDataStore(PreferenceDataStore)
      */
     public void setSharedPreferencesName(String sharedPreferencesName) {
         mSharedPreferencesName = sharedPreferencesName;
@@ -197,15 +262,124 @@ public class PreferenceManager {
     }
 
     /**
-     * Gets a SharedPreferences instance that preferences managed by this will
+     * Sets the storage location used internally by this class to be the default
+     * provided by the hosting {@link Context}.
+     */
+    public void setStorageDefault() {
+        if (Build.VERSION.SDK_INT >= 24) {
+            mStorage = STORAGE_DEFAULT;
+            mSharedPreferences = null;
+        }
+    }
+
+    /**
+     * Explicitly set the storage location used internally by this class to be
+     * device-protected storage.
+     * <p>
+     * On devices with direct boot, data stored in this location is encrypted
+     * with a key tied to the physical device, and it can be accessed
+     * immediately after the device has booted successfully, both
+     * <em>before and after</em> the user has authenticated with their
+     * credentials (such as a lock pattern or PIN).
+     * <p>
+     * Because device-protected data is available without user authentication,
+     * you should carefully limit the data you store using this Context. For
+     * example, storing sensitive authentication tokens or passwords in the
+     * device-protected area is strongly discouraged.
+     * <p>
+     * Prior to API 24 this method has no effect,
+     * since device-protected storage is not available.
+     *
+     * @see Context#createDeviceProtectedStorageContext()
+     */
+    public void setStorageDeviceProtected() {
+        if (Build.VERSION.SDK_INT >= 24) {
+            mStorage = STORAGE_DEVICE_PROTECTED;
+            mSharedPreferences = null;
+        }
+    }
+
+    /**
+     * Indicates if the storage location used internally by this class is the
+     * default provided by the hosting {@link Context}.
+     *
+     * @see #setStorageDefault()
+     * @see #setStorageDeviceProtected()
+     */
+    public boolean isStorageDefault() {
+        if (Build.VERSION.SDK_INT >= 24) {
+            return mStorage == STORAGE_DEFAULT;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Indicates if the storage location used internally by this class is backed
+     * by device-protected storage.
+     *
+     * @see #setStorageDefault()
+     * @see #setStorageDeviceProtected()
+     */
+    public boolean isStorageDeviceProtected() {
+        if (Build.VERSION.SDK_INT >= 24) {
+            return mStorage == STORAGE_DEVICE_PROTECTED;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Sets a {@link PreferenceDataStore} to be used by all Preferences associated with this manager
+     * that don't have a custom {@link PreferenceDataStore} assigned via
+     * {@link Preference#setPreferenceDataStore(PreferenceDataStore)}. Also if the data store is
+     * set, the child preferences won't use {@link android.content.SharedPreferences} as long as
+     * they are assigned to this manager.
+     *
+     * @param dataStore the {@link PreferenceDataStore} to be used by this manager
+     * @see Preference#setPreferenceDataStore(PreferenceDataStore)
+     */
+    public void setPreferenceDataStore(PreferenceDataStore dataStore) {
+        mPreferenceDataStore = dataStore;
+    }
+
+    /**
+     * Returns the {@link PreferenceDataStore} associated with this manager or {@code null} if
+     * the default {@link android.content.SharedPreferences} are used instead.
+     *
+     * @return The {@link PreferenceDataStore} associated with this manager or {@code null} if none.
+     * @see #setPreferenceDataStore(PreferenceDataStore)
+     */
+    @Nullable
+    public PreferenceDataStore getPreferenceDataStore() {
+        return mPreferenceDataStore;
+    }
+
+    /**
+     * Gets a {@link SharedPreferences} instance that preferences managed by this will
      * use.
      *
-     * @return A SharedPreferences instance pointing to the file that contains
-     *         the values of preferences that are managed by this.
+     * @return a {@link SharedPreferences} instance pointing to the file that contain the values of
+     *         preferences that are managed by this PreferenceManager. If
+     *         a {@link PreferenceDataStore} has been set, this method returns {@code null}.
      */
     public SharedPreferences getSharedPreferences() {
+        if (getPreferenceDataStore() != null) {
+            return null;
+        }
+
         if (mSharedPreferences == null) {
-            mSharedPreferences = mContext.getSharedPreferences(mSharedPreferencesName,
+            final Context storageContext;
+            switch (mStorage) {
+                case STORAGE_DEVICE_PROTECTED:
+                    storageContext = ContextCompat.createDeviceProtectedStorageContext(mContext);
+                    break;
+                default:
+                    storageContext = mContext;
+                    break;
+            }
+
+            mSharedPreferences = storageContext.getSharedPreferences(mSharedPreferencesName,
                     mSharedPreferencesMode);
         }
 
@@ -250,6 +424,9 @@ public class PreferenceManager {
      */
     public boolean setPreferences(PreferenceScreen preferenceScreen) {
         if (preferenceScreen != mPreferenceScreen) {
+            if (mPreferenceScreen != null) {
+                mPreferenceScreen.onDetached();
+            }
             mPreferenceScreen = preferenceScreen;
             return true;
         }
@@ -293,15 +470,14 @@ public class PreferenceManager {
      *            and clear it followed by a call to this method with this
      *            parameter set to true.
      */
-    public static void setDefaultValues(Context context, PreferenceFragment fragment, int resId, boolean readAgain) {
-
+    public static void setDefaultValues(Context context, int resId, boolean readAgain) {
         // Use the default shared preferences name and mode
-        setDefaultValues(context, fragment, getDefaultSharedPreferencesName(context),
+        setDefaultValues(context, getDefaultSharedPreferencesName(context),
                 getDefaultSharedPreferencesMode(), resId, readAgain);
     }
 
     /**
-     * Similar to {@link #setDefaultValues(Context, PreferenceFragment, int, boolean)} but allows
+     * Similar to {@link #setDefaultValues(Context, int, boolean)} but allows
      * the client to provide the filename and mode of the shared preferences
      * file.
      *
@@ -328,13 +504,13 @@ public class PreferenceManager {
      * @see #setSharedPreferencesName(String)
      * @see #setSharedPreferencesMode(int)
      */
-    public static void setDefaultValues(Context context, PreferenceFragment fragment, String sharedPreferencesName,
-            int sharedPreferencesMode, int resId, boolean readAgain) {
+    public static void setDefaultValues(Context context, String sharedPreferencesName,
+                                        int sharedPreferencesMode, int resId, boolean readAgain) {
         final SharedPreferences defaultValueSp = context.getSharedPreferences(
                 KEY_HAS_SET_DEFAULT_VALUES, Context.MODE_PRIVATE);
 
         if (readAgain || !defaultValueSp.getBoolean(KEY_HAS_SET_DEFAULT_VALUES, false)) {
-            final PreferenceManager pm = new PreferenceManager(context, fragment);
+            final PreferenceManager pm = new PreferenceManager(context);
             pm.setSharedPreferencesName(sharedPreferencesName);
             pm.setSharedPreferencesMode(sharedPreferencesMode);
             pm.inflateFromResource(context, resId, null);
@@ -348,13 +524,17 @@ public class PreferenceManager {
 
     /**
      * Returns an editor to use when modifying the shared preferences.
-     * <p>
-     * Do NOT commit unless {@link #shouldCommit()} returns true.
      *
-     * @return An editor to use to write to shared preferences.
+     * <p>Do NOT commit unless {@link #shouldCommit()} returns true.
+     *
+     * @return an editor to use to write to shared preferences. If a {@link PreferenceDataStore} has
+     *         been set, this method returns {@code null}.
      * @see #shouldCommit()
      */
     SharedPreferences.Editor getEditor() {
+        if (mPreferenceDataStore != null) {
+            return null;
+        }
 
         if (mNoCommit) {
             if (mEditor == null) {
@@ -371,6 +551,8 @@ public class PreferenceManager {
      * Whether it is the client's responsibility to commit on the
      * {@link #getEditor()}. This will return false in cases where the writes
      * should be batched, for example when inflating preferences from XML.
+     *
+     * <p>If preferences are using {@link PreferenceDataStore} this value is irrelevant.
      *
      * @return Whether the client should commit.
      */
@@ -392,6 +574,15 @@ public class PreferenceManager {
      */
     public Context getContext() {
         return mContext;
+    }
+
+    public PreferenceComparisonCallback getPreferenceComparisonCallback() {
+        return mPreferenceComparisonCallback;
+    }
+
+    public void setPreferenceComparisonCallback(
+            PreferenceComparisonCallback preferenceComparisonCallback) {
+        mPreferenceComparisonCallback = preferenceComparisonCallback;
     }
 
     public OnDisplayPreferenceDialogListener getOnDisplayPreferenceDialogListener() {
@@ -435,8 +626,160 @@ public class PreferenceManager {
         mDefaultPackages = array;
     }
 
-    public PreferenceFragment getFragment() {
-        return mFragment;
+    /**
+     * Registers a listener.
+     *
+     * @see OnActivityResultListener
+     */
+    void registerOnActivityResultListener(OnActivityResultListener listener) {
+        synchronized (this) {
+            if (mActivityResultListeners == null) {
+                mActivityResultListeners = new ArrayList<>();
+            }
+
+            if (!mActivityResultListeners.contains(listener)) {
+                mActivityResultListeners.add(listener);
+            }
+        }
+    }
+
+    /**
+     * Unregisters a listener.
+     *
+     * @see OnActivityResultListener
+     */
+    void unregisterOnActivityResultListener(OnActivityResultListener listener) {
+        synchronized (this) {
+            if (mActivityResultListeners != null) {
+                mActivityResultListeners.remove(listener);
+            }
+        }
+    }
+
+    /**
+     * Called by the {@link PreferenceManager} to dispatch a subactivity result.
+     */
+    void dispatchActivityResult(int requestCode, int resultCode, Intent data) {
+        List<OnActivityResultListener> list;
+
+        synchronized (this) {
+            if (mActivityResultListeners == null) return;
+            list = new ArrayList<>(mActivityResultListeners);
+        }
+
+        final int N = list.size();
+        for (int i = 0; i < N; i++) {
+            if (list.get(i).onActivityResult(requestCode, resultCode, data)) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * Registers a listener.
+     *
+     * @see OnActivityStopListener
+     * @hide
+     */
+    public void registerOnActivityStopListener(OnActivityStopListener listener) {
+        synchronized (this) {
+            if (mActivityStopListeners == null) {
+                mActivityStopListeners = new ArrayList<>();
+            }
+            if (!mActivityStopListeners.contains(listener)) {
+                mActivityStopListeners.add(listener);
+            }
+        }
+    }
+    /**
+     * Unregisters a listener.
+     *
+     * @see OnActivityStopListener
+     * @hide
+     */
+    public void unregisterOnActivityStopListener(OnActivityStopListener listener) {
+        synchronized (this) {
+            if (mActivityStopListeners != null) {
+                mActivityStopListeners.remove(listener);
+            }
+        }
+    }
+    /**
+     * Called by the {@link PreferenceManager} to dispatch the activity stop
+     * event.
+     */
+    void dispatchActivityStop() {
+        List<OnActivityStopListener> list;
+        synchronized (this) {
+            if (mActivityStopListeners == null) return;
+            list = new ArrayList<>(mActivityStopListeners);
+        }
+        final int N = list.size();
+        for (int i = 0; i < N; i++) {
+            list.get(i).onActivityStop();
+        }
+    }
+    /**
+     * Registers a listener.
+     *
+     * @see OnActivityDestroyListener
+     */
+    void registerOnActivityDestroyListener(OnActivityDestroyListener listener) {
+        synchronized (this) {
+            if (mActivityDestroyListeners == null) {
+                mActivityDestroyListeners = new ArrayList<>();
+            }
+            if (!mActivityDestroyListeners.contains(listener)) {
+                mActivityDestroyListeners.add(listener);
+            }
+        }
+    }
+    /**
+     * Unregisters a listener.
+     *
+     * @see OnActivityDestroyListener
+     */
+    void unregisterOnActivityDestroyListener(OnActivityDestroyListener listener) {
+        synchronized (this) {
+            if (mActivityDestroyListeners != null) {
+                mActivityDestroyListeners.remove(listener);
+            }
+        }
+    }
+    /**
+     * Called by the {@link PreferenceManager} to dispatch the activity destroy
+     * event.
+     */
+    void dispatchActivityDestroy() {
+        List<OnActivityDestroyListener> list = null;
+        synchronized (this) {
+            if (mActivityDestroyListeners != null) {
+                list = new ArrayList<>(mActivityDestroyListeners);
+            }
+        }
+        if (list != null) {
+            final int N = list.size();
+            for (int i = 0; i < N; i++) {
+                list.get(i).onActivityDestroy();
+            }
+        }
+    }
+
+    public void setNextRequestCode(int nextRequestCode) {
+        mNextRequestCode = nextRequestCode;
+    }
+
+    /**
+     * Returns a request code that is unique for the activity. Each subsequent
+     * call to this method should return another unique request code.
+     *
+     * @return A unique request code that will never be used by anyone other
+     *         than the caller of this method.
+     */
+    int getNextRequestCode() {
+        synchronized (this) {
+            return mNextRequestCode++;
+        }
     }
 
     /**
@@ -468,6 +811,102 @@ public class PreferenceManager {
      */
     public OnNavigateToScreenListener getOnNavigateToScreenListener() {
         return mOnNavigateToScreenListener;
+    }
+
+    /**
+     * Callback class to be used by the {@link android.support.v7.widget.RecyclerView.Adapter}
+     * associated with the {@link PreferenceScreen}, used to determine when two {@link Preference}
+     * objects are semantically and visually the same.
+     */
+    public static abstract class PreferenceComparisonCallback {
+        /**
+         * Called to determine if two {@link Preference} objects represent the same item
+         *
+         * @param p1 {@link Preference} object to compare
+         * @param p2 {@link Preference} object to compare
+         * @return {@code true} if the objects represent the same item
+         */
+        public abstract boolean arePreferenceItemsTheSame(Preference p1, Preference p2);
+
+        /**
+         * Called to determine if two {@link Preference} objects will display the same data
+         *
+         * @param p1 {@link Preference} object to compare
+         * @param p2 {@link Preference} object to compare
+         * @return {@code true} if the objects are visually identical
+         */
+        public abstract boolean arePreferenceContentsTheSame(Preference p1, Preference p2);
+    }
+
+    /**
+     * A basic implementation of {@link PreferenceComparisonCallback} suitable for use with the
+     * default {@link Preference} classes. If the {@link PreferenceScreen} contains custom
+     * {@link Preference} subclasses, you must override
+     * {@link #arePreferenceContentsTheSame(Preference, Preference)}
+     */
+    public static class SimplePreferenceComparisonCallback extends PreferenceComparisonCallback {
+        /**
+         * {@inheritDoc}
+         *
+         * <p>This method will not be able to track replaced {@link Preference} objects if they
+         * do not have a unique key.</p>
+         *
+         * @see Preference#setKey(String)
+         */
+        @Override
+        public boolean arePreferenceItemsTheSame(Preference p1, Preference p2) {
+            return p1.getId() == p2.getId();
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * <p>The result of this method is only valid for the default {@link Preference} objects,
+         * and custom subclasses which do not override
+         * {@link Preference#onBindViewHolder(PreferenceViewHolder)}. This method also assumes
+         * that if a preference object is being replaced by a new instance, the old instance was
+         * not modified after being removed from its containing {@link PreferenceGroup}.</p>
+         */
+        @Override
+        public boolean arePreferenceContentsTheSame(Preference p1, Preference p2) {
+            if (p1.getClass() != p2.getClass()) {
+                return false;
+            }
+            if (p1 == p2 && p1.wasDetached()) {
+                // Defensively handle the case where a preference was removed, updated and re-added.
+                // Hopefully this is rare.
+                return false;
+            }
+            if (!TextUtils.equals(p1.getTitle(), p2.getTitle())) {
+                return false;
+            }
+            if (!TextUtils.equals(p1.getSummary(), p2.getSummary())) {
+                return false;
+            }
+            final Drawable p1Icon = p1.getIcon();
+            final Drawable p2Icon = p2.getIcon();
+            if (p1Icon != p2Icon && (p1Icon == null || !p1Icon.equals(p2Icon))) {
+                return false;
+            }
+            if (p1.isEnabled() != p2.isEnabled()) {
+                return false;
+            }
+            if (p1.isSelectable() != p2.isSelectable()) {
+                return false;
+            }
+            if (p1 instanceof TwoStatePreference) {
+                if (((TwoStatePreference) p1).isChecked()
+                        != ((TwoStatePreference) p2).isChecked()) {
+                    return false;
+                }
+            }
+            if (p1 instanceof DropDownPreference && p1 != p2) {
+                // Different object, must re-bind spinner adapter
+                return false;
+            }
+
+            return true;
+        }
     }
 
     /**
@@ -514,14 +953,11 @@ public class PreferenceManager {
         void onNavigateToScreen(PreferenceScreen preferenceScreen);
     }
 
-
     /**
-     * List of activity result listeners.
+     * Interface definition for a class that will be called when the container's activity
+     * receives an activity result.
      */
-    private List<OnActivityResultListener> mActivityResultListeners;
-
     public interface OnActivityResultListener {
-
         /**
          * See Activity's onActivityResult.
          *
@@ -530,68 +966,24 @@ public class PreferenceManager {
          */
         boolean onActivityResult(int requestCode, int resultCode, Intent data);
     }
-
     /**
-     * Registers a listener.
-     *
-     * @see OnActivityResultListener
+     * Interface definition for a class that will be called when the container's activity
+     * is stopped.
      */
-    void registerOnActivityResultListener(OnActivityResultListener listener) {
-        synchronized (this) {
-            if (mActivityResultListeners == null) {
-                mActivityResultListeners = new ArrayList<OnActivityResultListener>();
-            }
-
-            if (!mActivityResultListeners.contains(listener)) {
-                mActivityResultListeners.add(listener);
-            }
-        }
+    public interface OnActivityStopListener {
+        /**
+         * See Activity's onStop.
+         */
+        void onActivityStop();
     }
-
     /**
-     * Unregisters a listener.
-     *
-     * @see OnActivityResultListener
+     * Interface definition for a class that will be called when the container's activity
+     * is destroyed.
      */
-    void unregisterOnActivityResultListener(OnActivityResultListener listener) {
-        synchronized (this) {
-            if (mActivityResultListeners != null) {
-                mActivityResultListeners.remove(listener);
-            }
-        }
-    }
-
-    /**
-     * Called by the {@link PreferenceManager} to dispatch a subactivity result.
-     */
-    void dispatchActivityResult(int requestCode, int resultCode, Intent data) {
-        List<OnActivityResultListener> list;
-
-        synchronized (this) {
-                if (mActivityResultListeners == null) return;
-            list = new ArrayList<OnActivityResultListener>(mActivityResultListeners);
-        }
-
-        final int N = list.size();
-        for (int i = 0; i < N; i++) {
-            if (list.get(i).onActivityResult(requestCode, resultCode, data)) {
-                break;
-            }
-        }
-    }
-
-    private int mNextRequestCode = 9999;
-
-    /**
-     * Returns a request code that is unique for the activity. Each subsequent
-     * call to this method should return another unique request code.
-     *
-     * @return A unique request code that will never be used by anyone other
-     *         than the caller of this method.
-     */
-    int getNextRequestCode() {
-        synchronized (this) {
-            return mNextRequestCode++;
-        }
+    public interface OnActivityDestroyListener {
+        /**
+         * See Activity's onDestroy.
+         */
+        void onActivityDestroy();
     }
 }

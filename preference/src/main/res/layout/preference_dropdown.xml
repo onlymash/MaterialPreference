@@ -21,13 +21,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingStart="?android:listPreferredItemPaddingLeft"
     android:paddingLeft="?android:listPreferredItemPaddingLeft"
+    android:paddingEnd="?android:listPreferredItemPaddingRight"
     android:paddingRight="?android:listPreferredItemPaddingRight"
     android:clipToPadding="false"
     android:minHeight="?android:listPreferredItemHeightSmall"
-    android:background="?android:selectableItemBackground"
-    android:gravity="center_vertical"
-    tools:ignore="RtlHardcoded">
+    android:background="?backgroundCompat"
+    android:gravity="center_vertical">
 
     <Spinner
         android:id="@+id/spinner"
@@ -78,6 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@android:id/title"
+                android:layout_alignStart="@android:id/title"
                 android:layout_alignLeft="@android:id/title"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorSecondary"
@@ -90,6 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="end|center_vertical"
+            android:paddingStart="16dp"
             android:paddingLeft="16dp"
             android:orientation="vertical"
             tools:ignore="RtlSymmetry"/>

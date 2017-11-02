@@ -16,20 +16,38 @@
 
 package moe.shizuku.preference;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.RestrictTo;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+/**
+ * A {@link Preference} that provides a two-state toggleable option.
+ * <p>
+ * This preference will store a boolean into the SharedPreferences.
+ *
+ * @attr name android:summaryOff
+ * @attr name android:summaryOn
+ * @attr name android:switchTextOff
+ * @attr name android:switchTextOn
+ * @attr name android:disableDependentsState
+ */
 public class SwitchPreference extends TwoStatePreference {
     private final Listener mListener = new Listener();
+
     // Switch text for on and off states
     private CharSequence mSwitchOn;
     private CharSequence mSwitchOff;
+
     private class Listener implements CompoundButton.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -39,9 +57,11 @@ public class SwitchPreference extends TwoStatePreference {
                 buttonView.setChecked(!isChecked);
                 return;
             }
+
             SwitchPreference.this.setChecked(isChecked);
         }
     }
+
     /**
      * Construct a new SwitchPreference with the given style options.
      *
@@ -55,28 +75,35 @@ public class SwitchPreference extends TwoStatePreference {
      *        defStyleAttr is 0 or can not be found in the theme. Can be 0
      *        to not look for defaults.
      */
+    @SuppressLint("RestrictedApi")
     public SwitchPreference(Context context, AttributeSet attrs, int defStyleAttr,
-                                  int defStyleRes) {
+                            int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.SwitchPreference, defStyleAttr, defStyleRes);
+
         setSummaryOn(TypedArrayUtils.getString(a, R.styleable.SwitchPreference_summaryOn,
                 R.styleable.SwitchPreference_android_summaryOn));
+
         setSummaryOff(TypedArrayUtils.getString(a, R.styleable.SwitchPreference_summaryOff,
                 R.styleable.SwitchPreference_android_summaryOff));
+
         setSwitchTextOn(TypedArrayUtils.getString(a,
                 R.styleable.SwitchPreference_switchTextOn,
                 R.styleable.SwitchPreference_android_switchTextOn));
+
         setSwitchTextOff(TypedArrayUtils.getString(a,
                 R.styleable.SwitchPreference_switchTextOff,
                 R.styleable.SwitchPreference_android_switchTextOff));
+
         setDisableDependentsState(TypedArrayUtils.getBoolean(a,
                 R.styleable.SwitchPreference_disableDependentsState,
                 R.styleable.SwitchPreference_android_disableDependentsState, false));
-        a.recycle();
 
-        //setWidgetLayoutResource(R.layout.preference_switch_material);
+        a.recycle();
     }
+
     /**
      * Construct a new SwitchPreference with the given style options.
      *
@@ -89,6 +116,7 @@ public class SwitchPreference extends TwoStatePreference {
     public SwitchPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, R.style.Preference_SwitchPreference);
     }
+
     /**
      * Construct a new SwitchPreference with the given style options.
      *
@@ -98,6 +126,7 @@ public class SwitchPreference extends TwoStatePreference {
     public SwitchPreference(Context context, AttributeSet attrs) {
         this(context, attrs, R.attr.switchPreferenceStyle);
     }
+
     /**
      * Construct a new SwitchPreference with default style options.
      *
@@ -115,12 +144,6 @@ public class SwitchPreference extends TwoStatePreference {
         syncSummaryView(holder);
     }
 
-    @Override
-    protected void onClick() {
-        super.onClick();
-        mSetInPost = true;
-    }
-
     /**
      * Set the text displayed on the switch widget in the on state.
      * This should be a very short string; one word if possible.
@@ -131,6 +154,7 @@ public class SwitchPreference extends TwoStatePreference {
         mSwitchOn = onText;
         notifyChanged();
     }
+
     /**
      * Set the text displayed on the switch widget in the off state.
      * This should be a very short string; one word if possible.
@@ -141,6 +165,7 @@ public class SwitchPreference extends TwoStatePreference {
         mSwitchOff = offText;
         notifyChanged();
     }
+
     /**
      * Set the text displayed on the switch widget in the on state.
      * This should be a very short string; one word if possible.
@@ -150,6 +175,7 @@ public class SwitchPreference extends TwoStatePreference {
     public void setSwitchTextOn(int resId) {
         setSwitchTextOn(getContext().getString(resId));
     }
+
     /**
      * Set the text displayed on the switch widget in the off state.
      * This should be a very short string; one word if possible.
@@ -159,12 +185,14 @@ public class SwitchPreference extends TwoStatePreference {
     public void setSwitchTextOff(int resId) {
         setSwitchTextOff(getContext().getString(resId));
     }
+
     /**
      * @return The text that will be displayed on the switch widget in the on state
      */
     public CharSequence getSwitchTextOn() {
         return mSwitchOn;
     }
+
     /**
      * @return The text that will be displayed on the switch widget in the off state
      */
@@ -172,13 +200,16 @@ public class SwitchPreference extends TwoStatePreference {
         return mSwitchOff;
     }
 
-    private boolean mSetInPost;
-
+    /**
+     * @hide
+     */
+    @RestrictTo(LIBRARY_GROUP)
     @Override
     protected void performClick(View view) {
         super.performClick(view);
         syncViewIfAccessibilityEnabled(view);
     }
+
 
     private void syncViewIfAccessibilityEnabled(View view) {
         AccessibilityManager accessibilityManager = (AccessibilityManager)
@@ -186,34 +217,26 @@ public class SwitchPreference extends TwoStatePreference {
         if (!accessibilityManager.isEnabled()) {
             return;
         }
+
         View switchView = view.findViewById(R.id.switchWidget);
         syncSwitchView(switchView);
+
         View summaryView = view.findViewById(android.R.id.summary);
         syncSummaryView(summaryView);
     }
 
-    private void syncSwitchView(final View view) {
-        if (view instanceof CompoundButton) {
-            CompoundButton switchView = (CompoundButton) view;
+    private void syncSwitchView(View view) {
+        if (view instanceof Switch) {
+            final Switch switchView = (Switch) view;
             switchView.setOnCheckedChangeListener(null);
-
-            if (!mSetInPost) {
-                switchView.setChecked(mChecked);
-            } else {
-                view.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((CompoundButton) view).setChecked(mChecked);
-                        mSetInPost = false;
-                    }
-                });
-            }
-
-            if (view instanceof Switch) {
-                ((Switch) switchView).setTextOn(mSwitchOn);
-                ((Switch) switchView).setTextOff(mSwitchOff);
-            }
-
+        }
+        if (view instanceof Checkable) {
+            ((Checkable) view).setChecked(mChecked);
+        }
+        if (view instanceof Switch) {
+            final Switch switchView = (Switch) view;
+            switchView.setTextOn(mSwitchOn);
+            switchView.setTextOff(mSwitchOff);
             switchView.setOnCheckedChangeListener(mListener);
         }
     }

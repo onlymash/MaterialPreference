@@ -16,6 +16,7 @@
 
 package moe.shizuku.preference;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -35,16 +36,18 @@ import android.util.AttributeSet;
  * This preference will store a string into the SharedPreferences. This string will be the value
  * from the {@link #setEntryValues(CharSequence[])} array.
  *
- * @attr ref android.R.styleable#ListPreference_entries
- * @attr ref android.R.styleable#ListPreference_entryValues
+ * @attr name android:entries
+ * @attr name android:entryValues
  */
 public class ListPreference extends DialogPreference {
+
     private CharSequence[] mEntries;
     private CharSequence[] mEntryValues;
     private String mValue;
     private String mSummary;
     private boolean mValueSet;
 
+    @SuppressLint("RestrictedApi")
     public ListPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
@@ -317,14 +320,15 @@ public class ListPreference extends DialogPreference {
 
         public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
+                    @Override
+                    public SavedState createFromParcel(Parcel in) {
+                        return new SavedState(in);
+                    }
 
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
+                    @Override
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                };
     }
-
 }

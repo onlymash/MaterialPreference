@@ -16,10 +16,13 @@
 
 package moe.shizuku.preference;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.RestrictTo;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -200,6 +203,7 @@ public abstract class TwoStatePreference extends Preference {
     /**
      * @hide
      */
+    @RestrictTo(LIBRARY_GROUP)
     protected void syncSummaryView(View view) {
         if (!(view instanceof TextView)) {
             return;
@@ -276,13 +280,15 @@ public abstract class TwoStatePreference extends Preference {
 
         public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
+                    @Override
+                    public SavedState createFromParcel(Parcel in) {
+                        return new SavedState(in);
+                    }
 
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
+                    @Override
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                };
     }
 }

@@ -1,20 +1,41 @@
+/*
+ * Copyright (C) 2015 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package moe.shizuku.preference;
+
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 /**
- * A version of {@link ListPreference} that presents the options in a drop down menu rather than a dialog.
+ * A version of {@link ListPreference} that presents the options in a
+ * drop down menu rather than a dialog.
  */
 public class DropDownPreference extends ListPreference {
 
     private final Context mContext;
-    private final ArrayAdapter<String> mAdapter;
+    private final ArrayAdapter mAdapter;
 
     private Spinner mSpinner;
 
@@ -80,8 +101,9 @@ public class DropDownPreference extends ListPreference {
     /**
      * @hide
      */
+    @RestrictTo(LIBRARY_GROUP)
     public int findSpinnerIndexOfValue(String value) {
-        Object[] entryValues = getEntryValues();
+        CharSequence[] entryValues = getEntryValues();
         if (value != null && entryValues != null) {
             for (int i = entryValues.length - 1; i >= 0; i--) {
                 if (entryValues[i].equals(value)) {
@@ -100,15 +122,14 @@ public class DropDownPreference extends ListPreference {
 
     @Override
     public void onBindViewHolder(PreferenceViewHolder view) {
-        super.onBindViewHolder(view);
-
         mSpinner = view.itemView.findViewById(R.id.spinner);
         mSpinner.setAdapter(mAdapter);
         mSpinner.setOnItemSelectedListener(mItemSelectedListener);
         mSpinner.setSelection(findSpinnerIndexOfValue(getValue()));
+        super.onBindViewHolder(view);
     }
 
-    private final AdapterView.OnItemSelectedListener mItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+    private final OnItemSelectedListener mItemSelectedListener = new OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
             if (position >= 0) {

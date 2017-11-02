@@ -16,15 +16,15 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:minHeight="?android:attr/listPreferredItemHeightSmall"
-              android:gravity="center_vertical"
-              android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-              android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-              android:baselineAligned="false"
-              tools:ignore="RtlHardcoded">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+    android:gravity="center_vertical"
+    android:paddingStart="?android:listPreferredItemPaddingLeft"
+    android:paddingLeft="?android:listPreferredItemPaddingLeft"
+    android:paddingEnd="?android:listPreferredItemPaddingRight"
+    android:paddingRight="?android:listPreferredItemPaddingRight"
+    android:baselineAligned="false">
 
     <LinearLayout
         android:id="@+id/icon_frame"
@@ -38,6 +38,7 @@
             android:id="@android:id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:contentDescription="@null"/>
 
@@ -60,6 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@android:id/title"
+            android:layout_alignStart="@android:id/title"
             android:layout_alignLeft="@android:id/title"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorSecondary"

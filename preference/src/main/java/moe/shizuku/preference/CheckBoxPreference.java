@@ -16,8 +16,12 @@
 
 package moe.shizuku.preference;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.RestrictTo;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -31,9 +35,9 @@ import android.widget.CompoundButton;
  * <p>
  * This preference will store a boolean into the SharedPreferences.
  *
- * @attr ref android.R.styleable#CheckBoxPreference_summaryOff
- * @attr ref android.R.styleable#CheckBoxPreference_summaryOn
- * @attr ref android.R.styleable#CheckBoxPreference_disableDependentsState
+ * @attr name android:summaryOff
+ * @attr name android:summaryOn
+ * @attr name android:disableDependentsState
  */
 public class CheckBoxPreference extends TwoStatePreference {
     private final Listener mListener = new Listener();
@@ -55,6 +59,7 @@ public class CheckBoxPreference extends TwoStatePreference {
         this(context, attrs, defStyleAttr, R.style.Preference_CheckBoxPreference_Material);
     }
 
+    @SuppressLint("RestrictedApi")
     public CheckBoxPreference(
             Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -87,10 +92,7 @@ public class CheckBoxPreference extends TwoStatePreference {
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
-        View checkboxView = holder.findViewById(R.id.checkbox);
-        if (checkboxView != null && checkboxView instanceof Checkable) {
-            ((Checkable) checkboxView).setChecked(mChecked);
-        }
+        syncCheckboxView(holder.findViewById(R.id.checkbox));
 
         syncSummaryView(holder);
     }
@@ -98,6 +100,7 @@ public class CheckBoxPreference extends TwoStatePreference {
     /**
      * @hide
      */
+    @RestrictTo(LIBRARY_GROUP)
     @Override
     protected void performClick(View view) {
         super.performClick(view);
@@ -111,7 +114,7 @@ public class CheckBoxPreference extends TwoStatePreference {
             return;
         }
 
-        View checkboxView = view.findViewById(R.id.checkbox);
+        View checkboxView = view.findViewById(android.R.id.checkbox);
         syncCheckboxView(checkboxView);
 
         View summaryView = view.findViewById(android.R.id.summary);

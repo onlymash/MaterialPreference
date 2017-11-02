@@ -11,6 +11,7 @@ import moe.shizuku.preference.CheckBoxPreference;
 import moe.shizuku.preference.ListPreference;
 import moe.shizuku.preference.Preference;
 import moe.shizuku.preference.PreferenceCategory;
+import moe.shizuku.preference.PreferenceDataStore;
 import moe.shizuku.preference.PreferenceFragment;
 
 /**
@@ -68,10 +69,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         getPreferenceScreen().addPreference(checkBoxPreference);
     }
 
-    @Override
+    /*@Override
     public DividerDecoration onCreateItemDecoration() {
         return new CategoryDivideDividerDecoration();
-    }
+    }*/
 
     @Override
     public void onPause() {

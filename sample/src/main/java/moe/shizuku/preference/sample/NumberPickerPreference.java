@@ -1,5 +1,6 @@
 package moe.shizuku.preference.sample;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class NumberPickerPreference extends DialogPreference {
 
     private boolean mValueSet;
 
+    @SuppressLint("RestrictedApi")
     public NumberPickerPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 

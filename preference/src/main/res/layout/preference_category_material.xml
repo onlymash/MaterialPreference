@@ -17,13 +17,13 @@
 
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@android:id/title"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textAppearance="@style/Preference_TextAppearanceMaterialBody2"
     android:textColor="?accentColorCompat"
+    android:paddingStart="?android:listPreferredItemPaddingLeft"
     android:paddingLeft="?android:listPreferredItemPaddingLeft"
+    android:paddingEnd="?android:listPreferredItemPaddingRight"
     android:paddingRight="?android:listPreferredItemPaddingRight"
-    android:paddingTop="16dp"
-    tools:ignore="RtlHardcoded"/>
+    android:paddingTop="16dp"/>

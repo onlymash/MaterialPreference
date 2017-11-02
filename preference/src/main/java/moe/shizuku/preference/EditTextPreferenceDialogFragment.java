@@ -16,8 +16,11 @@
 
 package moe.shizuku.preference;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.RestrictTo;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
@@ -77,6 +80,7 @@ public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
         return (EditTextPreference) getPreference();
     }
 
+    @RestrictTo(LIBRARY_GROUP)
     @Override
     public boolean needInputMethod() {
         // We want the input method to show, if possible, when dialog is displayed

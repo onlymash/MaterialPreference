@@ -44,7 +44,7 @@ class PreferenceInflater {
 
     private static final HashMap<String, Constructor> CONSTRUCTOR_MAP = new HashMap<>();
 
-    protected static final String DEFAULT_PACKAGE = BuildConfig.APPLICATION_ID + ".";
+    static final String DEFAULT_PACKAGE = BuildConfig.APPLICATION_ID + ".";
 
     private final Context mContext;
 
@@ -165,13 +165,11 @@ class PreferenceInflater {
             } catch (InflateException e) {
                 throw e;
             } catch (XmlPullParserException e) {
-                final InflateException ex = new InflateException(e.getMessage(), e);
-                throw ex;
+                throw new InflateException(e.getMessage(), e);
             } catch (IOException e) {
-                final InflateException ex = new InflateException(
+                throw new InflateException(
                         parser.getPositionDescription()
                                 + ": " + e.getMessage(), e);
-                throw ex;
             }
 
             return result;
@@ -179,7 +177,7 @@ class PreferenceInflater {
     }
 
     private @NonNull PreferenceGroup onMergeRoots(PreferenceGroup givenRoot,
-            @NonNull PreferenceGroup xmlRoot) {
+                                                  @NonNull PreferenceGroup xmlRoot) {
         // If we were given a Preferences, use it as the root (ignoring the root
         // Preferences from the XML file).
         if (givenRoot == null) {
@@ -205,10 +203,10 @@ class PreferenceInflater {
      * @param name The full name of the class to be instantiated.
      * @param attrs The XML attributes supplied for this instance.
      *
-     * @return The newly instantied item, or null.
+     * @return The newly instantiated item, or null.
      */
     private Preference createItem(@NonNull String name, @Nullable String[] prefixes,
-            AttributeSet attrs)
+                                  AttributeSet attrs)
             throws ClassNotFoundException, InflateException {
         Constructor constructor = CONSTRUCTOR_MAP.get(name);
 
@@ -225,6 +223,7 @@ class PreferenceInflater {
                     for (final String prefix : prefixes) {
                         try {
                             clazz = classLoader.loadClass(prefix + name);
+                            break;
                         } catch (final ClassNotFoundException e) {
                             notFoundException = e;
                         }
@@ -253,7 +252,8 @@ class PreferenceInflater {
             throw e;
         } catch (Exception e) {
             final InflateException ie = new InflateException(attrs
-                    .getPositionDescription() + ": Error inflating class " + name, e);
+                    .getPositionDescription() + ": Error inflating class " + name);
+            ie.initCause(e);
             throw ie;
         }
     }
@@ -274,7 +274,7 @@ class PreferenceInflater {
     }
 
     private Preference createItemFromTag(String name,
-            AttributeSet attrs) {
+                                         AttributeSet attrs) {
         try {
             final Preference item;
 
@@ -292,13 +292,15 @@ class PreferenceInflater {
         } catch (ClassNotFoundException e) {
             final InflateException ie = new InflateException(attrs
                     .getPositionDescription()
-                    + ": Error inflating class (not found)" + name, e);
+                    + ": Error inflating class (not found)" + name);
+            ie.initCause(e);
             throw ie;
 
         } catch (Exception e) {
             final InflateException ie = new InflateException(attrs
                     .getPositionDescription()
-                    + ": Error inflating class " + name, e);
+                    + ": Error inflating class " + name);
+            ie.initCause(e);
             throw ie;
         }
     }

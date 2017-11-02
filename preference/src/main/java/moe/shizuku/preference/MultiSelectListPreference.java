@@ -16,8 +16,8 @@
 
 package moe.shizuku.preference;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -25,7 +25,6 @@ import android.os.Parcelable;
 import android.support.annotation.ArrayRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.util.AttributeSet;
 
@@ -41,14 +40,15 @@ import java.util.Set;
  * This set will contain one or more values from the
  * {@link #setEntryValues(CharSequence[])} array.
  *
- * @attr ref android.R.styleable#MultiSelectListPreference_entries
- * @attr ref android.R.styleable#MultiSelectListPreference_entryValues
+ * @attr name android:entries
+ * @attr name android:entryValues
  */
 public class MultiSelectListPreference extends DialogPreference {
     private CharSequence[] mEntries;
     private CharSequence[] mEntryValues;
     private Set<String> mValues = new HashSet<>();
 
+    @SuppressLint("RestrictedApi")
     public MultiSelectListPreference(
             Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -89,62 +89,6 @@ public class MultiSelectListPreference extends DialogPreference {
         b.putString(PreferenceDialogFragment.ARG_KEY, key);
         fragment.setArguments(b);
         return fragment;
-    }
-
-    /**
-     * Attempts to persist a set of Strings to the {@link android.content.SharedPreferences}.
-     * <p>
-     * This will check if this Preference is persistent, get an editor from
-     * the {@link android.preference.PreferenceManager}, put in the strings, and check if we should
-     * commit (and commit if so).
-     *
-     * @param values The values to persist.
-     * @return True if the Preference is persistent. (This is not whether the
-     *         value was persisted, since we may not necessarily commit if there
-     *         will be a batch commit later.)
-     * @see #getPersistedString
-     *
-     * @hide
-     */
-    protected boolean persistStringSet(Set<String> values) {
-        if (shouldPersist()) {
-            // Shouldn't store null
-            if (values.equals(getPersistedStringSet(null))) {
-                // It's already there, so the same as persisting
-                return true;
-            }
-
-            SharedPreferences.Editor editor = getPreferenceManager().getSharedPreferences().edit();
-            editor.putStringSet(getKey(), values);
-            SharedPreferencesCompat.EditorCompat.getInstance().apply(editor);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Attempts to get a persisted set of Strings from the
-     * {@link android.content.SharedPreferences}.
-     * <p>
-     * This will check if this Preference is persistent, get the SharedPreferences
-     * from the {@link android.preference.PreferenceManager}, and get the value.
-     *
-     * @param defaultReturnValue The default value to return if either the
-     *            Preference is not persistent or the Preference is not in the
-     *            shared preferences.
-     * @return The value from the SharedPreferences or the default return
-     *         value.
-     * @see #persistStringSet(Set)
-     *
-     * @hide
-     */
-    protected Set<String> getPersistedStringSet(Set<String> defaultReturnValue) {
-        if (!shouldPersist()) {
-            return defaultReturnValue;
-        }
-
-        return getPreferenceManager().getSharedPreferences()
-                .getStringSet(getKey(), defaultReturnValue);
     }
 
     /**
@@ -268,6 +212,7 @@ public class MultiSelectListPreference extends DialogPreference {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
         setValues(restoreValue ? getPersistedStringSet(mValues) : (Set<String>) defaultValue);
@@ -325,10 +270,12 @@ public class MultiSelectListPreference extends DialogPreference {
 
         public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<SavedState>() {
+                    @Override
                     public SavedState createFromParcel(Parcel in) {
                         return new SavedState(in);
                     }
 
+                    @Override
                     public SavedState[] newArray(int size) {
                         return new SavedState[size];
                     }

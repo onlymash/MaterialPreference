@@ -16,6 +16,7 @@
 
 package moe.shizuku.preference;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -47,8 +48,9 @@ public class EditTextPreference extends DialogPreference {
     private boolean mSelectAllOnFocus;
     private boolean mCommitOnEnter;
 
+    @SuppressLint("RestrictedApi")
     public EditTextPreference(Context context, AttributeSet attrs, int defStyleAttr,
-            int defStyleRes) {
+                              int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
         TypedArray a;
@@ -253,14 +255,15 @@ public class EditTextPreference extends DialogPreference {
 
         public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
+                    @Override
+                    public SavedState createFromParcel(Parcel in) {
+                        return new SavedState(in);
+                    }
 
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
+                    @Override
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                };
     }
-
 }

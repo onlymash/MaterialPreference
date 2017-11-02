@@ -29,5 +29,6 @@
         <item name="preferenceFragmentListStyle">@style/PreferenceFragmentList.Material</item>
         <item name="dropDownPreferenceStyle">@style/Preference.DropDownPreference</item>
         <item name="ringtonePreferenceStyle">@style/Preference.RingtonePreference</item>
+        <item name="seekBarPreferenceStyle">@style/Preference.SeekBarPreference</item>
     </style>
 </resources>

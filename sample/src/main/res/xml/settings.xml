@@ -106,9 +106,15 @@
             android:summary="%s"
             android:ringtoneType="notification"
             android:defaultValue="content://settings/system/notification_sound"
-            app:summaryNone="None">
+            app:summaryNone="None"
+            app:iconSpaceReserved="true"/>
 
-        </RingtonePreference>
+        <SeekBarPreference
+            android:icon="@mipmap/ic_launcher"
+            android:key="seekbar"
+            android:title="SeekBarPreference"
+            app:min="0"
+            android:max="100"/>
 
         <DropDownPreference
             android:key="drop_down2"
