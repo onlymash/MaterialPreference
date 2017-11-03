@@ -74,8 +74,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public DividerDecoration onCreateItemDecoration() {
-        //return new CategoryDivideDividerDecoration();
-        return new DefaultDividerDecoration();
+        return new CategoryDivideDividerDecoration();
+        //return new DefaultDividerDecoration();
     }
 
     @Override
