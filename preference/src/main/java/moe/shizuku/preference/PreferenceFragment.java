@@ -821,6 +821,10 @@ public abstract class PreferenceFragment extends Fragment implements
 
         public abstract boolean shouldDrawDividerBelow(View view, RecyclerView parent);
 
+        public Drawable getDivider() {
+            return mDivider;
+        }
+
         public void setDivider(Drawable divider) {
             if (divider != null) {
                 mDividerHeight = divider.getIntrinsicHeight();
@@ -829,6 +833,10 @@ public abstract class PreferenceFragment extends Fragment implements
             }
             mDivider = divider;
             mList.invalidateItemDecorations();
+        }
+
+        public int getDividerHeight() {
+            return mDividerHeight;
         }
 
         public void setDividerHeight(int dividerHeight) {
@@ -852,19 +860,18 @@ public abstract class PreferenceFragment extends Fragment implements
 
         @Override
         public boolean shouldDrawDividerBelow(View view, RecyclerView parent) {
-            final RecyclerView.ViewHolder holder = parent.getChildViewHolder(view);
-            final boolean dividerAllowedBelow = holder instanceof PreferenceViewHolder
-                    && ((PreferenceViewHolder) holder).isDividerAllowedBelow();
+            if (!(parent.getAdapter() instanceof PreferenceGroupAdapter)) {
+                return false;
+            }
+            PreferenceGroupAdapter adapter = (PreferenceGroupAdapter) parent.getAdapter();
+            int index = parent.getChildAdapterPosition(view);
+            final boolean dividerAllowedBelow = adapter.getItem(index).isAllowDividerBelow();
             if (!dividerAllowedBelow) {
                 return false;
             }
             boolean nextAllowed = isAllowDividerAfterLastItem();
-            int index = parent.indexOfChild(view);
-            if (index < parent.getChildCount() - 1) {
-                final View nextView = parent.getChildAt(index + 1);
-                final RecyclerView.ViewHolder nextHolder = parent.getChildViewHolder(nextView);
-                nextAllowed = nextHolder instanceof PreferenceViewHolder
-                        && ((PreferenceViewHolder) nextHolder).isDividerAllowedAbove();
+            if (index < adapter.getItemCount() - 1) {
+                nextAllowed = adapter.getItem(index + 1).isAllowDividerAbove();
             }
             return nextAllowed;
         }
@@ -873,49 +880,60 @@ public abstract class PreferenceFragment extends Fragment implements
     /**
      * An other DividerDecoration, divider show between category (uncheckable) items
      */
-    public class CategoryDivideDividerDecoration extends DividerDecoration {
+    public class CategoryDivideDividerDecoration extends DefaultDividerDecoration {
 
-        /*private static final int PADDING_DP = 8;
-        private int padding;*/
+        private static final int PADDING_DP = 8;
+        private int mPadding;
 
         public CategoryDivideDividerDecoration() {
-            //this((int) (PADDING_DP * getActivity().getResources().getDisplayMetrics().density));
+            this(Math.round(PADDING_DP * getActivity().getResources().getDisplayMetrics().density));
         }
 
         public CategoryDivideDividerDecoration(int padding) {
-            //this.padding = padding;
+            this.mPadding = padding;
         }
-
-        /*@Override
-        public boolean shouldDrawDividerAbove(View view, RecyclerView parent) {
-            PreferenceViewHolder holder =
-                    (PreferenceViewHolder) parent.getChildViewHolder(view);
-
-            boolean nextAllowed = false;
-            int index = parent.indexOfChild(view);
-            if (index < parent.getChildCount() - 1) {
-                View nextView = parent.getChildAt(index + 1);
-                PreferenceViewHolder nextHolder =
-                        (PreferenceViewHolder) parent.getChildViewHolder(nextView);
-                nextAllowed = nextHolder.isDividerAllowedAbove();
-            }
-            return nextAllowed && !holder.isDividerAllowedAbove() && index != 0;
-        }*/
 
         @Override
         public boolean shouldDrawDividerBelow(View view, RecyclerView parent) {
-            return false;
+            if (!(parent.getAdapter() instanceof PreferenceGroupAdapter)) {
+                return false;
+            }
+            PreferenceGroupAdapter adapter = (PreferenceGroupAdapter) parent.getAdapter();
+            int index = parent.getChildAdapterPosition(view);
+            final boolean dividerAllowedBelow = adapter.getItem(index).isAllowDividerBelow();
+            if (!dividerAllowedBelow) {
+                return false;
+            }
+            boolean nextAllowed = isAllowDividerAfterLastItem();
+            if (index < adapter.getItemCount() - 1) {
+                nextAllowed = !adapter.getItem(index + 1).isAllowDividerAbove();
+            }
+            return nextAllowed;
         }
 
         @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            /*PreferenceViewHolder holder =
-                    (PreferenceViewHolder) parent.getChildViewHolder(view);
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
+                                   RecyclerView.State state) {
+            if (shouldDrawDividerBelow(view, parent)) {
+                outRect.bottom = mPadding + getDividerHeight();
+            }
+        }
 
-            if (holder != null && !holder.isDividerAllowedAbove()) {
-                outRect.top = padding;
-                outRect.bottom = padding;
-            }*/
+        @Override
+        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            if (getDivider() == null) {
+                return;
+            }
+            final int childCount = parent.getChildCount();
+            final int width = parent.getWidth();
+            for (int childViewIndex = 0; childViewIndex < childCount; childViewIndex++) {
+                final View view = parent.getChildAt(childViewIndex);
+                if (shouldDrawDividerBelow(view, parent)) {
+                    int top = (int) view.getY() + view.getHeight() + mPadding;
+                    getDivider().setBounds(0, top, width, top + getDividerHeight());
+                    getDivider().draw(c);
+                }
+            }
         }
     }
 }

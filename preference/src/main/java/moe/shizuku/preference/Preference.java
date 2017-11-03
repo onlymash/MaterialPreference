@@ -1552,6 +1552,22 @@ public class Preference implements Comparable<Preference> {
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
     }
 
+    public boolean isAllowDividerAbove() {
+        return mAllowDividerAbove;
+    }
+
+    public void setAllowDividerAbove(boolean allowDividerAbove) {
+        mAllowDividerAbove = allowDividerAbove;
+    }
+
+    public boolean isAllowDividerBelow() {
+        return mAllowDividerBelow;
+    }
+
+    public void setAllowDividerBelow(boolean allowDividerBelow) {
+        mAllowDividerBelow = allowDividerBelow;
+    }
+
     private void tryCommit(@NonNull SharedPreferences.Editor editor) {
         if (mPreferenceManager.shouldCommit()) {
             SharedPreferencesCompat.EditorCompat.getInstance().apply(editor);

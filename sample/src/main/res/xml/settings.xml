@@ -98,7 +98,8 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="OtherPreference">
+        android:title="OtherPreference\napp:iconSpaceReserved = true"
+        app:iconSpaceReserved="true">
 
         <RingtonePreference
             android:key="ringtone"

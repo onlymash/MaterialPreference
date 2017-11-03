@@ -2,8 +2,11 @@ package moe.shizuku.preference.sample;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import java.util.Locale;
 
@@ -69,10 +72,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         getPreferenceScreen().addPreference(checkBoxPreference);
     }
 
-    /*@Override
+    @Override
     public DividerDecoration onCreateItemDecoration() {
-        return new CategoryDivideDividerDecoration();
-    }*/
+        //return new CategoryDivideDividerDecoration();
+        return new DefaultDividerDecoration();
+    }
 
     @Override
     public void onPause() {

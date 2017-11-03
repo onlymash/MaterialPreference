@@ -15,15 +15,35 @@
   ~ limitations under the License
   -->
 
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/title"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textAppearance="@style/Preference_TextAppearanceMaterialBody2"
-    android:textColor="?accentColorCompat"
+    android:gravity="center_vertical"
     android:paddingStart="?android:listPreferredItemPaddingLeft"
     android:paddingLeft="?android:listPreferredItemPaddingLeft"
     android:paddingEnd="?android:listPreferredItemPaddingRight"
     android:paddingRight="?android:listPreferredItemPaddingRight"
-    android:paddingTop="16dp"/>
+    android:clipToPadding="false"
+    android:focusable="true"
+    android:baselineAligned="false"
+    android:paddingTop="16dp"
+    android:paddingBottom="8dp">
+
+    <View
+        android:id="@+id/icon_frame"
+        android:layout_width="56dp"
+        android:layout_height="0dp"
+        android:gravity="start"/>
+
+    <TextView
+        android:id="@android:id/title"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Preference_TextAppearanceMaterialBody2"
+        android:textColor="?accentColorCompat"
+        tools:text="Category"/>
+
+</LinearLayout>

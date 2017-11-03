@@ -78,6 +78,9 @@
 
     <style name="Preference.Category.Material">
         <item name="android:layout">@layout/preference_category_material</item>
+        <!-- The title should not dim if the category is disabled, instead only the preference children should dim. -->
+        <item name="android:shouldDisableView">false</item>
+        <item name="android:selectable">false</item>
     </style>
 
     <style name="Preference.CheckBoxPreference.Material">
