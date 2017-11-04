@@ -154,9 +154,9 @@
         <attr name="dividerBelowVisibility" format="enum">
             <!-- Unspecified, display or not is depend on DividerDecoration -->
             <enum name="unspecified" value="0"/>
-            <!-- DividerDecoration must show the divider -->
-            <enum name="enforce" value="1"/>
-            <!-- DividerDecoration must not show the divider -->
+            <!-- Forced to show the divider -->
+            <enum name="enforced" value="1"/>
+            <!-- Forbid the display of divder -->
             <enum name="forbidden" value="2"/>
         </attr>
 

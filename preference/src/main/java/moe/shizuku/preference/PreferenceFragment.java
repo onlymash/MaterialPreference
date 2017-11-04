@@ -803,7 +803,7 @@ public abstract class PreferenceFragment extends Fragment implements
             int index = parent.getChildAdapterPosition(view);
             Preference preference = adapter.getItem(index);
             switch (preference.getDividerBelowVisibility()) {
-                case DividerVisibility.ENFORCE:
+                case DividerVisibility.ENFORCED:
                     return true;
                 case DividerVisibility.FORBIDDEN:
                     return false;

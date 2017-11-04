@@ -99,9 +99,9 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="OtherPreference\napp:iconSpaceReserved = true\napp:dividerBelowVisibility = enforce"
+        android:title="OtherPreference\napp:iconSpaceReserved = true\napp:dividerBelowVisibility = enforced"
         app:iconSpaceReserved="true"
-        app:dividerBelowVisibility="enforce">
+        app:dividerBelowVisibility="enforced">
 
         <RingtonePreference
             android:key="ringtone"

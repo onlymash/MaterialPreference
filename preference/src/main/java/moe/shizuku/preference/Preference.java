@@ -147,14 +147,14 @@ public class Preference implements Comparable<Preference> {
     private boolean mParentDependencyMet = true;
     private boolean mVisible = true;
 
-    @IntDef({DividerVisibility.UNSPECIFIED, DividerVisibility.ENFORCE, DividerVisibility.FORBIDDEN})
+    @IntDef({DividerVisibility.UNSPECIFIED, DividerVisibility.ENFORCED, DividerVisibility.FORBIDDEN})
     @Retention(RetentionPolicy.SOURCE)
     public @interface DividerVisibility {
         /** Unspecified, display or not is depend on DividerDecoration */
         int UNSPECIFIED = 0;
-        /** DividerDecoration must show the divider */
-        int ENFORCE = 1;
-        /** DividerDecoration must not show the divider */
+        /** Forced to show the divider */
+        int ENFORCED = 1;
+        /** Forbid the display of divder */
         int FORBIDDEN = 2;
     }
 
