@@ -929,7 +929,17 @@ public abstract class PreferenceFragment extends Fragment implements
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
                                    RecyclerView.State state) {
             if (shouldDrawDividerBelow(view, parent)) {
-                outRect.bottom = mPadding + getDividerHeight();
+                PreferenceGroupAdapter adapter = (PreferenceGroupAdapter) parent.getAdapter();
+                int index = parent.getChildAdapterPosition(view);
+                if (index < adapter.getItemCount() - 1) {
+                    Preference preference = adapter.getItem(index + 1);
+                    if (preference instanceof PreferenceCategory) {
+                        outRect.bottom = mPadding + getDividerHeight();
+                        return;
+                    }
+                }
+
+                outRect.bottom = mPadding * 2 + getDividerHeight();
             }
         }
 
