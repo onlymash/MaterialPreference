@@ -35,7 +35,7 @@ public class SimpleMenuPreference extends ListPreference {
     }
 
     public SimpleMenuPreference(Context context, AttributeSet attrs, int defStyle) {
-        this(context, attrs, defStyle, 0);
+        this(context, attrs, defStyle, R.style.Preference_SimpleMenuPreference);
     }
 
     public SimpleMenuPreference(Context context, AttributeSet attrs, int defStyleAttr,
