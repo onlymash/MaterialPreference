@@ -150,10 +150,15 @@
         <attr name="shouldDisableView" format="boolean" />
         <attr name="android:shouldDisableView" />
 
-        <!-- Whether the preference allows displaying divider on top -->
-        <attr name="allowDividerAbove" format="boolean" />
         <!-- Whether the preference allows displaying divider below it -->
-        <attr name="allowDividerBelow" format="boolean" />
+        <attr name="dividerBelowVisibility" format="enum">
+            <!-- Unspecified, display or not is depend on DividerDecoration -->
+            <enum name="unspecified" value="0"/>
+            <!-- DividerDecoration must show the divider -->
+            <enum name="enforce" value="1"/>
+            <!-- DividerDecoration must not show the divider -->
+            <enum name="forbidden" value="2"/>
+        </attr>
 
         <!-- Whether to use single line for the preference title text. By default, preference title
              will be constrained to one line, so the default value of this attribute is true. -->

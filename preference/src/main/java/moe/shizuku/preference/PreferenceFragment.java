@@ -17,6 +17,7 @@
 package moe.shizuku.preference;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static moe.shizuku.preference.Preference.DividerVisibility;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -263,7 +264,7 @@ public abstract class PreferenceFragment extends Fragment implements
         final int dividerHeight = a.getDimensionPixelSize(
                 R.styleable.PreferenceFragment_android_dividerHeight, -1);
         final boolean allowDividerAfterLastItem = a.getBoolean(
-                R.styleable.PreferenceFragment_allowDividerAfterLastItem, true);
+                R.styleable.PreferenceFragment_allowDividerAfterLastItem, false);
 
         a.recycle();
 
@@ -792,7 +793,42 @@ public abstract class PreferenceFragment extends Fragment implements
 
         private Drawable mDivider;
         private int mDividerHeight;
-        private boolean mAllowDividerAfterLastItem = true;
+        private boolean mAllowDividerAfterLastItem = false;
+
+        public final boolean shouldDrawDividerBelow(View view, RecyclerView parent) {
+            if (!(parent.getAdapter() instanceof PreferenceGroupAdapter)) {
+                return false;
+            }
+            PreferenceGroupAdapter adapter = (PreferenceGroupAdapter) parent.getAdapter();
+            int index = parent.getChildAdapterPosition(view);
+            Preference preference = adapter.getItem(index);
+            switch (preference.getDividerBelowVisibility()) {
+                case DividerVisibility.ENFORCE:
+                    return true;
+                case DividerVisibility.FORBIDDEN:
+                    return false;
+                case DividerVisibility.UNSPECIFIED:
+                default:
+                    if (index == adapter.getItemCount() - 1) {
+                        return isAllowDividerAfterLastItem();
+                    }
+                    return shouldDrawDividerBelow(view, parent, adapter, index, preference);
+            }
+        }
+
+        /**
+         * Called when Preference dose not specific whether to show the divider ot not.
+         *
+         * @param view Preference item view
+         * @param parent RecyclerView
+         * @param adapter PreferenceGroupAdapter
+         * @param index index, never be last
+         * @param preference Preference, never be last
+         * @return whether to show the divider ot not
+         */
+        public abstract boolean shouldDrawDividerBelow(View view, RecyclerView parent,
+                                                       PreferenceGroupAdapter adapter,
+                                                       int index, Preference preference);
 
         @Override
         public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
@@ -818,8 +854,6 @@ public abstract class PreferenceFragment extends Fragment implements
                 outRect.bottom = mDividerHeight;
             }
         }
-
-        public abstract boolean shouldDrawDividerBelow(View view, RecyclerView parent);
 
         public Drawable getDivider() {
             return mDivider;
@@ -854,26 +888,16 @@ public abstract class PreferenceFragment extends Fragment implements
     }
 
     /**
-     * Default DividerDecoration, divider will show between checkable items
+     * Default DividerDecoration, divider will show between items
      */
     public class DefaultDividerDecoration extends DividerDecoration {
 
         @Override
-        public boolean shouldDrawDividerBelow(View view, RecyclerView parent) {
-            if (!(parent.getAdapter() instanceof PreferenceGroupAdapter)) {
-                return false;
-            }
-            PreferenceGroupAdapter adapter = (PreferenceGroupAdapter) parent.getAdapter();
-            int index = parent.getChildAdapterPosition(view);
-            final boolean dividerAllowedBelow = adapter.getItem(index).isAllowDividerBelow();
-            if (!dividerAllowedBelow) {
-                return false;
-            }
-            boolean nextAllowed = isAllowDividerAfterLastItem();
-            if (index < adapter.getItemCount() - 1) {
-                nextAllowed = adapter.getItem(index + 1).isAllowDividerAbove();
-            }
-            return nextAllowed;
+        public boolean shouldDrawDividerBelow(View view, RecyclerView parent, PreferenceGroupAdapter adapter,
+                                              int index, Preference preference) {
+            Preference nextPreference = adapter.getItem(index + 1);
+            return !(preference instanceof PreferenceCategory)
+                    && !(nextPreference instanceof PreferenceCategory);
         }
     }
 
@@ -894,21 +918,11 @@ public abstract class PreferenceFragment extends Fragment implements
         }
 
         @Override
-        public boolean shouldDrawDividerBelow(View view, RecyclerView parent) {
-            if (!(parent.getAdapter() instanceof PreferenceGroupAdapter)) {
-                return false;
-            }
-            PreferenceGroupAdapter adapter = (PreferenceGroupAdapter) parent.getAdapter();
-            int index = parent.getChildAdapterPosition(view);
-            final boolean dividerAllowedBelow = adapter.getItem(index).isAllowDividerBelow();
-            if (!dividerAllowedBelow) {
-                return false;
-            }
-            boolean nextAllowed = isAllowDividerAfterLastItem();
-            if (index < adapter.getItemCount() - 1) {
-                nextAllowed = !adapter.getItem(index + 1).isAllowDividerAbove();
-            }
-            return nextAllowed;
+        public boolean shouldDrawDividerBelow(View view, RecyclerView parent, PreferenceGroupAdapter adapter,
+                                              int index, Preference preference) {
+            Preference nextPreference = adapter.getItem(index + 1);
+            return !(preference instanceof PreferenceCategory)
+                    && nextPreference instanceof PreferenceCategory;
         }
 
         @Override

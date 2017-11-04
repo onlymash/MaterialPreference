@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.CallSuper;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
@@ -44,6 +45,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -144,8 +147,19 @@ public class Preference implements Comparable<Preference> {
     private boolean mParentDependencyMet = true;
     private boolean mVisible = true;
 
-    private boolean mAllowDividerAbove = true;
-    private boolean mAllowDividerBelow = true;
+    @IntDef({DividerVisibility.UNSPECIFIED, DividerVisibility.ENFORCE, DividerVisibility.FORBIDDEN})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface DividerVisibility {
+        /** Unspecified, display or not is depend on DividerDecoration */
+        int UNSPECIFIED = 0;
+        /** DividerDecoration must show the divider */
+        int ENFORCE = 1;
+        /** DividerDecoration must not show the divider */
+        int FORBIDDEN = 2;
+    }
+
+    private @DividerVisibility int mDividerBelowVisibility = DividerVisibility.UNSPECIFIED;
+
     private boolean mHasSingleLineTitleAttr;
     private boolean mSingleLineTitle = true;
     private boolean mIconSpaceReserved;
@@ -301,11 +315,8 @@ public class Preference implements Comparable<Preference> {
         mDependencyKey = TypedArrayUtils.getString(a, R.styleable.Preference_dependency,
                 R.styleable.Preference_android_dependency);
 
-        mAllowDividerAbove = TypedArrayUtils.getBoolean(a, R.styleable.Preference_allowDividerAbove,
-                R.styleable.Preference_allowDividerAbove, mSelectable);
-
-        mAllowDividerBelow = TypedArrayUtils.getBoolean(a, R.styleable.Preference_allowDividerBelow,
-                R.styleable.Preference_allowDividerBelow, mSelectable);
+        mDividerBelowVisibility = TypedArrayUtils.getInt(a, R.styleable.Preference_dividerBelowVisibility,
+                R.styleable.Preference_dividerBelowVisibility, DividerVisibility.UNSPECIFIED);
 
         if (a.hasValue(R.styleable.Preference_defaultValue)) {
             mDefaultValue = onGetDefaultValue(a, R.styleable.Preference_defaultValue);
@@ -623,10 +634,17 @@ public class Preference implements Comparable<Preference> {
         holder.itemView.setFocusable(selectable);
         holder.itemView.setClickable(selectable);
 
-        holder.setDividerAllowedAbove(mAllowDividerAbove);
-        holder.setDividerAllowedBelow(mAllowDividerBelow);
+        /*holder.setDividerAllowedAbove(mDividerAboveVisibility);
+        holder.setDividerAllowedBelow(mDividerBelowVisibility);*/
     }
 
+    /**
+     * Called when ViewHolder is recycled.
+     *
+     * @param holder The ViewHolder that provides references to the views to fill in. These views
+     *               will be recycled, so you should not hold a reference to them after this method
+     *               returns.
+     */
     public void onViewRecycled(PreferenceViewHolder holder) {
 
     }
@@ -1552,20 +1570,12 @@ public class Preference implements Comparable<Preference> {
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
     }
 
-    public boolean isAllowDividerAbove() {
-        return mAllowDividerAbove;
+    public @DividerVisibility int getDividerBelowVisibility() {
+        return mDividerBelowVisibility;
     }
 
-    public void setAllowDividerAbove(boolean allowDividerAbove) {
-        mAllowDividerAbove = allowDividerAbove;
-    }
-
-    public boolean isAllowDividerBelow() {
-        return mAllowDividerBelow;
-    }
-
-    public void setAllowDividerBelow(boolean allowDividerBelow) {
-        mAllowDividerBelow = allowDividerBelow;
+    public void setDividerBelowVisibility(@DividerVisibility int dividerBelowVisibility) {
+        mDividerBelowVisibility = dividerBelowVisibility;
     }
 
     private void tryCommit(@NonNull SharedPreferences.Editor editor) {
