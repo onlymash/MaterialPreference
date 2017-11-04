@@ -35,7 +35,7 @@ import android.widget.Spinner;
 public class DropDownPreference extends ListPreference {
 
     private final Context mContext;
-    private final ArrayAdapter mAdapter;
+    private final ArrayAdapter<String> mAdapter;
 
     private Spinner mSpinner;
 

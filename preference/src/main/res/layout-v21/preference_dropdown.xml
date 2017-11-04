@@ -29,14 +29,6 @@
     android:gravity="center_vertical"
     tools:ignore="RtlHardcoded">
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:layout_gravity="center_vertical"
-        tools:ignore="Suspicious0dp"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -59,6 +51,14 @@
                 app:maxHeight="48dp" />
 
         </LinearLayout>
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_gravity="center_vertical"
+            tools:ignore="Suspicious0dp"/>
 
         <RelativeLayout
             android:layout_width="0dp"

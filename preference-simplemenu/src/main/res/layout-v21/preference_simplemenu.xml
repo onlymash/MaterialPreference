@@ -22,13 +22,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingStart="?android:listPreferredItemPaddingLeft"
-    android:paddingLeft="?android:listPreferredItemPaddingLeft"
     android:paddingEnd="?android:listPreferredItemPaddingRight"
-    android:paddingRight="?android:listPreferredItemPaddingRight"
     android:clipToPadding="false"
     android:minHeight="?android:listPreferredItemHeightSmall"
-    android:background="?backgroundCompat"
-    android:gravity="center_vertical">
+    android:background="?android:selectableItemBackground"
+    android:gravity="center_vertical"
+    tools:ignore="RtlHardcoded">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,13 +52,12 @@
 
         </LinearLayout>
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
+        <View
+            android:id="@android:id/empty"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:visibility="invisible"
-            android:layout_gravity="center_vertical"
-            tools:ignore="Suspicious0dp"/>
+            android:layout_gravity="center_vertical"/>
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -80,8 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@android:id/title"
                 android:layout_alignStart="@android:id/title"
-                android:layout_alignLeft="@android:id/title"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAppearance="?android:attr/textAppearanceListItemSecondary"
                 android:textColor="?android:attr/textColorSecondary"
                 android:maxLines="10" />
 
@@ -93,7 +90,6 @@
             android:layout_height="match_parent"
             android:gravity="end|center_vertical"
             android:paddingStart="16dp"
-            android:paddingLeft="16dp"
             android:orientation="vertical"
             tools:ignore="RtlSymmetry"/>
 

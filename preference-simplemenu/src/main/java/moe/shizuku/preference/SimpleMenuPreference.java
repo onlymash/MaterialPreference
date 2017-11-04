@@ -22,6 +22,7 @@ import moe.shizuku.preference.widget.SimpleMenuPopupWindow;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class SimpleMenuPreference extends ListPreference {
 
+    private View mAnchor;
     private View mItemView;
     private SimpleMenuPopupWindow mPopupWindow;
 
@@ -81,7 +82,11 @@ public class SimpleMenuPreference extends ListPreference {
 
         mPopupWindow.setEntries(getEntries());
         mPopupWindow.setSelectedIndex(findIndexOfValue(getValue()));
-        mPopupWindow.show(mItemView);
+
+        View container = (View) mItemView   // itemView
+                .getParent();               // -> list (RecyclerView)
+
+        mPopupWindow.show(mItemView, container, (int) mAnchor.getX());
     }
 
     @Override
@@ -109,5 +114,11 @@ public class SimpleMenuPreference extends ListPreference {
         }
 
         mItemView = view.itemView;
+        mAnchor = view.itemView.findViewById(android.R.id.empty);
+
+        if (mAnchor == null) {
+            throw new IllegalStateException("SimpleMenuPreference item layout must contain" +
+                    "a view id is android.R.id.empty to support iconSpaceReserved");
+        }
     }
 }

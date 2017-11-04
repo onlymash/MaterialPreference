@@ -84,11 +84,12 @@
 
         <SimpleMenuPreference
             android:key="drop_down4"
-            android:title="SimpleMenuPreference"
+            android:title="SimpleMenuPreference\napp:iconSpaceReserved = true"
             android:summary="%s"
             android:entries="@array/entries"
             android:entryValues="@array/entry_values"
-            android:defaultValue="1"/>
+            android:defaultValue="1"
+            app:iconSpaceReserved="true"/>
 
         <SimpleMenuPreference
             android:key="drop_down5"
@@ -103,7 +104,7 @@
 
         <RingtonePreference
             android:key="ringtone"
-            android:title="RingtonePreference"
+            android:title="RingtonePreference\napp:iconSpaceReserved = true"
             android:summary="%s"
             android:ringtoneType="notification"
             android:defaultValue="content://settings/system/notification_sound"
@@ -119,8 +120,9 @@
 
         <DropDownPreference
             android:key="drop_down2"
-            android:title="DropDownPreference"
-            android:summary="%s"/>
+            android:title="DropDownPreference\napp:iconSpaceReserved = true"
+            android:summary="%s"
+            app:iconSpaceReserved="true"/>
 
         <NumberPickerPreference
             android:key="number_picker"
