@@ -253,13 +253,6 @@
         <attr name="android:entryValues" />
     </declare-styleable>
 
-    <declare-styleable name="PreferenceImageView">
-        <attr name="maxWidth" format="dimension" />
-        <attr name="android:maxWidth" />
-        <attr name="maxHeight" format="dimension" />
-        <attr name="android:maxHeight" />
-    </declare-styleable>
-
     <declare-styleable name="SwitchPreference">
         <!-- The summary for the Preference in a PreferenceActivity screen when the
              SwitchPreference is checked. If separate on/off summaries are not
