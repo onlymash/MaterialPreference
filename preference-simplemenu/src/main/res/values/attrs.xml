@@ -3,7 +3,7 @@
     <declare-styleable name="Theme">
 
         <attr name="backgroundCompat" />
-        <attr name="preferenceListStyle" />
+        <attr name="dialogPreferenceStyle" />
 
         <!-- Default style for simple menu preferences. -->
         <attr name="simpleMenuPreferenceStyle" format="reference" />
