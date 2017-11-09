@@ -1,5 +1,7 @@
 package moe.shizuku.preference.widget;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -7,7 +9,7 @@ import android.widget.CheckedTextView;
 import static moe.shizuku.preference.widget.SimpleMenuPopupWindow.DIALOG;
 import static moe.shizuku.preference.widget.SimpleMenuPopupWindow.HORIZONTAL;
 
-
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class SimpleMenuListItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public CheckedTextView mCheckedTextView;
