@@ -154,7 +154,7 @@ public class Preference implements Comparable<Preference> {
         int UNSPECIFIED = 0;
         /** Forced to show the divider */
         int ENFORCED = 1;
-        /** Forbid the display of divder */
+        /** Forbid the display of divider */
         int FORBIDDEN = 2;
     }
 
