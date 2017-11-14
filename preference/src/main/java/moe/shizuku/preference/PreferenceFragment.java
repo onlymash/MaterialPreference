@@ -801,6 +801,9 @@ public abstract class PreferenceFragment extends Fragment implements
             }
             PreferenceGroupAdapter adapter = (PreferenceGroupAdapter) parent.getAdapter();
             int index = parent.getChildAdapterPosition(view);
+            if (index == RecyclerView.NO_POSITION) {
+                return false;
+            }
             Preference preference = adapter.getItem(index);
             switch (preference.getDividerBelowVisibility()) {
                 case DividerVisibility.ENFORCED:
