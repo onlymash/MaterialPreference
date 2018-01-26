@@ -49,6 +49,7 @@ public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
         if (getEditTextPreference().getInputType() != InputType.TYPE_CLASS_TEXT)
             mEditText.setInputType(getEditTextPreference().getInputType());
 
+        mEditText.setHint(getEditTextPreference().getHint());
         mEditText.setText(getEditTextPreference().getText());
 
         mEditText.requestFocus();
