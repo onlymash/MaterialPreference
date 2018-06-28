@@ -43,6 +43,7 @@ public class EditTextPreference extends DialogPreference {
 
     private String mText;
     private String mSummary;
+    private String mHint;
     private int mInputType;
     private boolean mSingleLine;
     private boolean mSelectAllOnFocus;
@@ -64,6 +65,9 @@ public class EditTextPreference extends DialogPreference {
 
         mSelectAllOnFocus = TypedArrayUtils.getBoolean(a, R.styleable.EditTextPreference_selectAllOnFocus,
                 R.styleable.EditTextPreference_android_selectAllOnFocus, false);
+
+        mHint = TypedArrayUtils.getString(a, R.styleable.EditTextPreference_hint,
+                R.styleable.EditTextPreference_android_hint);
 
         mCommitOnEnter = a.getBoolean(R.styleable.EditTextPreference_commitOnEnter, false);
         a.recycle();
@@ -176,6 +180,14 @@ public class EditTextPreference extends DialogPreference {
      */
     public int getInputType() {
         return mInputType;
+    }
+
+    /**
+     *
+     * @return Hint
+     */
+    public String getHint() {
+        return mHint;
     }
 
     /**

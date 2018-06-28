@@ -57,6 +57,14 @@
             app:commitOnEnter="true"
             android:inputType="number"/>
 
+        <EditTextPreference
+            android:key="edit_text_with_hint"
+            android:title="EditTextPreference with hint"
+            android:summary="%s"
+            android:hint="Hint!"
+            android:singleLine="true"
+            android:defaultValue="Try to clear all text in dialog."/>
+
         <ListPreference
             android:key="list"
             android:title="ListPreference"
