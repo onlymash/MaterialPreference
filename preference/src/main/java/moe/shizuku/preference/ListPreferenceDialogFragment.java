@@ -83,7 +83,7 @@ public class ListPreferenceDialogFragment extends PreferenceDialogFragment {
     }
 
     @Override
-    protected void onPrepareDialogBuilder(PreferenceDialogBuilder builder) {
+    protected void onPrepareDialogBuilder(PreferenceDialogCompatBuilder builder) {
         super.onPrepareDialogBuilder(builder);
 
         builder.setSingleChoiceItems(mEntries, mClickedDialogEntryIndex,

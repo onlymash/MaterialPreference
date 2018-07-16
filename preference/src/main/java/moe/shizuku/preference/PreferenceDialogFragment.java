@@ -136,7 +136,7 @@ public abstract class PreferenceDialogFragment extends DialogFragment implements
         final Context context = getActivity();
         mWhichButtonClicked = DialogInterface.BUTTON_NEGATIVE;
 
-        final PreferenceDialogBuilder builder = new PreferenceDialogBuilder(context)
+        final PreferenceDialogCompatBuilder builder = new PreferenceDialogCompatBuilder(context)
                 .setTitle(mDialogTitle)
                 .setIcon(mDialogIcon)
                 .setPositiveButton(mPositiveButtonText, this)
@@ -182,10 +182,10 @@ public abstract class PreferenceDialogFragment extends DialogFragment implements
      * Prepares the dialog builder to be shown when the preference is clicked.
      * Use this to set custom properties on the dialog.
      * <p>
-     * Do not {@link PreferenceDialogBuilder#create()} or
-     * {@link PreferenceDialogBuilder#show()}.
+     * Do not {@link PreferenceDialogCompatBuilder#create()} or
+     * {@link PreferenceDialogCompatBuilder#show()}.
      */
-    protected void onPrepareDialogBuilder(PreferenceDialogBuilder builder) {}
+    protected void onPrepareDialogBuilder(PreferenceDialogCompatBuilder builder) {}
 
     /**
      * Returns whether the preference needs to display a soft input method when the dialog

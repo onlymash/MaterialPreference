@@ -81,7 +81,7 @@ public class MultiSelectListPreferenceDialogFragment extends PreferenceDialogFra
     }
 
     @Override
-    protected void onPrepareDialogBuilder(PreferenceDialogBuilder builder) {
+    protected void onPrepareDialogBuilder(PreferenceDialogCompatBuilder builder) {
         super.onPrepareDialogBuilder(builder);
 
         final int entryCount = mEntryValues.length;

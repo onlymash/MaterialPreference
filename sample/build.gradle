@@ -28,7 +28,7 @@ dependencies {
     implementation "com.google.android.material:material:$androidxVersion"
 
     implementation project(':preference')
-    implementation project(':preference-dialog-appcompat')
+    implementation project(':preference-dialog')
     implementation project(':preference-simplemenu')
     implementation project(':preference-switchcompat')
 }
