@@ -16,7 +16,7 @@
 
 package moe.shizuku.preference;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static moe.shizuku.preference.Preference.DividerVisibility;
 
 import android.annotation.SuppressLint;
@@ -29,13 +29,15 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.XmlRes;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.XmlRes;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -345,7 +347,7 @@ public abstract class PreferenceFragment extends Fragment implements
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         if (mHavePrefs) {
@@ -407,7 +409,7 @@ public abstract class PreferenceFragment extends Fragment implements
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         final PreferenceScreen preferenceScreen = getPreferenceScreen();
@@ -591,11 +593,11 @@ public abstract class PreferenceFragment extends Fragment implements
     }
 
     /**
-     * Creates the {@link android.support.v7.widget.RecyclerView} used to display the preferences.
+     * Creates the {@link RecyclerView} used to display the preferences.
      * Subclasses may override this to return a customized
-     * {@link android.support.v7.widget.RecyclerView}.
+     * {@link RecyclerView}.
      * @param inflater The LayoutInflater object that can be used to inflate the
-     *                 {@link android.support.v7.widget.RecyclerView}.
+     *                 {@link RecyclerView}.
      * @param parent The parent {@link android.view.View} that the RecyclerView will be attached to.
      *               This method should not add the view itself, but this can be used to generate
      *               the LayoutParams of the view.
@@ -617,9 +619,9 @@ public abstract class PreferenceFragment extends Fragment implements
 
     /**
      * Called from {@link #onCreateRecyclerView} to create the
-     * {@link android.support.v7.widget.RecyclerView.LayoutManager} for the created
-     * {@link android.support.v7.widget.RecyclerView}.
-     * @return A new {@link android.support.v7.widget.RecyclerView.LayoutManager} instance.
+     * {@link RecyclerView.LayoutManager} for the created
+     * {@link RecyclerView}.
+     * @return A new {@link RecyclerView.LayoutManager} instance.
      */
     public RecyclerView.LayoutManager onCreateLayoutManager() {
         return new LinearLayoutManager(getActivity());
@@ -851,8 +853,8 @@ public abstract class PreferenceFragment extends Fragment implements
         }
 
         @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
-                                   RecyclerView.State state) {
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent,
+                                   @NonNull RecyclerView.State state) {
             if (shouldDrawDividerBelow(view, parent)) {
                 outRect.bottom = mDividerHeight;
             }
@@ -929,8 +931,8 @@ public abstract class PreferenceFragment extends Fragment implements
         }
 
         @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
-                                   RecyclerView.State state) {
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent,
+                                   @NonNull RecyclerView.State state) {
             if (shouldDrawDividerBelow(view, parent)) {
                 PreferenceGroupAdapter adapter = (PreferenceGroupAdapter) parent.getAdapter();
                 int index = parent.getChildAdapterPosition(view);

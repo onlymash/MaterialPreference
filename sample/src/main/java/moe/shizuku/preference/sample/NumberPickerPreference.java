@@ -6,9 +6,9 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.content.res.TypedArrayUtils;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.core.content.res.TypedArrayUtils;
 import android.util.AttributeSet;
 import android.widget.NumberPicker;
 

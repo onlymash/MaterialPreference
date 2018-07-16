@@ -18,7 +18,7 @@ package moe.shizuku.preference;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
@@ -75,7 +75,7 @@ public class ListPreferenceDialogFragment extends PreferenceDialogFragment {
     private static CharSequence[] getCharSequenceArray(Bundle in, String key) {
         final ArrayList<String> stored = in.getStringArrayList(key);
 
-        return stored == null ? null : stored.toArray(new CharSequence[stored.size()]);
+        return stored == null ? null : stored.toArray(new CharSequence[0]);
     }
 
     private ListPreference getListPreference() {

@@ -16,14 +16,14 @@
 
 package moe.shizuku.preference;
 
-import android.support.annotation.IdRes;
-import android.support.annotation.RestrictTo;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.IdRes;
+import androidx.annotation.RestrictTo;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
 
 /**
- * A {@link android.support.v7.widget.RecyclerView.ViewHolder} class which caches views associated
+ * A {@link RecyclerView.ViewHolder} class which caches views associated
  * with the default {@link Preference} layouts. Cached views can be retrieved by calling
  * {@link #findViewById(int)}.
  */

@@ -19,8 +19,8 @@ package moe.shizuku.preference;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.XmlResourceParser;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.InflateException;
@@ -162,8 +162,6 @@ class PreferenceInflater {
                 // Inflate all children under temp
                 rInflate(parser, result, attrs);
 
-            } catch (InflateException e) {
-                throw e;
             } catch (XmlPullParserException e) {
                 throw new InflateException(e.getMessage(), e);
             } catch (IOException e) {

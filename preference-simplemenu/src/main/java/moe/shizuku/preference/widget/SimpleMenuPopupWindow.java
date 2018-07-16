@@ -7,9 +7,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -240,8 +240,8 @@ public class SimpleMenuPopupWindow extends PopupWindow {
             public void run() {
                 // disable over scroll when no scroll
                 LinearLayoutManager lm = (LinearLayoutManager) getContentView().getLayoutManager();
-                if (lm.findFirstCompletelyVisibleItemPosition() == 0
-                    && lm.findLastCompletelyVisibleItemPosition() == count - 1) {
+                if ((lm != null ? lm.findFirstCompletelyVisibleItemPosition() : 0) == 0
+                    && (lm != null ? lm.findLastCompletelyVisibleItemPosition() : 0) == count - 1) {
                     getContentView().setOverScrollMode(View.OVER_SCROLL_NEVER);
                 }
             }

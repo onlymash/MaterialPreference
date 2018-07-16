@@ -1,8 +1,10 @@
 package moe.shizuku.preference.widget;
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -19,13 +21,14 @@ public class SimpleMenuListAdapter extends RecyclerView.Adapter<SimpleMenuListIt
         mWindow = window;
     }
 
+    @NonNull
     @Override
-    public SimpleMenuListItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SimpleMenuListItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new SimpleMenuListItemHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_menu_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final SimpleMenuListItemHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final SimpleMenuListItemHolder holder, int position) {
         holder.bind(mWindow, position);
     }
 

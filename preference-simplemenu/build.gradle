@@ -10,7 +10,7 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -21,8 +21,8 @@ android {
 }
 
 dependencies {
-    implementation "com.android.support:support-fragment:$supportLibraryVersion"
-    implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    implementation "androidx.fragment:fragment:$androidxVersion"
+    implementation "androidx.recyclerview:recyclerview:$androidxVersion"
 
     compileOnly project(':preference')
 }

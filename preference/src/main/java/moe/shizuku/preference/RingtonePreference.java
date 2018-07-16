@@ -16,6 +16,7 @@
 
 package moe.shizuku.preference;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -23,7 +24,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.provider.Settings.System;
-import android.support.v4.content.res.TypedArrayUtils;
+import androidx.core.content.res.TypedArrayUtils;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
@@ -57,6 +58,7 @@ public class RingtonePreference extends Preference implements
 
     private int mRequestCode;
 
+    @SuppressLint("RestrictedApi")
     public RingtonePreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 

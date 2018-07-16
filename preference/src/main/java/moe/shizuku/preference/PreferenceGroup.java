@@ -16,16 +16,16 @@
 
 package moe.shizuku.preference;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.RestrictTo;
-import android.support.v4.content.res.TypedArrayUtils;
-import android.support.v4.util.SimpleArrayMap;
+import androidx.annotation.RestrictTo;
+import androidx.core.content.res.TypedArrayUtils;
+import androidx.collection.SimpleArrayMap;import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
@@ -297,7 +297,7 @@ public abstract class PreferenceGroup extends Preference {
             final Preference preference = getPreference(i);
             final String curKey = preference.getKey();
 
-            if (curKey != null && curKey.equals(key)) {
+            if (curKey != null && curKey.contentEquals(key)) {
                 return preference;
             }
 
@@ -414,7 +414,7 @@ public abstract class PreferenceGroup extends Preference {
          * Return the adapter position of the first {@link Preference} with the specified key
          * @param key Key of {@link Preference} to find
          * @return Adapter position of the {@link Preference} or
-         *         {@link android.support.v7.widget.RecyclerView#NO_POSITION} if not found
+         *         {@link RecyclerView#NO_POSITION} if not found
          */
         int getPreferenceAdapterPosition(String key);
 
@@ -422,7 +422,7 @@ public abstract class PreferenceGroup extends Preference {
          * Return the adapter position of the specified {@link Preference} object
          * @param preference {@link Preference} object to find
          * @return Adapter position of the {@link Preference} or
-         *         {@link android.support.v7.widget.RecyclerView#NO_POSITION} if not found
+         *         {@link RecyclerView#NO_POSITION} if not found
          */
         int getPreferenceAdapterPosition(Preference preference);
     }

@@ -16,7 +16,7 @@
 
 package moe.shizuku.preference;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -27,15 +27,15 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.CallSuper;
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.SharedPreferencesCompat;
-import android.support.v4.content.res.TypedArrayUtils;
-import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.annotation.CallSuper;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.SharedPreferencesCompat;
+import androidx.core.content.res.TypedArrayUtils;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -49,12 +49,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Set;import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Represents the basic Preference UI building
  * block displayed by a {@link PreferenceFragment} in the form of a
- * {@link android.support.v7.widget.RecyclerView}. This class provides data for the
+ * {@link RecyclerView}. This class provides data for the
  * {@link android.view.View} to be displayed
  * in the list and associates with a {@link SharedPreferences} to
  * store/retrieve the preference data.
@@ -1390,7 +1390,7 @@ public class Preference implements Comparable<Preference> {
      */
     private void registerDependent(Preference dependent) {
         if (mDependents == null) {
-            mDependents = new ArrayList<Preference>();
+            mDependents = new ArrayList<>();
         }
 
         mDependents.add(dependent);

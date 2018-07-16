@@ -16,21 +16,21 @@
 
 package moe.shizuku.preference;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.SharedPreferencesCompat;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.SharedPreferencesCompat;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List;import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Used to help create {@link Preference} hierarchies
@@ -814,7 +814,7 @@ public class PreferenceManager {
     }
 
     /**
-     * Callback class to be used by the {@link android.support.v7.widget.RecyclerView.Adapter}
+     * Callback class to be used by the {@link RecyclerView.Adapter}
      * associated with the {@link PreferenceScreen}, used to determine when two {@link Preference}
      * objects are semantically and visually the same.
      */
