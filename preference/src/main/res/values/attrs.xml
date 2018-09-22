@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
     Copyright (C) 2015 The Android Open Source Project
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -225,6 +226,8 @@
         <attr name="selectAllOnFocus" format="boolean" />
         <attr name="android:selectAllOnFocus" />
         <attr name="commitOnEnter" format="boolean" />
+        <attr name="hint" format="string"/>
+        <attr name="android:hint"/>
     </declare-styleable>
 
     <!-- Base attributes available to ListPreference. -->

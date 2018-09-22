@@ -24,13 +24,13 @@
     android:clipToPadding="false"
     android:minHeight="?android:listPreferredItemHeightSmall"
     android:background="?android:selectableItemBackground"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:focusable="true"
         android:baselineAligned="false">
 
         <LinearLayout
