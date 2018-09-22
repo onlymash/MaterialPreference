@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,7 @@
   -->
 
 <resources>
+
     <style name="PreferenceThemeOverlay">
         <item name="preferenceScreenStyle">@style/Preference.PreferenceScreen.Material</item>
         <item name="preferenceFragmentStyle">@style/PreferenceFragment.Material</item>
@@ -25,7 +25,9 @@
         <item name="checkBoxPreferenceStyle">@style/Preference.CheckBoxPreference.Material</item>
         <item name="switchPreferenceStyle">@style/Preference.SwitchPreference.Material</item>
         <item name="dialogPreferenceStyle">@style/Preference.DialogPreference.Material</item>
-        <item name="editTextPreferenceStyle">@style/Preference.DialogPreference.EditTextPreference.Material</item>
+        <item name="editTextPreferenceStyle">
+            @style/Preference.DialogPreference.EditTextPreference.Material
+        </item>
         <item name="preferenceFragmentListStyle">@style/PreferenceFragmentList.Material</item>
         <item name="dropDownPreferenceStyle">@style/Preference.DropDownPreference</item>
         <item name="ringtonePreferenceStyle">@style/Preference.RingtonePreference</item>

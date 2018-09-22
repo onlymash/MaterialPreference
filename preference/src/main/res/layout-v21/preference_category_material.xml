@@ -32,7 +32,7 @@
         android:id="@+id/icon_frame"
         android:layout_width="56dp"
         android:layout_height="0dp"
-        android:gravity="start"/>
+        android:gravity="start" />
 
     <TextView
         android:id="@android:id/title"
@@ -41,6 +41,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="@android:style/TextAppearance.Material.Body2"
         android:textColor="?android:attr/colorAccent"
-        tools:text="Category"/>
+        tools:text="Category" />
 
 </LinearLayout>

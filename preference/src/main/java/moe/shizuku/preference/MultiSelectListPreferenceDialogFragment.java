@@ -18,11 +18,12 @@ package moe.shizuku.preference;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import androidx.annotation.NonNull;
 
 public class MultiSelectListPreferenceDialogFragment extends PreferenceDialogFragment {
 

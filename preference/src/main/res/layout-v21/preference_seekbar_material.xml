@@ -16,7 +16,6 @@
 
 <!-- Layout used by SeekBarPreference for the seekbar widget style. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:listPreferredItemHeightSmall"
@@ -25,7 +24,8 @@
     android:paddingEnd="?android:listPreferredItemPaddingRight"
     android:background="?android:selectableItemBackground"
     android:clipChildren="false"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    android:baselineAligned="false">
 
     <LinearLayout
         android:id="@+id/icon_frame"
@@ -53,22 +53,24 @@
         android:clipChildren="false"
         android:clipToPadding="false">
 
-        <TextView android:id="@android:id/title"
+        <TextView
+            android:id="@android:id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceListItem"
             android:ellipsize="marquee"
-            android:fadingEdge="horizontal"/>
+            android:fadingEdge="horizontal" />
 
-        <TextView android:id="@android:id/summary"
+        <TextView
+            android:id="@android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@android:id/title"
             android:layout_alignStart="@android:id/title"
             android:textAppearance="?android:attr/textAppearanceListItemSecondary"
             android:textColor="?android:attr/textColorSecondary"
-            android:maxLines="4"/>
+            android:maxLines="4" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -89,14 +91,15 @@
                 android:focusable="false"
                 android:clickable="false" />
 
-            <TextView android:id="@+id/seekbar_value"
+            <TextView
+                android:id="@+id/seekbar_value"
                 android:layout_width="32dp"
                 android:layout_height="match_parent"
                 android:gravity="end|center_vertical"
                 android:fontFamily="sans-serif-condensed"
                 android:singleLine="true"
                 android:ellipsize="marquee"
-                android:fadingEdge="horizontal"/>
+                android:fadingEdge="horizontal" />
 
         </LinearLayout>
 

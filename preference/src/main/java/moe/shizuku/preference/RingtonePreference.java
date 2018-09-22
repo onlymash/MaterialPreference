@@ -23,9 +23,10 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.provider.Settings.System;
-import android.support.v4.content.res.TypedArrayUtils;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+
+import androidx.core.content.res.TypedArrayUtils;
 
 /**
  * A {@link Preference} that allows the user to choose a ringtone from those on the device.
@@ -173,7 +174,7 @@ public class RingtonePreference extends Preference implements
      * to adjust the parameters of the ringtone picker.
      *
      * @param ringtonePickerIntent The ringtone picker intent that can be
-     *            modified by putting extras.
+     *                             modified by putting extras.
      */
     protected void onPrepareRingtonePickerIntent(Intent ringtonePickerIntent) {
 

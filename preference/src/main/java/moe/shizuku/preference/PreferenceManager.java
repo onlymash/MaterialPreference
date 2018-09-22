@@ -16,21 +16,23 @@
 
 package moe.shizuku.preference;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.SharedPreferencesCompat;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.SharedPreferencesCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /**
  * Used to help create {@link Preference} hierarchies
@@ -158,6 +160,7 @@ public class PreferenceManager {
     void setFragment(PreferenceFragment fragment) {
         mFragment = fragment;
     }
+
     /**
      * Returns the owning preference fragment, if any.
      */
@@ -170,12 +173,12 @@ public class PreferenceManager {
      * Inflates a preference hierarchy from XML. If a preference hierarchy is
      * given, the new preference hierarchies will be merged in.
      *
-     * @param context The context of the resource.
-     * @param resId The resource ID of the XML to inflate.
+     * @param context         The context of the resource.
+     * @param resId           The resource ID of the XML to inflate.
      * @param rootPreferences Optional existing hierarchy to merge the new
-     *            hierarchies into.
+     *                        hierarchies into.
      * @return The root hierarchy (if one was not provided, the new hierarchy's
-     *         root).
+     * root).
      * @hide
      */
     @RestrictTo(LIBRARY_GROUP)
@@ -360,8 +363,8 @@ public class PreferenceManager {
      * use.
      *
      * @return a {@link SharedPreferences} instance pointing to the file that contain the values of
-     *         preferences that are managed by this PreferenceManager. If
-     *         a {@link PreferenceDataStore} has been set, this method returns {@code null}.
+     * preferences that are managed by this PreferenceManager. If
+     * a {@link PreferenceDataStore} has been set, this method returns {@code null}.
      */
     public SharedPreferences getSharedPreferences() {
         if (getPreferenceDataStore() != null) {
@@ -392,7 +395,7 @@ public class PreferenceManager {
      *
      * @param context The context of the preferences whose values are wanted.
      * @return A SharedPreferences instance that can be used to retrieve and
-     *         listen to values of the preferences.
+     * listen to values of the preferences.
      */
     public static SharedPreferences getDefaultSharedPreferences(Context context) {
         return context.getSharedPreferences(getDefaultSharedPreferencesName(context),
@@ -455,20 +458,20 @@ public class PreferenceManager {
      * be called by the application's main activity.
      * <p>
      *
-     * @param context The context of the shared preferences.
-     * @param resId The resource ID of the preference XML file.
+     * @param context   The context of the shared preferences.
+     * @param resId     The resource ID of the preference XML file.
      * @param readAgain Whether to re-read the default values.
-     * If false, this method sets the default values only if this
-     * method has never been called in the past (or if the
-     * {@link #KEY_HAS_SET_DEFAULT_VALUES} in the default value shared
-     * preferences file is false). To attempt to set the default values again
-     * bypassing this check, set {@code readAgain} to true.
-     *            <p class="note">
-     *            Note: this will NOT reset preferences back to their default
-     *            values. For that functionality, use
-     *            {@link PreferenceManager#getDefaultSharedPreferences(Context)}
-     *            and clear it followed by a call to this method with this
-     *            parameter set to true.
+     *                  If false, this method sets the default values only if this
+     *                  method has never been called in the past (or if the
+     *                  {@link #KEY_HAS_SET_DEFAULT_VALUES} in the default value shared
+     *                  preferences file is false). To attempt to set the default values again
+     *                  bypassing this check, set {@code readAgain} to true.
+     *                  <p class="note">
+     *                  Note: this will NOT reset preferences back to their default
+     *                  values. For that functionality, use
+     *                  {@link PreferenceManager#getDefaultSharedPreferences(Context)}
+     *                  and clear it followed by a call to this method with this
+     *                  parameter set to true.
      */
     public static void setDefaultValues(Context context, int resId, boolean readAgain) {
         // Use the default shared preferences name and mode
@@ -481,25 +484,24 @@ public class PreferenceManager {
      * the client to provide the filename and mode of the shared preferences
      * file.
      *
-     * @param context The context of the shared preferences.
+     * @param context               The context of the shared preferences.
      * @param sharedPreferencesName A custom name for the shared preferences file.
      * @param sharedPreferencesMode The file creation mode for the shared preferences file, such
-     * as {@link android.content.Context#MODE_PRIVATE} or {@link
-     * android.content.Context#MODE_PRIVATE}
-     * @param resId The resource ID of the preference XML file.
-     * @param readAgain Whether to re-read the default values.
-     * If false, this method will set the default values only if this
-     * method has never been called in the past (or if the
-     * {@link #KEY_HAS_SET_DEFAULT_VALUES} in the default value shared
-     * preferences file is false). To attempt to set the default values again
-     * bypassing this check, set {@code readAgain} to true.
-     *            <p class="note">
-     *            Note: this will NOT reset preferences back to their default
-     *            values. For that functionality, use
-     *            {@link PreferenceManager#getDefaultSharedPreferences(Context)}
-     *            and clear it followed by a call to this method with this
-     *            parameter set to true.
-     *
+     *                              as {@link android.content.Context#MODE_PRIVATE} or {@link
+     *                              android.content.Context#MODE_PRIVATE}
+     * @param resId                 The resource ID of the preference XML file.
+     * @param readAgain             Whether to re-read the default values.
+     *                              If false, this method will set the default values only if this
+     *                              method has never been called in the past (or if the
+     *                              {@link #KEY_HAS_SET_DEFAULT_VALUES} in the default value shared
+     *                              preferences file is false). To attempt to set the default values again
+     *                              bypassing this check, set {@code readAgain} to true.
+     *                              <p class="note">
+     *                              Note: this will NOT reset preferences back to their default
+     *                              values. For that functionality, use
+     *                              {@link PreferenceManager#getDefaultSharedPreferences(Context)}
+     *                              and clear it followed by a call to this method with this
+     *                              parameter set to true.
      * @see #setDefaultValues(Context, int, boolean)
      * @see #setSharedPreferencesName(String)
      * @see #setSharedPreferencesMode(int)
@@ -528,7 +530,7 @@ public class PreferenceManager {
      * <p>Do NOT commit unless {@link #shouldCommit()} returns true.
      *
      * @return an editor to use to write to shared preferences. If a {@link PreferenceDataStore} has
-     *         been set, this method returns {@code null}.
+     * been set, this method returns {@code null}.
      * @see #shouldCommit()
      */
     SharedPreferences.Editor getEditor() {
@@ -607,7 +609,7 @@ public class PreferenceManager {
 
     public final String[] getDefaultPackages() {
         if (mDefaultPackages == null) {
-            mDefaultPackages = new String[]{ PreferenceInflater.DEFAULT_PACKAGE };
+            mDefaultPackages = new String[]{PreferenceInflater.DEFAULT_PACKAGE};
         }
         return mDefaultPackages;
     }
@@ -617,7 +619,7 @@ public class PreferenceManager {
      * for tag names that have no explicit package.
      *
      * @param defaultPackages The default package. This will be prepended to the
-     *            tag name, so it should end with a period.
+     *                        tag name, so it should end with a period.
      */
     public void setDefaultPackages(String[] defaultPackages) {
         String[] array = new String[defaultPackages.length + 1];
@@ -678,8 +680,8 @@ public class PreferenceManager {
     /**
      * Registers a listener.
      *
-     * @see OnActivityStopListener
      * @hide
+     * @see OnActivityStopListener
      */
     public void registerOnActivityStopListener(OnActivityStopListener listener) {
         synchronized (this) {
@@ -691,11 +693,12 @@ public class PreferenceManager {
             }
         }
     }
+
     /**
      * Unregisters a listener.
      *
-     * @see OnActivityStopListener
      * @hide
+     * @see OnActivityStopListener
      */
     public void unregisterOnActivityStopListener(OnActivityStopListener listener) {
         synchronized (this) {
@@ -704,6 +707,7 @@ public class PreferenceManager {
             }
         }
     }
+
     /**
      * Called by the {@link PreferenceManager} to dispatch the activity stop
      * event.
@@ -719,6 +723,7 @@ public class PreferenceManager {
             list.get(i).onActivityStop();
         }
     }
+
     /**
      * Registers a listener.
      *
@@ -734,6 +739,7 @@ public class PreferenceManager {
             }
         }
     }
+
     /**
      * Unregisters a listener.
      *
@@ -746,6 +752,7 @@ public class PreferenceManager {
             }
         }
     }
+
     /**
      * Called by the {@link PreferenceManager} to dispatch the activity destroy
      * event.
@@ -774,7 +781,7 @@ public class PreferenceManager {
      * call to this method should return another unique request code.
      *
      * @return A unique request code that will never be used by anyone other
-     *         than the caller of this method.
+     * than the caller of this method.
      */
     int getNextRequestCode() {
         synchronized (this) {
@@ -814,7 +821,7 @@ public class PreferenceManager {
     }
 
     /**
-     * Callback class to be used by the {@link android.support.v7.widget.RecyclerView.Adapter}
+     * Callback class to be used by the {@link RecyclerView.Adapter}
      * associated with the {@link PreferenceScreen}, used to determine when two {@link Preference}
      * objects are semantically and visually the same.
      */
@@ -900,12 +907,7 @@ public class PreferenceManager {
                     return false;
                 }
             }
-            if (p1 instanceof DropDownPreference && p1 != p2) {
-                // Different object, must re-bind spinner adapter
-                return false;
-            }
-
-            return true;
+            return !(p1 instanceof DropDownPreference) || p1 == p2;
         }
     }
 
@@ -962,10 +964,11 @@ public class PreferenceManager {
          * See Activity's onActivityResult.
          *
          * @return Whether the request code was handled (in which case
-         *         subsequent listeners will not be called.
+         * subsequent listeners will not be called.
          */
         boolean onActivityResult(int requestCode, int resultCode, Intent data);
     }
+
     /**
      * Interface definition for a class that will be called when the container's activity
      * is stopped.
@@ -976,6 +979,7 @@ public class PreferenceManager {
          */
         void onActivityStop();
     }
+
     /**
      * Interface definition for a class that will be called when the container's activity
      * is destroyed.

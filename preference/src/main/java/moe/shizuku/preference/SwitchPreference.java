@@ -1,34 +1,35 @@
 /*
-* Copyright (C) 2015 The Android Open Source Project
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License
-*/
+ * Copyright (C) 2015 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License
+ */
 
 package moe.shizuku.preference;
-
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.RestrictTo;
-import android.support.v4.content.res.TypedArrayUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+
+import androidx.annotation.RestrictTo;
+import androidx.core.content.res.TypedArrayUtils;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /**
  * A {@link Preference} that provides a two-state toggleable option.
@@ -65,15 +66,15 @@ public class SwitchPreference extends TwoStatePreference {
     /**
      * Construct a new SwitchPreference with the given style options.
      *
-     * @param context The Context that will style this preference
-     * @param attrs Style attributes that differ from the default
+     * @param context      The Context that will style this preference
+     * @param attrs        Style attributes that differ from the default
      * @param defStyleAttr An attribute in the current theme that contains a
-     *        reference to a style resource that supplies default values for
-     *        the view. Can be 0 to not look for defaults.
-     * @param defStyleRes A resource identifier of a style resource that
-     *        supplies default values for the view, used only if
-     *        defStyleAttr is 0 or can not be found in the theme. Can be 0
-     *        to not look for defaults.
+     *                     reference to a style resource that supplies default values for
+     *                     the view. Can be 0 to not look for defaults.
+     * @param defStyleRes  A resource identifier of a style resource that
+     *                     supplies default values for the view, used only if
+     *                     defStyleAttr is 0 or can not be found in the theme. Can be 0
+     *                     to not look for defaults.
      */
     @SuppressLint("RestrictedApi")
     public SwitchPreference(Context context, AttributeSet attrs, int defStyleAttr,
@@ -107,11 +108,11 @@ public class SwitchPreference extends TwoStatePreference {
     /**
      * Construct a new SwitchPreference with the given style options.
      *
-     * @param context The Context that will style this preference
-     * @param attrs Style attributes that differ from the default
+     * @param context      The Context that will style this preference
+     * @param attrs        Style attributes that differ from the default
      * @param defStyleAttr An attribute in the current theme that contains a
-     *        reference to a style resource that supplies default values for
-     *        the view. Can be 0 to not look for defaults.
+     *                     reference to a style resource that supplies default values for
+     *                     the view. Can be 0 to not look for defaults.
      */
     public SwitchPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, R.style.Preference_SwitchPreference);
@@ -121,7 +122,7 @@ public class SwitchPreference extends TwoStatePreference {
      * Construct a new SwitchPreference with the given style options.
      *
      * @param context The Context that will style this preference
-     * @param attrs Style attributes that differ from the default
+     * @param attrs   Style attributes that differ from the default
      */
     public SwitchPreference(Context context, AttributeSet attrs) {
         this(context, attrs, R.attr.switchPreferenceStyle);

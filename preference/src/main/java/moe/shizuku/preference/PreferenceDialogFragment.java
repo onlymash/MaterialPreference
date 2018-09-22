@@ -16,8 +16,6 @@
 
 package moe.shizuku.preference;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,17 +24,20 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /**
  * Abstract base class which presents a dialog associated with a
@@ -63,11 +64,14 @@ public abstract class PreferenceDialogFragment extends DialogFragment implements
     private CharSequence mPositiveButtonText;
     private CharSequence mNegativeButtonText;
     private CharSequence mDialogMessage;
-    private @LayoutRes int mDialogLayoutRes;
+    private @LayoutRes
+    int mDialogLayoutRes;
 
     private BitmapDrawable mDialogIcon;
 
-    /** Which button was clicked. */
+    /**
+     * Which button was clicked.
+     */
     private int mWhichButtonClicked;
 
     @Override
@@ -185,12 +189,14 @@ public abstract class PreferenceDialogFragment extends DialogFragment implements
      * Do not {@link PreferenceDialogBuilder#create()} or
      * {@link PreferenceDialogBuilder#show()}.
      */
-    protected void onPrepareDialogBuilder(PreferenceDialogBuilder builder) {}
+    protected void onPrepareDialogBuilder(PreferenceDialogBuilder builder) {
+    }
 
     /**
      * Returns whether the preference needs to display a soft input method when the dialog
      * is displayed. Default is false. Subclasses should override this method if they need
      * the soft input method brought up automatically.
+     *
      * @hide
      */
     @RestrictTo(LIBRARY_GROUP)

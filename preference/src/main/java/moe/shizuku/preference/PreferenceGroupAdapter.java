@@ -16,16 +16,7 @@
 
 package moe.shizuku.preference;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.support.annotation.RestrictTo;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +24,12 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.RestrictTo;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /**
  * An adapter that connects a RecyclerView to the {@link Preference} objects contained in the
@@ -87,7 +84,8 @@ public class PreferenceGroupAdapter extends RecyclerView.Adapter<PreferenceViewH
         private int widgetResId;
         private String name;
 
-        public PreferenceLayout() {}
+        public PreferenceLayout() {
+        }
 
         public PreferenceLayout(PreferenceLayout other) {
             resId = other.resId;
@@ -224,7 +222,7 @@ public class PreferenceGroupAdapter extends RecyclerView.Adapter<PreferenceViewH
      * different view types.
      */
     private PreferenceLayout createPreferenceLayout(Preference preference, PreferenceLayout in) {
-        PreferenceLayout pl = in != null? in : new PreferenceLayout();
+        PreferenceLayout pl = in != null ? in : new PreferenceLayout();
         pl.name = preference.getClass().getName();
         pl.resId = preference.getLayoutResource();
         pl.widgetResId = preference.getWidgetLayoutResource();

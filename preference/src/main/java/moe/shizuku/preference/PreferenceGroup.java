@@ -16,22 +16,24 @@
 
 package moe.shizuku.preference;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.RestrictTo;
-import android.support.v4.content.res.TypedArrayUtils;
-import android.support.v4.util.SimpleArrayMap;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.RestrictTo;
+import androidx.collection.SimpleArrayMap;
+import androidx.core.content.res.TypedArrayUtils;
+import androidx.recyclerview.widget.RecyclerView;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /**
  * A container for multiple
@@ -130,6 +132,7 @@ public abstract class PreferenceGroup extends Preference {
 
     /**
      * Returns the number of children {@link Preference}s.
+     *
      * @return The number of preference children in this group.
      */
     public int getPreferenceCount() {
@@ -167,7 +170,7 @@ public abstract class PreferenceGroup extends Preference {
             if (preference instanceof PreferenceGroup) {
                 // TODO: fix (method is called tail recursively when inflating,
                 // so we won't end up properly passing this flag down to children
-                ((PreferenceGroup)preference).setOrderingAsAdded(mOrderingAsAdded);
+                ((PreferenceGroup) preference).setOrderingAsAdded(mOrderingAsAdded);
             }
         }
 
@@ -180,7 +183,7 @@ public abstract class PreferenceGroup extends Preference {
             return false;
         }
 
-        synchronized(this) {
+        synchronized (this) {
             mPreferenceList.add(insertionIndex, preference);
         }
 
@@ -218,7 +221,7 @@ public abstract class PreferenceGroup extends Preference {
     }
 
     private boolean removePreferenceInt(Preference preference) {
-        synchronized(this) {
+        synchronized (this) {
             preference.onPrepareForRemoval();
             if (preference.getParent() == this) {
                 preference.assignParent(null);
@@ -255,7 +258,7 @@ public abstract class PreferenceGroup extends Preference {
      * Removes all {@link Preference Preferences} from this group.
      */
     public void removeAll() {
-        synchronized(this) {
+        synchronized (this) {
             List<Preference> preferenceList = mPreferenceList;
             for (int i = preferenceList.size() - 1; i >= 0; i--) {
                 removePreferenceInt(preferenceList.get(0));
@@ -302,7 +305,7 @@ public abstract class PreferenceGroup extends Preference {
             }
 
             if (preference instanceof PreferenceGroup) {
-                final Preference returnedPreference = ((PreferenceGroup)preference)
+                final Preference returnedPreference = ((PreferenceGroup) preference)
                         .findPreference(key);
                 if (returnedPreference != null) {
                     return returnedPreference;
@@ -318,7 +321,7 @@ public abstract class PreferenceGroup extends Preference {
      * contained preferences.
      *
      * @return True if the contained preferences should be shown on the same
-     *         screen as this preference.
+     * screen as this preference.
      */
     protected boolean isOnSameScreenAsChildren() {
         return true;
@@ -326,6 +329,7 @@ public abstract class PreferenceGroup extends Preference {
 
     /**
      * Returns true if we're between {@link #onAttached()} and {@link #onPrepareForRemoval()}
+     *
      * @hide
      */
     @RestrictTo(LIBRARY_GROUP)
@@ -412,17 +416,19 @@ public abstract class PreferenceGroup extends Preference {
 
         /**
          * Return the adapter position of the first {@link Preference} with the specified key
+         *
          * @param key Key of {@link Preference} to find
          * @return Adapter position of the {@link Preference} or
-         *         {@link android.support.v7.widget.RecyclerView#NO_POSITION} if not found
+         * {@link RecyclerView#NO_POSITION} if not found
          */
         int getPreferenceAdapterPosition(String key);
 
         /**
          * Return the adapter position of the specified {@link Preference} object
+         *
          * @param preference {@link Preference} object to find
          * @return Adapter position of the {@link Preference} or
-         *         {@link android.support.v7.widget.RecyclerView#NO_POSITION} if not found
+         * {@link RecyclerView#NO_POSITION} if not found
          */
         int getPreferenceAdapterPosition(Preference preference);
     }

@@ -2,19 +2,20 @@ package moe.shizuku.preference;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface.OnClickListener;
+import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
-import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
+
+import androidx.annotation.RequiresApi;
 
 public class PreferenceDialogBuilder {
 

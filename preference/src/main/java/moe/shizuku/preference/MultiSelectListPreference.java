@@ -22,15 +22,16 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.ArrayRes;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.content.res.TypedArrayUtils;
 import android.util.AttributeSet;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
+import androidx.core.content.res.TypedArrayUtils;
+import androidx.fragment.app.DialogFragment;
 
 /**
  * A {@link Preference} that displays a list of entries as
@@ -106,8 +107,8 @@ public class MultiSelectListPreference extends DialogPreference {
     }
 
     /**
-     * @see #setEntries(CharSequence[])
      * @param entriesResId The entries array as a resource.
+     * @see #setEntries(CharSequence[])
      */
     public void setEntries(@ArrayRes int entriesResId) {
         setEntries(getContext().getResources().getTextArray(entriesResId));
@@ -134,8 +135,8 @@ public class MultiSelectListPreference extends DialogPreference {
     }
 
     /**
-     * @see #setEntryValues(CharSequence[])
      * @param entryValuesResId The entry values array as a resource.
+     * @see #setEntryValues(CharSequence[])
      */
     public void setEntryValues(@ArrayRes int entryValuesResId) {
         setEntryValues(getContext().getResources().getTextArray(entryValuesResId));

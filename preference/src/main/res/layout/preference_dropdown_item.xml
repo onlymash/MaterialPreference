@@ -18,14 +18,14 @@
 */
 -->
 <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:id="@android:id/text1"
-                 android:singleLine="true"
-                 android:layout_width="match_parent"
-                 android:layout_height="48dp"
-                 android:paddingLeft="16dp"
-                 android:paddingRight="16dp"
-                 android:textAppearance="@android:style/TextAppearance.Widget.DropDownItem"
-                 android:textSize="16sp"
-                 android:minWidth="112dp"
-                 android:gravity="center_vertical"
-                 android:ellipsize="marquee"/>
+    android:id="@android:id/text1"
+    android:singleLine="true"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:textAppearance="@android:style/TextAppearance.Widget.DropDownItem"
+    android:textSize="16sp"
+    android:minWidth="112dp"
+    android:gravity="center_vertical"
+    android:ellipsize="marquee" />

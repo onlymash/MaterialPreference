@@ -219,6 +219,7 @@ public class SeekBarPreference extends Preference {
      * Returns the amount of increment change via each arrow key click. This value is derived from
      * user's specified increment value if it's not zero. Otherwise, the default value is picked
      * from the default mKeyProgressIncrement value in {@link android.widget.AbsSeekBar}.
+     *
      * @return The amount of increment on the SeekBar performed after each user's arrow key press.
      */
     public final int getSeekBarIncrement() {
@@ -227,12 +228,13 @@ public class SeekBarPreference extends Preference {
 
     /**
      * Sets the increment amount on the SeekBar for each arrow key press.
+     *
      * @param seekBarIncrement The amount to increment or decrement when the user presses an
      *                         arrow key.
      */
     public final void setSeekBarIncrement(int seekBarIncrement) {
         if (seekBarIncrement != mSeekBarIncrement) {
-            mSeekBarIncrement =  Math.min(mMax - mMin, Math.abs(seekBarIncrement));
+            mSeekBarIncrement = Math.min(mMax - mMin, Math.abs(seekBarIncrement));
             notifyChanged();
         }
     }

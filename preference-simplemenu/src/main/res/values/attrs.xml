@@ -10,13 +10,13 @@
     </declare-styleable>
 
     <declare-styleable name="ForegroundCheckTextView">
-        <attr name="android:foregroundGravity"/>
-        <attr name="android:foreground"/>
-        <attr name="foregroundInsidePadding" format="boolean"/>
+        <attr name="android:foregroundGravity" />
+        <attr name="android:foreground" />
+        <attr name="foregroundInsidePadding" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="SimpleMenuPreference">
-        <attr name="popupStyle" format="reference"/>
+        <attr name="popupStyle" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="SimpleMenuPopup">

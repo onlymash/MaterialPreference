@@ -15,28 +15,7 @@
   ~ limitations under the License
   -->
 
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
-
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent" >
-
-    <FrameLayout
-        android:id="@+id/list_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <TextView android:id="@android:id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp"
-        android:gravity="center"
-        android:visibility="gone" />
-
-</LinearLayout>-->
+    android:layout_height="match_parent" />

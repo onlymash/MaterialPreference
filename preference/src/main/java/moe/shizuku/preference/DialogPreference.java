@@ -20,12 +20,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.TypedArrayUtils;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.TypedArrayUtils;
+import androidx.fragment.app.DialogFragment;
 
 /**
  * A base class for {@link Preference} objects that are
@@ -111,8 +112,8 @@ public abstract class DialogPreference extends Preference {
     }
 
     /**
-     * @see #setDialogTitle(CharSequence)
      * @param dialogTitleResId The dialog title as a resource.
+     * @see #setDialogTitle(CharSequence)
      */
     public void setDialogTitle(int dialogTitleResId) {
         setDialogTitle(getContext().getString(dialogTitleResId));
@@ -120,6 +121,7 @@ public abstract class DialogPreference extends Preference {
 
     /**
      * Returns the title to be shown on subsequent dialogs.
+     *
      * @return The title.
      */
     public CharSequence getDialogTitle() {
@@ -141,8 +143,8 @@ public abstract class DialogPreference extends Preference {
     }
 
     /**
-     * @see #setDialogMessage(CharSequence)
      * @param dialogMessageResId The dialog message as a resource.
+     * @see #setDialogMessage(CharSequence)
      */
     public void setDialogMessage(int dialogMessageResId) {
         setDialogMessage(getContext().getString(dialogMessageResId));
@@ -150,6 +152,7 @@ public abstract class DialogPreference extends Preference {
 
     /**
      * Returns the message to be shown on subsequent dialogs.
+     *
      * @return The message.
      */
     public CharSequence getDialogMessage() {
@@ -177,6 +180,7 @@ public abstract class DialogPreference extends Preference {
 
     /**
      * Returns the icon to be shown on subsequent dialogs.
+     *
      * @return The icon, as a {@link Drawable}.
      */
     public Drawable getDialogIcon() {
@@ -194,8 +198,8 @@ public abstract class DialogPreference extends Preference {
     }
 
     /**
-     * @see #setPositiveButtonText(CharSequence)
      * @param positiveButtonTextResId The positive button text as a resource.
+     * @see #setPositiveButtonText(CharSequence)
      */
     public void setPositiveButtonText(int positiveButtonTextResId) {
         setPositiveButtonText(getContext().getString(positiveButtonTextResId));
@@ -222,8 +226,8 @@ public abstract class DialogPreference extends Preference {
     }
 
     /**
-     * @see #setNegativeButtonText(CharSequence)
      * @param negativeButtonTextResId The negative button text as a resource.
+     * @see #setNegativeButtonText(CharSequence)
      */
     public void setNegativeButtonText(int negativeButtonTextResId) {
         setNegativeButtonText(getContext().getString(negativeButtonTextResId));

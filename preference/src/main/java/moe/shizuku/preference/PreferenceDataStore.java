@@ -16,9 +16,9 @@
 
 package moe.shizuku.preference;
 
-import android.support.annotation.Nullable;
-
 import java.util.Set;
+
+import androidx.annotation.Nullable;
 
 /**
  * A data store interface to be implemented and provided to the Preferences framework. This can be
@@ -47,7 +47,7 @@ public abstract class PreferenceDataStore {
      *
      * <p>Once the value is set the data store is responsible for holding it.
      *
-     * @param key the name of the preference to modify
+     * @param key   the name of the preference to modify
      * @param value the new value for the preference
      * @see #getString(String, String)
      */
@@ -60,7 +60,7 @@ public abstract class PreferenceDataStore {
      *
      * <p>Once the value is set the data store is responsible for holding it.
      *
-     * @param key the name of the preference to modify
+     * @param key    the name of the preference to modify
      * @param values the set of new values for the preference
      * @see #getStringSet(String, Set<String>)
      */
@@ -73,7 +73,7 @@ public abstract class PreferenceDataStore {
      *
      * <p>Once the value is set the data store is responsible for holding it.
      *
-     * @param key the name of the preference to modify
+     * @param key   the name of the preference to modify
      * @param value the new value for the preference
      * @see #getInt(String, int)
      */
@@ -86,7 +86,7 @@ public abstract class PreferenceDataStore {
      *
      * <p>Once the value is set the data store is responsible for holding it.
      *
-     * @param key the name of the preference to modify
+     * @param key   the name of the preference to modify
      * @param value the new value for the preference
      * @see #getLong(String, long)
      */
@@ -99,7 +99,7 @@ public abstract class PreferenceDataStore {
      *
      * <p>Once the value is set the data store is responsible for holding it.
      *
-     * @param key the name of the preference to modify
+     * @param key   the name of the preference to modify
      * @param value the new value for the preference
      * @see #getFloat(String, float)
      */
@@ -112,7 +112,7 @@ public abstract class PreferenceDataStore {
      *
      * <p>Once the value is set the data store is responsible for holding it.
      *
-     * @param key the name of the preference to modify
+     * @param key   the name of the preference to modify
      * @param value the new value for the preference
      * @see #getBoolean(String, boolean)
      */
@@ -123,7 +123,7 @@ public abstract class PreferenceDataStore {
     /**
      * Retrieves a {@link String} value from the data store.
      *
-     * @param key the name of the preference to retrieve
+     * @param key      the name of the preference to retrieve
      * @param defValue value to return if this preference does not exist in the storage
      * @return the value from the data store or the default return value
      * @see #putString(String, String)
@@ -136,7 +136,7 @@ public abstract class PreferenceDataStore {
     /**
      * Retrieves a set of Strings from the data store.
      *
-     * @param key the name of the preference to retrieve
+     * @param key       the name of the preference to retrieve
      * @param defValues values to return if this preference does not exist in the storage
      * @return the values from the data store or the default return values
      * @see #putStringSet(String, Set<String>)
@@ -149,7 +149,7 @@ public abstract class PreferenceDataStore {
     /**
      * Retrieves an {@link Integer} value from the data store.
      *
-     * @param key the name of the preference to retrieve
+     * @param key      the name of the preference to retrieve
      * @param defValue value to return if this preference does not exist in the storage
      * @return the value from the data store or the default return value
      * @see #putInt(String, int)
@@ -161,7 +161,7 @@ public abstract class PreferenceDataStore {
     /**
      * Retrieves a {@link Long} value from the data store.
      *
-     * @param key the name of the preference to retrieve
+     * @param key      the name of the preference to retrieve
      * @param defValue value to return if this preference does not exist in the storage
      * @return the value from the data store or the default return value
      * @see #putLong(String, long)
@@ -173,7 +173,7 @@ public abstract class PreferenceDataStore {
     /**
      * Retrieves a {@link Float} value from the data store.
      *
-     * @param key the name of the preference to retrieve
+     * @param key      the name of the preference to retrieve
      * @param defValue value to return if this preference does not exist in the storage
      * @return the value from the data store or the default return value
      * @see #putFloat(String, float)
@@ -185,7 +185,7 @@ public abstract class PreferenceDataStore {
     /**
      * Retrieves a {@link Boolean} value from the data store.
      *
-     * @param key the name of the preference to retrieve
+     * @param key      the name of the preference to retrieve
      * @param defValue value to return if this preference does not exist in the storage
      * @return the value from the data store or the default return value
      * @see #getBoolean(String, boolean)

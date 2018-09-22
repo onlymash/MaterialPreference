@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,8 @@
   ~ limitations under the License
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
+
     <style name="Preference">
         <item name="android:layout">@layout/preference_material</item>
     </style>
@@ -43,8 +43,7 @@
         <item name="android:widgetLayout">@layout/preference_widget_checkbox</item>
     </style>
 
-    <style name="Preference.PreferenceScreen">
-    </style>
+    <style name="Preference.PreferenceScreen"></style>
 
     <style name="Preference.DialogPreference">
         <item name="android:positiveButtonText">@android:string/ok</item>

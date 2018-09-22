@@ -7,12 +7,13 @@ import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * A wrapped {@link Drawable} that force use its own bounds to draw.
- *
+ * <p>
  * It maybe a little dirty. But if we don't do that, during the expanding animation, there will be
  * one or two frame using wrong bounds because of parent view sets bounds.
  */

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright (C) 2015 The Android Open Source Project
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -104,7 +103,7 @@
         <attr name="key" format="string" />
         <attr name="android:key" />
         <!-- The title for the Preference in a PreferenceActivity screen. -->
-        <attr name="title" format="string"/>
+        <attr name="title" format="string" />
         <attr name="android:title" />
         <!-- The summary for the Preference in a PreferenceActivity screen. -->
         <attr name="summary" format="string" />
@@ -153,11 +152,11 @@
         <!-- Whether the preference allows displaying divider below it -->
         <attr name="dividerBelowVisibility" format="enum">
             <!-- Unspecified, display or not is depend on DividerDecoration -->
-            <enum name="unspecified" value="0"/>
+            <enum name="unspecified" value="0" />
             <!-- Forced to show the divider -->
-            <enum name="enforced" value="1"/>
+            <enum name="enforced" value="1" />
             <!-- Forbid the display of divder -->
-            <enum name="forbidden" value="2"/>
+            <enum name="forbidden" value="2" />
         </attr>
 
         <!-- Whether to use single line for the preference title text. By default, preference title
@@ -219,13 +218,13 @@
 
     <!-- Base attributes available to EditTextPreference. -->
     <declare-styleable name="EditTextPreference">
-        <attr name="inputType" format="reference"/>
-        <attr name="android:inputType"/>
-        <attr name="singleLine" format="boolean"/>
-        <attr name="android:singleLine"/>
-        <attr name="selectAllOnFocus" format="boolean"/>
-        <attr name="android:selectAllOnFocus"/>
-        <attr name="commitOnEnter" format="boolean"/>
+        <attr name="inputType" format="reference" />
+        <attr name="android:inputType" />
+        <attr name="singleLine" format="boolean" />
+        <attr name="android:singleLine" />
+        <attr name="selectAllOnFocus" format="boolean" />
+        <attr name="android:selectAllOnFocus" />
+        <attr name="commitOnEnter" format="boolean" />
     </declare-styleable>
 
     <!-- Base attributes available to ListPreference. -->
@@ -267,7 +266,7 @@
         <!-- The text used on the switch itself when in the "on" state.
              This should be a very SHORT string, as it appears in a small space. -->
         <attr name="switchTextOn" format="string" />
-        <attr name="android:switchTextOn"/>
+        <attr name="android:switchTextOn" />
         <!-- The text used on the switch itself when in the "off" state.
              This should be a very SHORT string, as it appears in a small space. -->
         <attr name="switchTextOff" format="string" />
@@ -305,22 +304,22 @@
             <flag name="alarm" value="4" />
             <flag name="all" value="7" />
         </attr>
-        <attr name="android:ringtoneType"/>
+        <attr name="android:ringtoneType" />
 
         <!-- Whether to show an item for a default sound. -->
-        <attr name="showDefault" format="boolean"/>
-        <attr name="android:showDefault"/>
+        <attr name="showDefault" format="boolean" />
+        <attr name="android:showDefault" />
 
         <!-- Whether to show an item for 'Silent'. -->
-        <attr name="showSilent" format="boolean"/>
+        <attr name="showSilent" format="boolean" />
         <attr name="android:showSilent" />
 
-        <attr name="summaryNone" format="string"/>
+        <attr name="summaryNone" format="string" />
     </declare-styleable>
 
     <declare-styleable name="SeekBarPreference">
-        <attr name="min" format="integer"/>
-        <attr name="android:max"/>
+        <attr name="min" format="integer" />
+        <attr name="android:max" />
         <attr name="android:layout" />
         <!--Attribute controlling the amount to increment or decrement the seekbar when the user
         presses the arrow keys-->

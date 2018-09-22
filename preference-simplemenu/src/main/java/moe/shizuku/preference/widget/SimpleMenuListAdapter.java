@@ -1,11 +1,11 @@
 package moe.shizuku.preference.widget;
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.RecyclerView;
 import moe.shizuku.preference.simplemenu.R;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

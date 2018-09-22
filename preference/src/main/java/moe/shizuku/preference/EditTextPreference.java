@@ -22,13 +22,14 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.content.res.TypedArrayUtils;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.res.TypedArrayUtils;
+import androidx.fragment.app.DialogFragment;
 
 /**
  * A {@link Preference} that allows for string
@@ -171,7 +172,6 @@ public class EditTextPreference extends DialogPreference {
     }
 
     /**
-     *
      * @return Input type value.
      */
     public int getInputType() {
@@ -179,7 +179,6 @@ public class EditTextPreference extends DialogPreference {
     }
 
     /**
-     *
      * @return is SingleLine
      */
     public boolean isSingleLine() {

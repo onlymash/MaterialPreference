@@ -3,11 +3,11 @@ package moe.shizuku.preference;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import moe.shizuku.preference.simplemenu.R;
 import moe.shizuku.preference.widget.SimpleMenuPopupWindow;
 
@@ -15,7 +15,7 @@ import moe.shizuku.preference.widget.SimpleMenuPopupWindow;
  * A version of {@link ListPreference} that use
  * <a href="https://material.io/guidelines/components/menus.html#menus-simple-menus">Simple Menus</a>
  * in Material Design as drop down.
- *
+ * <p>
  * On pre-Lollipop, it will fallback {@link ListPreference}.
  */
 
@@ -39,7 +39,7 @@ public class SimpleMenuPreference extends ListPreference {
     }
 
     public SimpleMenuPreference(Context context, AttributeSet attrs, int defStyleAttr,
-                              int defStyleRes) {
+                                int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {

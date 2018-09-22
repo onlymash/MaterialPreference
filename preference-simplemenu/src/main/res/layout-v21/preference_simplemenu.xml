@@ -15,9 +15,7 @@
   ~ limitations under the License
   -->
 
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -57,7 +55,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:visibility="invisible"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical" />
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -66,14 +64,16 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp">
 
-            <TextView android:id="@android:id/title"
+            <TextView
+                android:id="@android:id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceListItem"
                 android:ellipsize="marquee" />
 
-            <TextView android:id="@android:id/summary"
+            <TextView
+                android:id="@android:id/summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@android:id/title"
@@ -85,13 +85,14 @@
         </RelativeLayout>
 
         <!-- Preference should place its actual preference widget here. -->
-        <LinearLayout android:id="@android:id/widget_frame"
+        <LinearLayout
+            android:id="@android:id/widget_frame"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="end|center_vertical"
             android:paddingStart="16dp"
             android:orientation="vertical"
-            tools:ignore="RtlSymmetry"/>
+            tools:ignore="RtlSymmetry" />
 
     </LinearLayout>
 

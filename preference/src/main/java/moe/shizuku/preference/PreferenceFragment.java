@@ -16,9 +16,6 @@
 
 package moe.shizuku.preference;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static moe.shizuku.preference.Preference.DividerVisibility;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -29,18 +26,22 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.XmlRes;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.XmlRes;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static moe.shizuku.preference.Preference.DividerVisibility;
 
 /**
  * Shows a hierarchy of {@link Preference} objects as
@@ -92,15 +93,15 @@ import android.view.ViewGroup;
  *
  * <p>The following sample code shows a simple preference fragment that is
  * populated from a resource.  The resource it loads is:</p>
- *
+ * <p>
  * {@sample frameworks/support/samples/SupportPreferenceDemos/res/xml/preferences.xml preferences}
  *
  * <p>The fragment implementation itself simply populates the preferences
  * when created.  Note that the preferences framework takes care of loading
  * the current values out of the app preferences and writing them when changed:</p>
- *
+ * <p>
  * {@sample frameworks/support/samples/SupportPreferenceDemos/src/com/example/android/supportpreference/FragmentSupportPreferencesCompat.java
- *      support_fragment_compat}
+ * support_fragment_compat}
  *
  * @see Preference
  * @see PreferenceScreen
@@ -169,8 +170,9 @@ public abstract class PreferenceFragment extends Fragment implements
          * a fragment class name associated with it.  The implementation
          * should instantiate and switch to an instance of the given
          * fragment.
+         *
          * @param caller The fragment requesting navigation.
-         * @param pref The preference requesting the fragment.
+         * @param pref   The preference requesting the fragment.
          * @return true if the fragment creation has been handled
          */
         boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref);
@@ -185,8 +187,9 @@ public abstract class PreferenceFragment extends Fragment implements
         /**
          * Called when the user has clicked on a PreferenceScreen item in order to navigate to a new
          * screen of preferences.
+         *
          * @param caller The fragment requesting navigation.
-         * @param pref The preference screen to navigate to.
+         * @param pref   The preference screen to navigate to.
          * @return true if the screen navigation has been handled
          */
         boolean onPreferenceStartScreen(PreferenceFragment caller, PreferenceScreen pref);
@@ -195,9 +198,8 @@ public abstract class PreferenceFragment extends Fragment implements
     public interface OnPreferenceDisplayDialogCallback {
 
         /**
-         *
          * @param caller The fragment containing the preference requesting the dialog.
-         * @param pref The preference requesting the dialog.
+         * @param pref   The preference requesting the dialog.
          * @return true if the dialog creation has been handled.
          */
         boolean onPreferenceDisplayDialog(PreferenceFragment caller, Preference pref);
@@ -242,8 +244,8 @@ public abstract class PreferenceFragment extends Fragment implements
      *
      * @param savedInstanceState If the fragment is being re-created from
      *                           a previous saved state, this is the state.
-     * @param rootKey If non-null, this preference fragment should be rooted at the
-     *                {@link PreferenceScreen} with this key.
+     * @param rootKey            If non-null, this preference fragment should be rooted at the
+     *                           {@link PreferenceScreen} with this key.
      */
     public abstract void onCreatePreferences(Bundle savedInstanceState, String rootKey);
 
@@ -316,7 +318,8 @@ public abstract class PreferenceFragment extends Fragment implements
      *
      * @return ItemDecoration or null for no divider
      */
-    @Nullable public DividerDecoration onCreateItemDecoration() {
+    @Nullable
+    public DividerDecoration onCreateItemDecoration() {
         return new DefaultDividerDecoration();
     }
 
@@ -420,6 +423,7 @@ public abstract class PreferenceFragment extends Fragment implements
 
     /**
      * Returns the {@link PreferenceManager} used by this fragment.
+     *
      * @return The {@link PreferenceManager}.
      */
     public PreferenceManager getPreferenceManager() {
@@ -445,7 +449,7 @@ public abstract class PreferenceFragment extends Fragment implements
      * Gets the root of the preference hierarchy that this fragment is showing.
      *
      * @return The {@link PreferenceScreen} that is the root of the preference
-     *         hierarchy.
+     * hierarchy.
      */
     public PreferenceScreen getPreferenceScreen() {
         return mPreferenceManager.getPreferenceScreen();
@@ -469,8 +473,8 @@ public abstract class PreferenceFragment extends Fragment implements
      * the preference hierarchy rooted at {@code key}.
      *
      * @param preferencesResId The XML resource ID to inflate.
-     * @param key The preference key of the {@link PreferenceScreen} to use as the root of the
-     *            preference hierarchy, or null to use the root {@link PreferenceScreen}.
+     * @param key              The preference key of the {@link PreferenceScreen} to use as the root of the
+     *                         preference hierarchy, or null to use the root {@link PreferenceScreen}.
      */
     public void setPreferencesFromResource(@XmlRes int preferencesResId, @Nullable String key) {
         requirePreferenceManager();
@@ -503,7 +507,7 @@ public abstract class PreferenceFragment extends Fragment implements
                 handled = ((OnPreferenceStartFragmentCallback) getCallbackFragment())
                         .onPreferenceStartFragment(this, preference);
             }
-            if (!handled && getActivity() instanceof OnPreferenceStartFragmentCallback){
+            if (!handled && getActivity() instanceof OnPreferenceStartFragmentCallback) {
                 handled = ((OnPreferenceStartFragmentCallback) getActivity())
                         .onPreferenceStartFragment(this, preference);
             }
@@ -518,6 +522,7 @@ public abstract class PreferenceFragment extends Fragment implements
      * {@link PreferenceFragment.OnPreferenceStartScreenCallback#onPreferenceStartScreen}
      * if the target fragment or containing activity implements
      * {@link PreferenceFragment.OnPreferenceStartScreenCallback}.
+     *
      * @param preferenceScreen The {@link PreferenceScreen} to navigate to.
      */
     @Override
@@ -576,12 +581,16 @@ public abstract class PreferenceFragment extends Fragment implements
         onUnbindPreferences();
     }
 
-    /** @hide */
+    /**
+     * @hide
+     */
     @RestrictTo(LIBRARY_GROUP)
     protected void onBindPreferences() {
     }
 
-    /** @hide */
+    /**
+     * @hide
+     */
     @RestrictTo(LIBRARY_GROUP)
     protected void onUnbindPreferences() {
     }
@@ -591,14 +600,15 @@ public abstract class PreferenceFragment extends Fragment implements
     }
 
     /**
-     * Creates the {@link android.support.v7.widget.RecyclerView} used to display the preferences.
+     * Creates the {@link RecyclerView} used to display the preferences.
      * Subclasses may override this to return a customized
-     * {@link android.support.v7.widget.RecyclerView}.
-     * @param inflater The LayoutInflater object that can be used to inflate the
-     *                 {@link android.support.v7.widget.RecyclerView}.
-     * @param parent The parent {@link android.view.View} that the RecyclerView will be attached to.
-     *               This method should not add the view itself, but this can be used to generate
-     *               the LayoutParams of the view.
+     * {@link RecyclerView}.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate the
+     *                           {@link RecyclerView}.
+     * @param parent             The parent {@link android.view.View} that the RecyclerView will be attached to.
+     *                           This method should not add the view itself, but this can be used to generate
+     *                           the LayoutParams of the view.
      * @param savedInstanceState If non-null, this view is being re-constructed from a previous
      *                           saved state as given here
      * @return A new RecyclerView object to be placed into the view hierarchy
@@ -617,9 +627,10 @@ public abstract class PreferenceFragment extends Fragment implements
 
     /**
      * Called from {@link #onCreateRecyclerView} to create the
-     * {@link android.support.v7.widget.RecyclerView.LayoutManager} for the created
-     * {@link android.support.v7.widget.RecyclerView}.
-     * @return A new {@link android.support.v7.widget.RecyclerView.LayoutManager} instance.
+     * {@link RecyclerView.LayoutManager} for the created
+     * {@link RecyclerView}.
+     *
+     * @return A new {@link RecyclerView.LayoutManager} instance.
      */
     public RecyclerView.LayoutManager onCreateLayoutManager() {
         return new LinearLayoutManager(getActivity());
@@ -674,6 +685,7 @@ public abstract class PreferenceFragment extends Fragment implements
 
     /**
      * Basically a wrapper for getParentFragment which is v17+. Used by the leanback preference lib.
+     *
      * @return Fragment to possibly use as a callback
      * @hide
      */
@@ -822,10 +834,10 @@ public abstract class PreferenceFragment extends Fragment implements
         /**
          * Called when Preference dose not specific whether to show the divider ot not.
          *
-         * @param view Preference item view
-         * @param parent RecyclerView
-         * @param adapter PreferenceGroupAdapter
-         * @param index index, never be last
+         * @param view       Preference item view
+         * @param parent     RecyclerView
+         * @param adapter    PreferenceGroupAdapter
+         * @param index      index, never be last
          * @param preference Preference, never be last
          * @return whether to show the divider ot not
          */

@@ -7,9 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -20,6 +17,9 @@ import android.widget.PopupWindow;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import moe.shizuku.preference.animation.SimpleMenuAnimation;
 import moe.shizuku.preference.drawable.FixedBoundsDrawable;
 import moe.shizuku.preference.simplemenu.R;
@@ -96,7 +96,7 @@ public class SimpleMenuPopupWindow extends PopupWindow {
         margin[DIALOG][VERTICAL] = (int) a.getDimension(R.styleable.SimpleMenuPopup_dialogMarginVertical, 0);
         listPadding[POPUP_MENU][HORIZONTAL] = (int) a.getDimension(R.styleable.SimpleMenuPopup_listItemPadding, 0);
         listPadding[DIALOG][HORIZONTAL] = (int) a.getDimension(R.styleable.SimpleMenuPopup_dialogItemPadding, 0);
-        dialogMaxWidth  = (int) a.getDimension(R.styleable.SimpleMenuPopup_dialogMaxWidth, 0);
+        dialogMaxWidth = (int) a.getDimension(R.styleable.SimpleMenuPopup_dialogMaxWidth, 0);
         unit = (int) a.getDimension(R.styleable.SimpleMenuPopup_unit, 0);
         maxUnits = a.getInteger(R.styleable.SimpleMenuPopup_maxUnits, 0);
 
@@ -178,8 +178,8 @@ public class SimpleMenuPopupWindow extends PopupWindow {
     /**
      * Show the PopupWindow
      *
-     * @param anchor View that will be used to calc the position of windows
-     * @param container View that will be used to calc the position of windows
+     * @param anchor      View that will be used to calc the position of windows
+     * @param container   View that will be used to calc the position of windows
      * @param extraMargin extra margin start
      */
     public void show(View anchor, View container, int extraMargin) {
@@ -205,7 +205,7 @@ public class SimpleMenuPopupWindow extends PopupWindow {
     /**
      * Show popup window in dialog mode
      *
-     * @param parent a parent view to get the {@link android.view.View#getWindowToken()} token from
+     * @param parent    a parent view to get the {@link android.view.View#getWindowToken()} token from
      * @param container Container view that holds preference list, also used to calc width
      */
     private void showDialog(View parent, View container) {
@@ -241,7 +241,7 @@ public class SimpleMenuPopupWindow extends PopupWindow {
                 // disable over scroll when no scroll
                 LinearLayoutManager lm = (LinearLayoutManager) getContentView().getLayoutManager();
                 if (lm.findFirstCompletelyVisibleItemPosition() == 0
-                    && lm.findLastCompletelyVisibleItemPosition() == count - 1) {
+                        && lm.findLastCompletelyVisibleItemPosition() == count - 1) {
                     getContentView().setOverScrollMode(View.OVER_SCROLL_NEVER);
                 }
             }
@@ -251,9 +251,9 @@ public class SimpleMenuPopupWindow extends PopupWindow {
     /**
      * Show popup window in popup mode
      *
-     * @param anchor View that will be used to calc the position of the window
+     * @param anchor    View that will be used to calc the position of the window
      * @param container Container view that holds preference list, also used to calc width
-     * @param width Measured width of this window
+     * @param width     Measured width of this window
      */
     private void showPopupMenu(View anchor, View container, int width, int extraMargin) {
         final boolean rtl = container.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
@@ -369,10 +369,10 @@ public class SimpleMenuPopupWindow extends PopupWindow {
      * Measure window width
      *
      * @param maxWidth max width for popup
-     * @param entries Entries of preference hold this window
-     * @return  0: skip
-     *          -1: use dialog
-     *          other: measuredWidth
+     * @param entries  Entries of preference hold this window
+     * @return 0: skip
+     * -1: use dialog
+     * other: measuredWidth
      */
     private int measureWidth(int maxWidth, CharSequence[] entries) {
         // skip if should not measure

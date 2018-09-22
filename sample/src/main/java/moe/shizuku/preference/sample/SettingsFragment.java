@@ -2,11 +2,8 @@ package moe.shizuku.preference.sample;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 
 import java.util.Locale;
 
@@ -14,7 +11,6 @@ import moe.shizuku.preference.CheckBoxPreference;
 import moe.shizuku.preference.ListPreference;
 import moe.shizuku.preference.Preference;
 import moe.shizuku.preference.PreferenceCategory;
-import moe.shizuku.preference.PreferenceDataStore;
 import moe.shizuku.preference.PreferenceFragment;
 
 /**
@@ -23,7 +19,7 @@ import moe.shizuku.preference.PreferenceFragment;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
 
-	private static final String TAG = SettingsFragment.class.getSimpleName();
+    private static final String TAG = SettingsFragment.class.getSimpleName();
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
